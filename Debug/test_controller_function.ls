@@ -1,4404 +1,4357 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.8.32 - 23 Mar 2010
-   3                     ; Generator V4.3.4 - 23 Mar 2010
-2655                     	switch	.data
-2656  0000               _uc_Rx_Data:
-2657  0000 00            	dc.b	0
-2658  0001 000000000000  	ds.b	7
-2659  0008 000000000000  	ds.b	24
-2695                     ; 37 void First_Switch_Control(void)
-2695                     ; 38 {
-2697                     	switch	.text
-2698  0000               _First_Switch_Control:
-2702                     ; 39 	if(b_ENTER_Button_Flag){
-2704  0000 c60000        	ld	a,_uc_Button_Status_Reg
-2705  0003 a520          	bcp	a,#32
-2706  0005 2718          	jreq	L1271
-2707                     ; 40 		b_First_Logic_On = ON;
-2709  0007 72100000      	bset	_uc_System_Ctrl_Reg,#0
-2710                     ; 41 		b_Model_Select_flag = OFF;		// Model_Selection_Skipped
-2712  000b 7211000d      	bres	_uc_Test_Ctrl_Reg,#0
-2713                     ; 42 		b_Data_Select_flag = OFF;
-2715  000f 7213000d      	bres	_uc_Test_Ctrl_Reg,#1
-2716                     ; 44 		uc_Test_Page_Pre = (U8)(1);
-2718  0013 35010003      	mov	_uc_Test_Page_Pre,#1
-2719                     ; 45 		uc_Test_Data_Select_Num = (U8)(0);
-2721  0017 725f0002      	clr	_uc_Test_Data_Select_Num
-2722                     ; 47 		b_ENTER_Button_Flag = OFF;
-2724  001b 721b0000      	bres	_uc_Button_Status_Reg,#5
-2725  001f               L1271:
-2726                     ; 50 	return;
-2729  001f 81            	ret
-2756                     ; 55 void Test_Controller_First_Routine(void)
-2756                     ; 56 {
-2757                     	switch	.text
-2758  0020               _Test_Controller_First_Routine:
-2762                     ; 57 	Start_Zig_Display();
-2764  0020 cd0000        	call	_Start_Zig_Display
-2766                     ; 58 	First_Switch_Control();
-2768  0023 addb          	call	_First_Switch_Control
-2770                     ; 59 	b_Com_On_flag = OFF;//YJS 20230314
-2772  0025 7217000d      	bres	_uc_Test_Ctrl_Reg,#3
-2773                     ; 60 	return;
-2776  0029 81            	ret
-2803                     ; 66 void Model_Select_Display_Handling(void)
-2803                     ; 67 {
-2804                     	switch	.text
-2805  002a               _Model_Select_Display_Handling:
-2809                     ; 68 	switch(uc_Test_Page_Now){
-2811  002a 725d0004      	tnz	_uc_Test_Page_Now
-2812  002e 262e          	jrne	L5371
-2815  0030               L3371:
-2816                     ; 71 		case 0:	strcpy(LCD_Dis_Data[0],"*HVCC Model*");	
-2818  0030 ae017a        	ldw	x,#L3571
-2819  0033 89            	pushw	x
-2820  0034 ae0000        	ldw	x,#_LCD_Dis_Data
-2821  0037 cd0000        	call	_strcpy
-2823  003a 85            	popw	x
-2824                     ; 72 				strcpy(LCD_Dis_Data[1],"");	// 
-2826  003b ae0179        	ldw	x,#L5571
-2827  003e 89            	pushw	x
-2828  003f ae0010        	ldw	x,#_LCD_Dis_Data+16
-2829  0042 cd0000        	call	_strcpy
-2831  0045 85            	popw	x
-2832                     ; 73 				strcpy(LCD_Dis_Data[2],"");	// 
-2834  0046 ae0179        	ldw	x,#L5571
-2835  0049 89            	pushw	x
-2836  004a ae0020        	ldw	x,#_LCD_Dis_Data+32
-2837  004d cd0000        	call	_strcpy
-2839  0050 85            	popw	x
-2840                     ; 74 				strcpy(LCD_Dis_Data[3],"");		
-2842  0051 ae0179        	ldw	x,#L5571
-2843  0054 89            	pushw	x
-2844  0055 ae0030        	ldw	x,#_LCD_Dis_Data+48
-2845  0058 cd0000        	call	_strcpy
-2847  005b 85            	popw	x
-2848                     ; 76 				break;
-2850  005c 202c          	jra	L1571
-2851  005e               L5371:
-2852                     ; 78 		default: 
-2852                     ; 79 				strcpy(LCD_Dis_Data[0],"");	// Null
-2854  005e ae0179        	ldw	x,#L5571
-2855  0061 89            	pushw	x
-2856  0062 ae0000        	ldw	x,#_LCD_Dis_Data
-2857  0065 cd0000        	call	_strcpy
-2859  0068 85            	popw	x
-2860                     ; 80 				strcpy(LCD_Dis_Data[1],"");	// Null
-2862  0069 ae0179        	ldw	x,#L5571
-2863  006c 89            	pushw	x
-2864  006d ae0010        	ldw	x,#_LCD_Dis_Data+16
-2865  0070 cd0000        	call	_strcpy
-2867  0073 85            	popw	x
-2868                     ; 81 				strcpy(LCD_Dis_Data[2],"");	// Null
-2870  0074 ae0179        	ldw	x,#L5571
-2871  0077 89            	pushw	x
-2872  0078 ae0020        	ldw	x,#_LCD_Dis_Data+32
-2873  007b cd0000        	call	_strcpy
-2875  007e 85            	popw	x
-2876                     ; 82 				strcpy(LCD_Dis_Data[3],"");	// Null
-2878  007f ae0179        	ldw	x,#L5571
-2879  0082 89            	pushw	x
-2880  0083 ae0030        	ldw	x,#_LCD_Dis_Data+48
-2881  0086 cd0000        	call	_strcpy
-2883  0089 85            	popw	x
-2884                     ; 84 				break;
-2885  008a               L1571:
-2886                     ; 87 	return;
-2889  008a 81            	ret
-2914                     ; 93 void Model_Select_Switch_Control(void)
-2914                     ; 94 {
-2915                     	switch	.text
-2916  008b               _Model_Select_Switch_Control:
-2920                     ; 95 	if(b_UP_Button_Flag){
-2922  008b c60000        	ld	a,_uc_Button_Status_Reg
-2923  008e a502          	bcp	a,#2
-2924  0090 2704          	jreq	L1771
-2925                     ; 97 		b_UP_Button_Flag = OFF;
-2927  0092 72130000      	bres	_uc_Button_Status_Reg,#1
-2928  0096               L1771:
-2929                     ; 100 	if(b_DOWN_Button_Flag){
-2931  0096 c60000        	ld	a,_uc_Button_Status_Reg
-2932  0099 a504          	bcp	a,#4
-2933  009b 2704          	jreq	L3771
-2934                     ; 102 		b_DOWN_Button_Flag = OFF;
-2936  009d 72150000      	bres	_uc_Button_Status_Reg,#2
-2937  00a1               L3771:
-2938                     ; 105 	if(b_ENTER_Button_Flag){
-2940  00a1 c60000        	ld	a,_uc_Button_Status_Reg
-2941  00a4 a520          	bcp	a,#32
-2942  00a6 2704          	jreq	L5771
-2943                     ; 107 		b_ENTER_Button_Flag = OFF;
-2945  00a8 721b0000      	bres	_uc_Button_Status_Reg,#5
-2946  00ac               L5771:
-2947                     ; 111 	return;
-2950  00ac 81            	ret
-2993                     ; 117 void Model_Select_LCD_Display_Control(void)
-2993                     ; 118 {
-2994                     	switch	.text
-2995  00ad               _Model_Select_LCD_Display_Control:
-2997  00ad 88            	push	a
-2998       00000001      OFST:	set	1
-3001                     ; 121 	if(uc_Test_Page_Now != uc_Test_Page_Pre){ Model_Select_Display_Handling();}
-3003  00ae c60004        	ld	a,_uc_Test_Page_Now
-3004  00b1 c10003        	cp	a,_uc_Test_Page_Pre
-3005  00b4 2703          	jreq	L3102
-3008  00b6 cd002a        	call	_Model_Select_Display_Handling
-3010  00b9               L3102:
-3011                     ; 122 	uc_Test_Page_Pre = uc_Test_Page_Now ;
-3013  00b9 5500040003    	mov	_uc_Test_Page_Pre,_uc_Test_Page_Now
-3014                     ; 125 	if(uc_Test_Page_Now == (U8)(0)){			//page 1
-3016  00be 725d0004      	tnz	_uc_Test_Page_Now
-3017  00c2 2643          	jrne	L5102
-3018                     ; 126 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-3020  00c4 0f01          	clr	(OFST+0,sp)
-3021  00c6               L7102:
-3022                     ; 127 			Set_LCD_Address(LCD_Line[uc_line_index]);
-3024  00c6 7b01          	ld	a,(OFST+0,sp)
-3025  00c8 5f            	clrw	x
-3026  00c9 97            	ld	xl,a
-3027  00ca d60000        	ld	a,(_LCD_Line,x)
-3028  00cd cd0000        	call	_Set_LCD_Address
-3030                     ; 129 			if((b_Data_Select_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
-3032  00d0 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3033  00d3 a502          	bcp	a,#2
-3034  00d5 271c          	jreq	L5202
-3036  00d7 7b01          	ld	a,(OFST+0,sp)
-3037  00d9 c10002        	cp	a,_uc_Test_Data_Select_Num
-3038  00dc 2615          	jrne	L5202
-3039                     ; 130 				if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
-3041  00de c60000        	ld	a,_uc_LCD_Blink_Reg
-3042  00e1 a502          	bcp	a,#2
-3043  00e3 271a          	jreq	L1302
-3046  00e5 7b01          	ld	a,(OFST+0,sp)
-3047  00e7 97            	ld	xl,a
-3048  00e8 a610          	ld	a,#16
-3049  00ea 42            	mul	x,a
-3050  00eb 1c0000        	addw	x,#_LCD_Dis_Data
-3051  00ee cd0000        	call	_Display_LCD_String
-3053  00f1 200c          	jra	L1302
-3054  00f3               L5202:
-3055                     ; 131 			}else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
-3057  00f3 7b01          	ld	a,(OFST+0,sp)
-3058  00f5 97            	ld	xl,a
-3059  00f6 a610          	ld	a,#16
-3060  00f8 42            	mul	x,a
-3061  00f9 1c0000        	addw	x,#_LCD_Dis_Data
-3062  00fc cd0000        	call	_Display_LCD_String
-3064  00ff               L1302:
-3065                     ; 126 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-3067  00ff 0c01          	inc	(OFST+0,sp)
-3070  0101 7b01          	ld	a,(OFST+0,sp)
-3071  0103 a104          	cp	a,#4
-3072  0105 25bf          	jrult	L7102
-3073  0107               L5102:
-3074                     ; 135 	return;
-3077  0107 84            	pop	a
-3078  0108 81            	ret
-3104                     ; 140 void Model_Select_Routine(void)
-3104                     ; 141 {
-3105                     	switch	.text
-3106  0109               _Model_Select_Routine:
-3110                     ; 142 	Model_Select_LCD_Display_Control();
-3112  0109 ada2          	call	_Model_Select_LCD_Display_Control
-3114                     ; 143 	Model_Select_Switch_Control();	
-3116  010b cd008b        	call	_Model_Select_Switch_Control
-3118                     ; 145 	return;
-3121  010e 81            	ret
-3167                     ; 151 void Test_Ctrl_Value_Change(U8 uc_st)
-3167                     ; 152 {
-3168                     	switch	.text
-3169  010f               _Test_Ctrl_Value_Change:
-3171  010f 88            	push	a
-3172  0110 5204          	subw	sp,#4
-3173       00000004      OFST:	set	4
-3176                     ; 157 	if(uc_st == 1){	
-3178  0112 a101          	cp	a,#1
-3179  0114 2703          	jreq	L22
-3180  0116 cc0257        	jp	L1602
-3181  0119               L22:
-3182                     ; 158   		if(uc_Test_Data_Select_Num == (U8)(0)){ uc_Heater_Enable_Flag ^= ON; }
-3184  0119 725d0002      	tnz	_uc_Test_Data_Select_Num
-3185  011d 260c          	jrne	L3602
-3188  011f c60009        	ld	a,_uc_Heater_Enable_Flag
-3189  0122 a801          	xor	a,	#1
-3190  0124 c70009        	ld	_uc_Heater_Enable_Flag,a
-3192  0127 ac090309      	jpf	L5512
-3193  012b               L3602:
-3194                     ; 159 		else if(uc_Test_Data_Select_Num == (U8)(1)){			
-3196  012b c60002        	ld	a,_uc_Test_Data_Select_Num
-3197  012e a101          	cp	a,#1
-3198  0130 2703          	jreq	L42
-3199  0132 cc0309        	jp	L5512
-3200  0135               L42:
-3201                     ; 160 			if(uc_Target_Display_Mode == (U8)(1)){	// Power_Display_Mode		
-3203  0135 c60000        	ld	a,_uc_Target_Display_Mode
-3204  0138 a101          	cp	a,#1
-3205  013a 2703          	jreq	L62
-3206  013c cc01ff        	jp	L1702
-3207  013f               L62:
-3208                     ; 161 if (HEATER_zone_status == HTR_ZONE_1)
-3210  013f 725d0000      	tnz	_HEATER_zone_status
-3211  0143 265d          	jrne	L3702
-3212                     ; 163 				if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(20); }
-3214  0145 c6000a        	ld	a,_uc_Target_Duty_Perc
-3215  0148 a114          	cp	a,#20
-3216  014a 2408          	jruge	L5702
-3219  014c 3514000a      	mov	_uc_Target_Duty_Perc,#20
-3221  0150 ac090309      	jpf	L5512
-3222  0154               L5702:
-3223                     ; 165 					ui_buffer = (U16)(uc_Target_Duty_Perc[HTR_ZONE_1]) + (U16)(uc_Perc_Unit);
-3225  0154 c60001        	ld	a,_uc_Perc_Unit
-3226  0157 5f            	clrw	x
-3227  0158 97            	ld	xl,a
-3228  0159 1f01          	ldw	(OFST-3,sp),x
-3229  015b c6000a        	ld	a,_uc_Target_Duty_Perc
-3230  015e 5f            	clrw	x
-3231  015f 97            	ld	xl,a
-3232  0160 72fb01        	addw	x,(OFST-3,sp)
-3233  0163 1f03          	ldw	(OFST-1,sp),x
-3234                     ; 167 					if((uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(180)) && (ui_buffer >= (U16)(180))){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(180); }
-3236  0165 c6000a        	ld	a,_uc_Target_Duty_Perc
-3237  0168 a1b4          	cp	a,#180
-3238  016a 240f          	jruge	L1012
-3240  016c 1e03          	ldw	x,(OFST-1,sp)
-3241  016e a300b4        	cpw	x,#180
-3242  0171 2508          	jrult	L1012
-3245  0173 35b4000a      	mov	_uc_Target_Duty_Perc,#180
-3247  0177 ac090309      	jpf	L5512
-3248  017b               L1012:
-3249                     ; 168 					else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(190); }
-3251  017b c6000a        	ld	a,_uc_Target_Duty_Perc
-3252  017e a1b4          	cp	a,#180
-3253  0180 2608          	jrne	L5012
-3256  0182 35be000a      	mov	_uc_Target_Duty_Perc,#190
-3258  0186 ac090309      	jpf	L5512
-3259  018a               L5012:
-3260                     ; 169 					else if(ui_buffer > (U16)(190)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(190); }
-3262  018a 1e03          	ldw	x,(OFST-1,sp)
-3263  018c a300bf        	cpw	x,#191
-3264  018f 2508          	jrult	L1112
-3267  0191 35be000a      	mov	_uc_Target_Duty_Perc,#190
-3269  0195 ac090309      	jpf	L5512
-3270  0199               L1112:
-3271                     ; 170 					else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(ui_buffer); }
-3273  0199 7b04          	ld	a,(OFST+0,sp)
-3274  019b c7000a        	ld	_uc_Target_Duty_Perc,a
-3275  019e ac090309      	jpf	L5512
-3276  01a2               L3702:
-3277                     ; 175 				if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(20); }
-3279  01a2 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3280  01a5 a114          	cp	a,#20
-3281  01a7 2408          	jruge	L7112
-3284  01a9 3514000b      	mov	_uc_Target_Duty_Perc+1,#20
-3286  01ad ac090309      	jpf	L5512
-3287  01b1               L7112:
-3288                     ; 177 					ui_buffer = (U16)(uc_Target_Duty_Perc[HTR_ZONE_2]) + (U16)(uc_Perc_Unit);
-3290  01b1 c60001        	ld	a,_uc_Perc_Unit
-3291  01b4 5f            	clrw	x
-3292  01b5 97            	ld	xl,a
-3293  01b6 1f01          	ldw	(OFST-3,sp),x
-3294  01b8 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3295  01bb 5f            	clrw	x
-3296  01bc 97            	ld	xl,a
-3297  01bd 72fb01        	addw	x,(OFST-3,sp)
-3298  01c0 1f03          	ldw	(OFST-1,sp),x
-3299                     ; 179 					if((uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(180)) && (ui_buffer >= (U16)(180))){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(180); }
-3301  01c2 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3302  01c5 a1b4          	cp	a,#180
-3303  01c7 240f          	jruge	L3212
-3305  01c9 1e03          	ldw	x,(OFST-1,sp)
-3306  01cb a300b4        	cpw	x,#180
-3307  01ce 2508          	jrult	L3212
-3310  01d0 35b4000b      	mov	_uc_Target_Duty_Perc+1,#180
-3312  01d4 ac090309      	jpf	L5512
-3313  01d8               L3212:
-3314                     ; 180 					else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(190); }
-3316  01d8 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3317  01db a1b4          	cp	a,#180
-3318  01dd 2608          	jrne	L7212
-3321  01df 35be000b      	mov	_uc_Target_Duty_Perc+1,#190
-3323  01e3 ac090309      	jpf	L5512
-3324  01e7               L7212:
-3325                     ; 181 					else if(ui_buffer > (U16)(190)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(190); }
-3327  01e7 1e03          	ldw	x,(OFST-1,sp)
-3328  01e9 a300bf        	cpw	x,#191
-3329  01ec 2508          	jrult	L3312
-3332  01ee 35be000b      	mov	_uc_Target_Duty_Perc+1,#190
-3334  01f2 ac090309      	jpf	L5512
-3335  01f6               L3312:
-3336                     ; 182 					else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(ui_buffer); }
-3338  01f6 7b04          	ld	a,(OFST+0,sp)
-3339  01f8 c7000b        	ld	_uc_Target_Duty_Perc+1,a
-3340  01fb ac090309      	jpf	L5512
-3341  01ff               L1702:
-3342                     ; 187 if (HEATER_zone_status == HTR_ZONE_1)
-3344  01ff 725d0000      	tnz	_HEATER_zone_status
-3345  0203 2629          	jrne	L1412
-3346                     ; 189 				ui_buffer = (U16)(uc_Target_Duty_Perc[HTR_ZONE_1]) + (U16)(uc_Perc_Unit);
-3348  0205 c60001        	ld	a,_uc_Perc_Unit
-3349  0208 5f            	clrw	x
-3350  0209 97            	ld	xl,a
-3351  020a 1f01          	ldw	(OFST-3,sp),x
-3352  020c c6000a        	ld	a,_uc_Target_Duty_Perc
-3353  020f 5f            	clrw	x
-3354  0210 97            	ld	xl,a
-3355  0211 72fb01        	addw	x,(OFST-3,sp)
-3356  0214 1f03          	ldw	(OFST-1,sp),x
-3357                     ; 190 				if(ui_buffer >= (U16)(200)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(200); }
-3359  0216 1e03          	ldw	x,(OFST-1,sp)
-3360  0218 a300c8        	cpw	x,#200
-3361  021b 2508          	jrult	L3412
-3364  021d 35c8000a      	mov	_uc_Target_Duty_Perc,#200
-3366  0221 ac090309      	jpf	L5512
-3367  0225               L3412:
-3368                     ; 191 				else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(ui_buffer); }
-3370  0225 7b04          	ld	a,(OFST+0,sp)
-3371  0227 c7000a        	ld	_uc_Target_Duty_Perc,a
-3372  022a ac090309      	jpf	L5512
-3373  022e               L1412:
-3374                     ; 195 				ui_buffer = (U16)(uc_Target_Duty_Perc[HTR_ZONE_2]) + (U16)(uc_Perc_Unit);
-3376  022e c60001        	ld	a,_uc_Perc_Unit
-3377  0231 5f            	clrw	x
-3378  0232 97            	ld	xl,a
-3379  0233 1f01          	ldw	(OFST-3,sp),x
-3380  0235 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3381  0238 5f            	clrw	x
-3382  0239 97            	ld	xl,a
-3383  023a 72fb01        	addw	x,(OFST-3,sp)
-3384  023d 1f03          	ldw	(OFST-1,sp),x
-3385                     ; 196 				if(ui_buffer >= (U16)(200)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(200); }
-3387  023f 1e03          	ldw	x,(OFST-1,sp)
-3388  0241 a300c8        	cpw	x,#200
-3389  0244 2508          	jrult	L1512
-3392  0246 35c8000b      	mov	_uc_Target_Duty_Perc+1,#200
-3394  024a ac090309      	jpf	L5512
-3395  024e               L1512:
-3396                     ; 197 				else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(ui_buffer); }
-3398  024e 7b04          	ld	a,(OFST+0,sp)
-3399  0250 c7000b        	ld	_uc_Target_Duty_Perc+1,a
-3400  0253 ac090309      	jpf	L5512
-3401  0257               L1602:
-3402                     ; 204 	else if(uc_st == 0){	
-3404  0257 0d05          	tnz	(OFST+1,sp)
-3405  0259 2703          	jreq	L03
-3406  025b cc0309        	jp	L5512
-3407  025e               L03:
-3408                     ; 205 		if(uc_Test_Data_Select_Num == (U8)(0)){ uc_Heater_Enable_Flag ^= ON; }
-3410  025e 725d0002      	tnz	_uc_Test_Data_Select_Num
-3411  0262 260c          	jrne	L1612
-3414  0264 c60009        	ld	a,_uc_Heater_Enable_Flag
-3415  0267 a801          	xor	a,	#1
-3416  0269 c70009        	ld	_uc_Heater_Enable_Flag,a
-3418  026c ac090309      	jpf	L5512
-3419  0270               L1612:
-3420                     ; 206 		else if(uc_Test_Data_Select_Num == (U8)(1)){
-3422  0270 c60002        	ld	a,_uc_Test_Data_Select_Num
-3423  0273 a101          	cp	a,#1
-3424  0275 2703          	jreq	L23
-3425  0277 cc0309        	jp	L5512
-3426  027a               L23:
-3427                     ; 207 			if(uc_Target_Display_Mode == (U8)(1)){	// Power_Display_Mode	
-3429  027a c60000        	ld	a,_uc_Target_Display_Mode
-3430  027d a101          	cp	a,#1
-3431  027f 2652          	jrne	L7612
-3432                     ; 208 if (HEATER_zone_status == HTR_ZONE_1)
-3434  0281 725d0000      	tnz	_HEATER_zone_status
-3435  0285 2626          	jrne	L1712
-3436                     ; 210 				if(uc_Target_Duty_Perc[HTR_ZONE_1] >= uc_Perc_Unit){ 
-3438  0287 c6000a        	ld	a,_uc_Target_Duty_Perc
-3439  028a c10001        	cp	a,_uc_Perc_Unit
-3440  028d 2518          	jrult	L3712
-3441                     ; 212 					if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(190)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(180); }
-3443  028f c6000a        	ld	a,_uc_Target_Duty_Perc
-3444  0292 a1be          	cp	a,#190
-3445  0294 2606          	jrne	L5712
-3448  0296 35b4000a      	mov	_uc_Target_Duty_Perc,#180
-3450  029a 206d          	jra	L5512
-3451  029c               L5712:
-3452                     ; 213 					else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(uc_Target_Duty_Perc[HTR_ZONE_1] - uc_Perc_Unit); }
-3454  029c c6000a        	ld	a,_uc_Target_Duty_Perc
-3455  029f c00001        	sub	a,_uc_Perc_Unit
-3456  02a2 c7000a        	ld	_uc_Target_Duty_Perc,a
-3457  02a5 2062          	jra	L5512
-3458  02a7               L3712:
-3459                     ; 215 				else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(0); }
-3461  02a7 725f000a      	clr	_uc_Target_Duty_Perc
-3462  02ab 205c          	jra	L5512
-3463  02ad               L1712:
-3464                     ; 219 				if(uc_Target_Duty_Perc[HTR_ZONE_2] >= uc_Perc_Unit){ 
-3466  02ad c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3467  02b0 c10001        	cp	a,_uc_Perc_Unit
-3468  02b3 2518          	jrult	L5022
-3469                     ; 221 					if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(190)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(180); }
-3471  02b5 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3472  02b8 a1be          	cp	a,#190
-3473  02ba 2606          	jrne	L7022
-3476  02bc 35b4000b      	mov	_uc_Target_Duty_Perc+1,#180
-3478  02c0 2047          	jra	L5512
-3479  02c2               L7022:
-3480                     ; 222 					else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(uc_Target_Duty_Perc[HTR_ZONE_2] - uc_Perc_Unit); }
-3482  02c2 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3483  02c5 c00001        	sub	a,_uc_Perc_Unit
-3484  02c8 c7000b        	ld	_uc_Target_Duty_Perc+1,a
-3485  02cb 203c          	jra	L5512
-3486  02cd               L5022:
-3487                     ; 224 				else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(0); }
-3489  02cd 725f000b      	clr	_uc_Target_Duty_Perc+1
-3490  02d1 2036          	jra	L5512
-3491  02d3               L7612:
-3492                     ; 228 if (HEATER_zone_status == HTR_ZONE_1)
-3494  02d3 725d0000      	tnz	_HEATER_zone_status
-3495  02d7 2619          	jrne	L7122
-3496                     ; 230 				if(uc_Target_Duty_Perc[HTR_ZONE_1] >= uc_Perc_Unit){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(uc_Target_Duty_Perc[HTR_ZONE_1] - uc_Perc_Unit); }
-3498  02d9 c6000a        	ld	a,_uc_Target_Duty_Perc
-3499  02dc c10001        	cp	a,_uc_Perc_Unit
-3500  02df 250b          	jrult	L1222
-3503  02e1 c6000a        	ld	a,_uc_Target_Duty_Perc
-3504  02e4 c00001        	sub	a,_uc_Perc_Unit
-3505  02e7 c7000a        	ld	_uc_Target_Duty_Perc,a
-3507  02ea 201d          	jra	L5512
-3508  02ec               L1222:
-3509                     ; 231 				else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(0); }
-3511  02ec 725f000a      	clr	_uc_Target_Duty_Perc
-3512  02f0 2017          	jra	L5512
-3513  02f2               L7122:
-3514                     ; 235 				if(uc_Target_Duty_Perc[HTR_ZONE_2] >= uc_Perc_Unit){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(uc_Target_Duty_Perc[HTR_ZONE_2] - uc_Perc_Unit); }
-3516  02f2 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3517  02f5 c10001        	cp	a,_uc_Perc_Unit
-3518  02f8 250b          	jrult	L7222
-3521  02fa c6000b        	ld	a,_uc_Target_Duty_Perc+1
-3522  02fd c00001        	sub	a,_uc_Perc_Unit
-3523  0300 c7000b        	ld	_uc_Target_Duty_Perc+1,a
-3525  0303 2004          	jra	L5512
-3526  0305               L7222:
-3527                     ; 236 				else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(0); }
-3529  0305 725f000b      	clr	_uc_Target_Duty_Perc+1
-3530  0309               L5512:
-3531                     ; 242 	return ;
-3534  0309 5b05          	addw	sp,#5
-3535  030b 81            	ret
-3569                     ; 247 void Test_Ctrl_Swtich_Control(void)
-3569                     ; 248 {
-3570                     	switch	.text
-3571  030c               _Test_Ctrl_Swtich_Control:
-3575                     ; 250 	if(b_UP_Button_Flag== ON){
-3577  030c c60000        	ld	a,_uc_Button_Status_Reg
-3578  030f a502          	bcp	a,#2
-3579  0311 2762          	jreq	L3422
-3580                     ; 252 		if(b_Test_Option_flag == ON){ if(uc_Perc_Unit < (U8)(130)){ uc_Perc_Unit++;}}
-3582  0313 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3583  0316 a510          	bcp	a,#16
-3584  0318 270d          	jreq	L5422
-3587  031a c60001        	ld	a,_uc_Perc_Unit
-3588  031d a182          	cp	a,#130
-3589  031f 244e          	jruge	L1522
-3592  0321 725c0001      	inc	_uc_Perc_Unit
-3593  0325 2048          	jra	L1522
-3594  0327               L5422:
-3595                     ; 254 			if(b_Data_Setting_flag == ON){	Test_Ctrl_Value_Change(1);}
-3597  0327 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3598  032a a504          	bcp	a,#4
-3599  032c 2707          	jreq	L3522
-3602  032e a601          	ld	a,#1
-3603  0330 cd010f        	call	_Test_Ctrl_Value_Change
-3606  0333 203a          	jra	L1522
-3607  0335               L3522:
-3608                     ; 255 			else if(b_Data_Select_flag == ON){
-3610  0335 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3611  0338 a502          	bcp	a,#2
-3612  033a 2712          	jreq	L7522
-3613                     ; 256 				if(uc_Test_Page_Now == (U8)(0)){
-3615  033c 725d0004      	tnz	_uc_Test_Page_Now
-3616  0340 262d          	jrne	L1522
-3617                     ; 257 					if(uc_Test_Data_Select_Num > 0){ uc_Test_Data_Select_Num--; }
-3619  0342 725d0002      	tnz	_uc_Test_Data_Select_Num
-3620  0346 2727          	jreq	L1522
-3623  0348 725a0002      	dec	_uc_Test_Data_Select_Num
-3624  034c 2021          	jra	L1522
-3625  034e               L7522:
-3626                     ; 260 				if(uc_Test_Page_Now > 0){
-3628  034e 725d0004      	tnz	_uc_Test_Page_Now
-3629  0352 271b          	jreq	L1522
-3630                     ; 261 					uc_Test_Page_Now--;
-3632  0354 725a0004      	dec	_uc_Test_Page_Now
-3633                     ; 262 					if(uc_Test_Page_Now == (U8)(0)){ uc_Test_Data_Select_Num = 0; }
-3635  0358 725d0004      	tnz	_uc_Test_Page_Now
-3636  035c 2606          	jrne	L1722
-3639  035e 725f0002      	clr	_uc_Test_Data_Select_Num
-3641  0362 200b          	jra	L1522
-3642  0364               L1722:
-3643                     ; 263 					else if(uc_Test_Page_Now == (U8)(1)){ uc_Test_Data_Select_Num = 4; }
-3645  0364 c60004        	ld	a,_uc_Test_Page_Now
-3646  0367 a101          	cp	a,#1
-3647  0369 2604          	jrne	L1522
-3650  036b 35040002      	mov	_uc_Test_Data_Select_Num,#4
-3651  036f               L1522:
-3652                     ; 267 		b_UP_Button_Flag = OFF;
-3654  036f 72130000      	bres	_uc_Button_Status_Reg,#1
-3656  0373 2067          	jra	L7722
-3657  0375               L3422:
-3658                     ; 271 	else if(b_DOWN_Button_Flag== ON){ 
-3660  0375 c60000        	ld	a,_uc_Button_Status_Reg
-3661  0378 a504          	bcp	a,#4
-3662  037a 2760          	jreq	L7722
-3663                     ; 273 		if(b_Test_Option_flag == ON){ if(uc_Perc_Unit > (U8)(1)){ uc_Perc_Unit--;}}
-3665  037c c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3666  037f a510          	bcp	a,#16
-3667  0381 270d          	jreq	L3032
-3670  0383 c60001        	ld	a,_uc_Perc_Unit
-3671  0386 a102          	cp	a,#2
-3672  0388 254e          	jrult	L7032
-3675  038a 725a0001      	dec	_uc_Perc_Unit
-3676  038e 2048          	jra	L7032
-3677  0390               L3032:
-3678                     ; 276 			if(b_Data_Setting_flag == ON){	Test_Ctrl_Value_Change(0);}
-3680  0390 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3681  0393 a504          	bcp	a,#4
-3682  0395 2706          	jreq	L1132
-3685  0397 4f            	clr	a
-3686  0398 cd010f        	call	_Test_Ctrl_Value_Change
-3689  039b 203b          	jra	L7032
-3690  039d               L1132:
-3691                     ; 278 			else if(b_Data_Select_flag == ON){
-3693  039d c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3694  03a0 a502          	bcp	a,#2
-3695  03a2 2712          	jreq	L5132
-3696                     ; 279 				if(uc_Test_Page_Now == (U8)(0)){
-3698  03a4 725d0004      	tnz	_uc_Test_Page_Now
-3699  03a8 262e          	jrne	L7032
-3700                     ; 280 					if(uc_Test_Data_Select_Num < 1){ uc_Test_Data_Select_Num++; }
-3702  03aa 725d0002      	tnz	_uc_Test_Data_Select_Num
-3703  03ae 2628          	jrne	L7032
-3706  03b0 725c0002      	inc	_uc_Test_Data_Select_Num
-3707  03b4 2022          	jra	L7032
-3708  03b6               L5132:
-3709                     ; 283 				if(uc_Test_Page_Now < 4){
-3711  03b6 c60004        	ld	a,_uc_Test_Page_Now
-3712  03b9 a104          	cp	a,#4
-3713  03bb 241b          	jruge	L7032
-3714                     ; 284 					uc_Test_Page_Now++;
-3716  03bd 725c0004      	inc	_uc_Test_Page_Now
-3717                     ; 286 					if(uc_Test_Page_Now == (U8)(0)){ uc_Test_Data_Select_Num = 0; }
-3719  03c1 725d0004      	tnz	_uc_Test_Page_Now
-3720  03c5 2606          	jrne	L7232
-3723  03c7 725f0002      	clr	_uc_Test_Data_Select_Num
-3725  03cb 200b          	jra	L7032
-3726  03cd               L7232:
-3727                     ; 287 					else if(uc_Test_Page_Now == (U8)(1)){ uc_Test_Data_Select_Num = 4; }
-3729  03cd c60004        	ld	a,_uc_Test_Page_Now
-3730  03d0 a101          	cp	a,#1
-3731  03d2 2604          	jrne	L7032
-3734  03d4 35040002      	mov	_uc_Test_Data_Select_Num,#4
-3735  03d8               L7032:
-3736                     ; 291 		b_DOWN_Button_Flag = OFF;
-3738  03d8 72150000      	bres	_uc_Button_Status_Reg,#2
-3739  03dc               L7722:
-3740                     ; 295 	if(b_SET_Button_Flag== ON){
-3742  03dc c60000        	ld	a,_uc_Button_Status_Reg
-3743  03df a508          	bcp	a,#8
-3744  03e1 2746          	jreq	L5332
-3745                     ; 296 		if(b_Test_Option_flag){ uc_Target_Display_Mode ^= ON; uc_Test_Page_Pre = (U8)(10);}
-3747  03e3 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3748  03e6 a510          	bcp	a,#16
-3749  03e8 270e          	jreq	L7332
-3752  03ea c60000        	ld	a,_uc_Target_Display_Mode
-3753  03ed a801          	xor	a,	#1
-3754  03ef c70000        	ld	_uc_Target_Display_Mode,a
-3757  03f2 350a0003      	mov	_uc_Test_Page_Pre,#10
-3759  03f6 202d          	jra	L1432
-3760  03f8               L7332:
-3761                     ; 297 		else if(uc_Test_Page_Now < 2){
-3763  03f8 c60004        	ld	a,_uc_Test_Page_Now
-3764  03fb a102          	cp	a,#2
-3765  03fd 2426          	jruge	L1432
-3766                     ; 299 			if(b_Data_Select_flag == OFF){b_Data_Select_flag= ON;}
-3768  03ff c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3769  0402 a502          	bcp	a,#2
-3770  0404 2606          	jrne	L5432
-3773  0406 7212000d      	bset	_uc_Test_Ctrl_Reg,#1
-3775  040a 2015          	jra	L7432
-3776  040c               L5432:
-3777                     ; 301 				if(b_Data_Setting_flag == OFF){
-3779  040c c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3780  040f a504          	bcp	a,#4
-3781  0411 2606          	jrne	L1532
-3782                     ; 302 					b_Data_Setting_flag = ON;
-3784  0413 7214000d      	bset	_uc_Test_Ctrl_Reg,#2
-3786  0417 2008          	jra	L7432
-3787  0419               L1532:
-3788                     ; 304 					b_Data_Setting_flag = OFF;
-3790  0419 7215000d      	bres	_uc_Test_Ctrl_Reg,#2
-3791                     ; 305 					b_Data_Select_flag = OFF;
-3793  041d 7213000d      	bres	_uc_Test_Ctrl_Reg,#1
-3794  0421               L7432:
-3795                     ; 308 			b_SET_Button_Flag = OFF;
-3797  0421 72170000      	bres	_uc_Button_Status_Reg,#3
-3798  0425               L1432:
-3799                     ; 311 		b_SET_Button_Flag = OFF;
-3801  0425 72170000      	bres	_uc_Button_Status_Reg,#3
-3802  0429               L5332:
-3803                     ; 315 	if(b_ONOFF_Button_Flag== ON){
-3805  0429 c60000        	ld	a,_uc_Button_Status_Reg
-3806  042c a501          	bcp	a,#1
-3807  042e 2704          	jreq	L5532
-3808                     ; 320 		b_ONOFF_Button_Flag = OFF;
-3810  0430 72110000      	bres	_uc_Button_Status_Reg,#0
-3811  0434               L5532:
-3812                     ; 324 	if(b_OPTION_Button_Flag == ON){
-3814  0434 c60000        	ld	a,_uc_Button_Status_Reg
-3815  0437 a510          	bcp	a,#16
-3816  0439 2715          	jreq	L7532
-3817                     ; 326 		if(b_Test_Option_flag == OFF){b_Test_Option_flag = ON; }
-3819  043b c6000d        	ld	a,_uc_Test_Ctrl_Reg
-3820  043e a510          	bcp	a,#16
-3821  0440 2606          	jrne	L1632
-3824  0442 7218000d      	bset	_uc_Test_Ctrl_Reg,#4
-3826  0446 2004          	jra	L3632
-3827  0448               L1632:
-3828                     ; 327 		else{b_Test_Option_flag = OFF; }
-3830  0448 7219000d      	bres	_uc_Test_Ctrl_Reg,#4
-3831  044c               L3632:
-3832                     ; 329 		b_OPTION_Button_Flag = OFF;
-3834  044c 72190000      	bres	_uc_Button_Status_Reg,#4
-3835  0450               L7532:
-3836                     ; 334 	if(b_ENTER_Button_Flag == ON){
-3838  0450 c60000        	ld	a,_uc_Button_Status_Reg
-3839  0453 a520          	bcp	a,#32
-3840  0455 2721          	jreq	L5632
-3841                     ; 335 		if(!b_First_Logic_On){ b_First_Logic_On= ON; }
-3843  0457 c60000        	ld	a,_uc_System_Ctrl_Reg
-3844  045a a501          	bcp	a,#1
-3845  045c 2606          	jrne	L7632
-3848  045e 72100000      	bset	_uc_System_Ctrl_Reg,#0
-3850  0462 2010          	jra	L1732
-3851  0464               L7632:
-3852                     ; 341 if (HEATER_zone_status != HTR_ZONE_1)
-3854  0464 725d0000      	tnz	_HEATER_zone_status
-3855  0468 2706          	jreq	L3732
-3856                     ; 342 HEATER_zone_status = HTR_ZONE_1;
-3858  046a 725f0000      	clr	_HEATER_zone_status
-3860  046e 2004          	jra	L1732
-3861  0470               L3732:
-3862                     ; 343 else HEATER_zone_status=HTR_ZONE_2;
-3864  0470 35010000      	mov	_HEATER_zone_status,#1
-3865  0474               L1732:
-3866                     ; 346 		b_ENTER_Button_Flag = OFF;
-3868  0474 721b0000      	bres	_uc_Button_Status_Reg,#5
-3869  0478               L5632:
-3870                     ; 349 	return;
-3873  0478 81            	ret
-3901                     ; 354 void Test_Ctrl_Text_Display_Handling(void)
-3901                     ; 355 {
-3902                     	switch	.text
-3903  0479               _Test_Ctrl_Text_Display_Handling:
-3907                     ; 356 	switch(uc_Test_Page_Now){
-3909  0479 c60004        	ld	a,_uc_Test_Page_Now
-3911                     ; 379 				break;
-3912  047c 4d            	tnz	a
-3913  047d 2731          	jreq	L7732
-3914  047f 4a            	dec	a
-3915  0480 276f          	jreq	L1042
-3916  0482               L3042:
-3917                     ; 373 		default:
-3917                     ; 374 				strcpy(LCD_Dis_Data[0],"");	// Null
-3919  0482 ae0179        	ldw	x,#L5571
-3920  0485 89            	pushw	x
-3921  0486 ae0000        	ldw	x,#_LCD_Dis_Data
-3922  0489 cd0000        	call	_strcpy
-3924  048c 85            	popw	x
-3925                     ; 375 				strcpy(LCD_Dis_Data[1],"");	// Null
-3927  048d ae0179        	ldw	x,#L5571
-3928  0490 89            	pushw	x
-3929  0491 ae0010        	ldw	x,#_LCD_Dis_Data+16
-3930  0494 cd0000        	call	_strcpy
-3932  0497 85            	popw	x
-3933                     ; 376 				strcpy(LCD_Dis_Data[2],"");	// Null
-3935  0498 ae0179        	ldw	x,#L5571
-3936  049b 89            	pushw	x
-3937  049c ae0020        	ldw	x,#_LCD_Dis_Data+32
-3938  049f cd0000        	call	_strcpy
-3940  04a2 85            	popw	x
-3941                     ; 377 				strcpy(LCD_Dis_Data[3],"");	// Null
-3943  04a3 ae0179        	ldw	x,#L5571
-3944  04a6 89            	pushw	x
-3945  04a7 ae0030        	ldw	x,#_LCD_Dis_Data+48
-3946  04aa cd0000        	call	_strcpy
-3948  04ad 85            	popw	x
-3949                     ; 379 				break;
-3951  04ae 206d          	jra	L7142
-3952  04b0               L7732:
-3953                     ; 359 		case 0:	strcpy(LCD_Dis_Data[0],"Al:     /");		// PTC_Allowance: / Status 
-3955  04b0 ae016f        	ldw	x,#L1242
-3956  04b3 89            	pushw	x
-3957  04b4 ae0000        	ldw	x,#_LCD_Dis_Data
-3958  04b7 cd0000        	call	_strcpy
-3960  04ba 85            	popw	x
-3961                     ; 360 				if(!uc_Target_Display_Mode){ strcpy(LCD_Dis_Data[1],"Td:     Fd:"); }	// Target Duty:   / Feedback Duty:
-3963  04bb 725d0000      	tnz	_uc_Target_Display_Mode
-3964  04bf 260d          	jrne	L3242
-3967  04c1 ae0163        	ldw	x,#L5242
-3968  04c4 89            	pushw	x
-3969  04c5 ae0010        	ldw	x,#_LCD_Dis_Data+16
-3970  04c8 cd0000        	call	_strcpy
-3972  04cb 85            	popw	x
-3974  04cc 200b          	jra	L7242
-3975  04ce               L3242:
-3976                     ; 361 				else{ strcpy(LCD_Dis_Data[1],"Tp:     Fd:"); }	// Target Duty:   / Feedback Duty:
-3978  04ce ae0157        	ldw	x,#L1342
-3979  04d1 89            	pushw	x
-3980  04d2 ae0010        	ldw	x,#_LCD_Dis_Data+16
-3981  04d5 cd0000        	call	_strcpy
-3983  04d8 85            	popw	x
-3984  04d9               L7242:
-3985                     ; 362 				strcpy(LCD_Dis_Data[2],"R:  F:  HV:");	// Ready: / Fault: / HV:
-3987  04d9 ae014b        	ldw	x,#L3342
-3988  04dc 89            	pushw	x
-3989  04dd ae0020        	ldw	x,#_LCD_Dis_Data+32
-3990  04e0 cd0000        	call	_strcpy
-3992  04e3 85            	popw	x
-3993                     ; 363 				strcpy(LCD_Dis_Data[3],"Cr:     Pw:");	// Current:  / Power:
-3995  04e4 ae013f        	ldw	x,#L5342
-3996  04e7 89            	pushw	x
-3997  04e8 ae0030        	ldw	x,#_LCD_Dis_Data+48
-3998  04eb cd0000        	call	_strcpy
-4000  04ee 85            	popw	x
-4001                     ; 364 				break;
-4003  04ef 202c          	jra	L7142
-4004  04f1               L1042:
-4005                     ; 367 		case 1:	strcpy(LCD_Dis_Data[0],"Ct:");			// Core Temp:
-4007  04f1 ae013b        	ldw	x,#L7342
-4008  04f4 89            	pushw	x
-4009  04f5 ae0000        	ldw	x,#_LCD_Dis_Data
-4010  04f8 cd0000        	call	_strcpy
-4012  04fb 85            	popw	x
-4013                     ; 368 				strcpy(LCD_Dis_Data[1],"Ver:");		// Software_Version:
-4015  04fc ae0136        	ldw	x,#L1442
-4016  04ff 89            	pushw	x
-4017  0500 ae0010        	ldw	x,#_LCD_Dis_Data+16
-4018  0503 cd0000        	call	_strcpy
-4020  0506 85            	popw	x
-4021                     ; 369 				strcpy(LCD_Dis_Data[2],"");	// Core Temp:
-4023  0507 ae0179        	ldw	x,#L5571
-4024  050a 89            	pushw	x
-4025  050b ae0020        	ldw	x,#_LCD_Dis_Data+32
-4026  050e cd0000        	call	_strcpy
-4028  0511 85            	popw	x
-4029                     ; 370 				strcpy(LCD_Dis_Data[3],"");	// Core Temp
-4031  0512 ae0179        	ldw	x,#L5571
-4032  0515 89            	pushw	x
-4033  0516 ae0030        	ldw	x,#_LCD_Dis_Data+48
-4034  0519 cd0000        	call	_strcpy
-4036  051c 85            	popw	x
-4037                     ; 371 				break;
-4039  051d               L7142:
-4040                     ; 382 	return;
-4043  051d 81            	ret
-4135                     .const:	section	.text
-4136  0000               L25:
-4137  0000 000003e8      	dc.l	1000
-4138                     ; 387 static void MV_Ctrl_LCD_Display_Control(void)
-4138                     ; 388 {
-4139                     	switch	.text
-4140  051e               L3442_MV_Ctrl_LCD_Display_Control:
-4142  051e 5216          	subw	sp,#22
-4143       00000016      OFST:	set	22
-4146                     ; 395 if (HEATER_zone_status==HTR_ZONE_1)
-4148  0520 725d0000      	tnz	_HEATER_zone_status
-4149  0524 263a          	jrne	L7742
-4150                     ; 397 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
-4152  0526 0f15          	clr	(OFST-1,sp)
-4153  0528               L1052:
-4154                     ; 399 		can_data[uc_buffer]=uc_Rx_Data[HTR_STATUS1][uc_buffer];
-4156  0528 96            	ldw	x,sp
-4157  0529 1c000d        	addw	x,#OFST-9
-4158  052c 9f            	ld	a,xl
-4159  052d 5e            	swapw	x
-4160  052e 1b15          	add	a,(OFST-1,sp)
-4161  0530 2401          	jrnc	L24
-4162  0532 5c            	incw	x
-4163  0533               L24:
-4164  0533 02            	rlwa	x,a
-4165  0534 7b15          	ld	a,(OFST-1,sp)
-4166  0536 905f          	clrw	y
-4167  0538 9097          	ld	yl,a
-4168  053a 90d60000      	ld	a,(_uc_Rx_Data,y)
-4169  053e f7            	ld	(x),a
-4170                     ; 400 		can_diag[uc_buffer]=uc_Rx_Data[HTR_STATUS2][uc_buffer];
-4172  053f 96            	ldw	x,sp
-4173  0540 1c0003        	addw	x,#OFST-19
-4174  0543 9f            	ld	a,xl
-4175  0544 5e            	swapw	x
-4176  0545 1b15          	add	a,(OFST-1,sp)
-4177  0547 2401          	jrnc	L44
-4178  0549 5c            	incw	x
-4179  054a               L44:
-4180  054a 02            	rlwa	x,a
-4181  054b 7b15          	ld	a,(OFST-1,sp)
-4182  054d 905f          	clrw	y
-4183  054f 9097          	ld	yl,a
-4184  0551 90d60008      	ld	a,(_uc_Rx_Data+8,y)
-4185  0555 f7            	ld	(x),a
-4186                     ; 397 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
-4188  0556 0c15          	inc	(OFST-1,sp)
-4191  0558 7b15          	ld	a,(OFST-1,sp)
-4192  055a a108          	cp	a,#8
-4193  055c 25ca          	jrult	L1052
-4195  055e 2038          	jra	L7052
-4196  0560               L7742:
-4197                     ; 405 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
-4199  0560 0f15          	clr	(OFST-1,sp)
-4200  0562               L1152:
-4201                     ; 407 		can_data[uc_buffer]=uc_Rx_Data[HTR_STATUS3][uc_buffer];
-4203  0562 96            	ldw	x,sp
-4204  0563 1c000d        	addw	x,#OFST-9
-4205  0566 9f            	ld	a,xl
-4206  0567 5e            	swapw	x
-4207  0568 1b15          	add	a,(OFST-1,sp)
-4208  056a 2401          	jrnc	L64
-4209  056c 5c            	incw	x
-4210  056d               L64:
-4211  056d 02            	rlwa	x,a
-4212  056e 7b15          	ld	a,(OFST-1,sp)
-4213  0570 905f          	clrw	y
-4214  0572 9097          	ld	yl,a
-4215  0574 90d60010      	ld	a,(_uc_Rx_Data+16,y)
-4216  0578 f7            	ld	(x),a
-4217                     ; 408 		can_diag[uc_buffer]=uc_Rx_Data[HTR_STATUS4][uc_buffer];
-4219  0579 96            	ldw	x,sp
-4220  057a 1c0003        	addw	x,#OFST-19
-4221  057d 9f            	ld	a,xl
-4222  057e 5e            	swapw	x
-4223  057f 1b15          	add	a,(OFST-1,sp)
-4224  0581 2401          	jrnc	L05
-4225  0583 5c            	incw	x
-4226  0584               L05:
-4227  0584 02            	rlwa	x,a
-4228  0585 7b15          	ld	a,(OFST-1,sp)
-4229  0587 905f          	clrw	y
-4230  0589 9097          	ld	yl,a
-4231  058b 90d60018      	ld	a,(_uc_Rx_Data+24,y)
-4232  058f f7            	ld	(x),a
-4233                     ; 405 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
-4235  0590 0c15          	inc	(OFST-1,sp)
-4238  0592 7b15          	ld	a,(OFST-1,sp)
-4239  0594 a108          	cp	a,#8
-4240  0596 25ca          	jrult	L1152
-4241  0598               L7052:
-4242                     ; 411 	if(b_Test_Option_flag == ON){
-4244  0598 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-4245  059b a510          	bcp	a,#16
-4246  059d 2779          	jreq	L7152
-4247                     ; 412 		Set_LCD_Address(LCD_Line[0]);
-4249  059f c60000        	ld	a,_LCD_Line
-4250  05a2 cd0000        	call	_Set_LCD_Address
-4252                     ; 413 		Display_LCD_String("*OPTION*");
-4254  05a5 ae012d        	ldw	x,#L1252
-4255  05a8 cd0000        	call	_Display_LCD_String
-4257                     ; 415 		if(uc_Target_Display_Mode == (U8)(0)){
-4259  05ab 725d0000      	tnz	_uc_Target_Display_Mode
-4260  05af 260e          	jrne	L3252
-4261                     ; 416 			Set_LCD_Address(LCD_Line[1]);
-4263  05b1 c60001        	ld	a,_LCD_Line+1
-4264  05b4 cd0000        	call	_Set_LCD_Address
-4266                     ; 417 			Display_LCD_String("*Target Perc");
-4268  05b7 ae0120        	ldw	x,#L5252
-4269  05ba cd0000        	call	_Display_LCD_String
-4272  05bd 200c          	jra	L7252
-4273  05bf               L3252:
-4274                     ; 420 			Set_LCD_Address(LCD_Line[1]);
-4276  05bf c60001        	ld	a,_LCD_Line+1
-4277  05c2 cd0000        	call	_Set_LCD_Address
-4279                     ; 421 			Display_LCD_String("*Target Watt(OS)");
-4281  05c5 ae010f        	ldw	x,#L1352
-4282  05c8 cd0000        	call	_Display_LCD_String
-4284  05cb               L7252:
-4285                     ; 424 		Set_LCD_Address(LCD_Line[2]);
-4287  05cb c60002        	ld	a,_LCD_Line+2
-4288  05ce cd0000        	call	_Set_LCD_Address
-4290                     ; 425 		Display_LCD_String("D_Unit:");
-4292  05d1 ae0107        	ldw	x,#L3352
-4293  05d4 cd0000        	call	_Display_LCD_String
-4295                     ; 427 		Set_LCD_Address((unsigned char)(LCD_Line[2]+7));
-4297  05d7 c60002        	ld	a,_LCD_Line+2
-4298  05da ab07          	add	a,#7
-4299  05dc cd0000        	call	_Set_LCD_Address
-4301                     ; 428 		if(b_Blink_250_Flag){
-4303  05df c60000        	ld	a,_uc_LCD_Blink_Reg
-4304  05e2 a502          	bcp	a,#2
-4305  05e4 272e          	jreq	L5352
-4306                     ; 429 			Num_Display_LCD(uc_Perc_Unit /(U8)(2));
-4308  05e6 c60001        	ld	a,_uc_Perc_Unit
-4309  05e9 44            	srl	a
-4310  05ea 5f            	clrw	x
-4311  05eb 97            	ld	xl,a
-4312  05ec cd0000        	call	_Num_Display_LCD
-4314                     ; 430 			Display_LCD_String(".");
-4316  05ef ae0105        	ldw	x,#L7352
-4317  05f2 cd0000        	call	_Display_LCD_String
-4319                     ; 431 			uc_buffer = uc_Perc_Unit %(U8)(2);
-4321  05f5 c60001        	ld	a,_uc_Perc_Unit
-4322  05f8 a401          	and	a,#1
-4323  05fa 6b15          	ld	(OFST-1,sp),a
-4324                     ; 432 			if(uc_buffer){ Display_LCD_String("5"); }
-4326  05fc 0d15          	tnz	(OFST-1,sp)
-4327  05fe 2708          	jreq	L1452
-4330  0600 ae0103        	ldw	x,#L3452
-4331  0603 cd0000        	call	_Display_LCD_String
-4334  0606 2006          	jra	L5452
-4335  0608               L1452:
-4336                     ; 433 			else{ Display_LCD_String("0"); }
-4338  0608 ae0101        	ldw	x,#L7452
-4339  060b cd0000        	call	_Display_LCD_String
-4341  060e               L5452:
-4342                     ; 434 			Display_LCD_String("%");
-4344  060e ae00ff        	ldw	x,#L1552
-4345  0611 cd0000        	call	_Display_LCD_String
-4347  0614               L5352:
-4348                     ; 436 		return;
-4350  0614 ac8c108c      	jpf	L65
-4351  0618               L7152:
-4352                     ; 439 	if(uc_Test_Page_Now != uc_Test_Page_Pre){ 
-4354  0618 c60004        	ld	a,_uc_Test_Page_Now
-4355  061b c10003        	cp	a,_uc_Test_Page_Pre
-4356  061e 270f          	jreq	L3552
-4357                     ; 440 		Test_Ctrl_Text_Display_Handling(); 
-4359  0620 cd0479        	call	_Test_Ctrl_Text_Display_Handling
-4361                     ; 441 		b_Data_Select_flag = OFF;
-4363  0623 7213000d      	bres	_uc_Test_Ctrl_Reg,#1
-4364                     ; 442 		b_Data_Setting_flag = OFF;
-4366  0627 7215000d      	bres	_uc_Test_Ctrl_Reg,#2
-4367                     ; 443 		uc_Test_Data_Select_Num = (U8)(0);
-4369  062b 725f0002      	clr	_uc_Test_Data_Select_Num
-4370  062f               L3552:
-4371                     ; 445 	uc_Test_Page_Pre = uc_Test_Page_Now ;
-4373  062f 5500040003    	mov	_uc_Test_Page_Pre,_uc_Test_Page_Now
-4374                     ; 448 	if(uc_Test_Page_Now == (U8)(0)){			//page 1
-4376  0634 725d0004      	tnz	_uc_Test_Page_Now
-4377  0638 2703          	jreq	L06
-4378  063a cc0bae        	jp	L5552
-4379  063d               L06:
-4380                     ; 449 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-4382  063d 0f16          	clr	(OFST+0,sp)
-4383  063f               L7552:
-4384                     ; 451 			Set_LCD_Address(LCD_Line[uc_line_index]);
-4386  063f 7b16          	ld	a,(OFST+0,sp)
-4387  0641 5f            	clrw	x
-4388  0642 97            	ld	xl,a
-4389  0643 d60000        	ld	a,(_LCD_Line,x)
-4390  0646 cd0000        	call	_Set_LCD_Address
-4392                     ; 453 			if((b_Data_Select_flag == ON) && (b_Data_Setting_flag == OFF)){
-4394  0649 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-4395  064c a502          	bcp	a,#2
-4396  064e 2763          	jreq	L5652
-4398  0650 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-4399  0653 a504          	bcp	a,#4
-4400  0655 265c          	jrne	L5652
-4401                     ; 454 				if(uc_line_index == uc_Test_Data_Select_Num){ 
-4403  0657 7b16          	ld	a,(OFST+0,sp)
-4404  0659 c10002        	cp	a,_uc_Test_Data_Select_Num
-4405  065c 2647          	jrne	L7652
-4406                     ; 455 					if(uc_Test_Data_Select_Num == (U8)(0)){
-4408  065e 725d0002      	tnz	_uc_Test_Data_Select_Num
-4409  0662 261d          	jrne	L1752
-4410                     ; 456 						if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
-4412  0664 c60000        	ld	a,_uc_LCD_Blink_Reg
-4413  0667 a502          	bcp	a,#2
-4414  0669 270e          	jreq	L3752
-4417  066b 7b16          	ld	a,(OFST+0,sp)
-4418  066d 97            	ld	xl,a
-4419  066e a610          	ld	a,#16
-4420  0670 42            	mul	x,a
-4421  0671 1c0000        	addw	x,#_LCD_Dis_Data
-4422  0674 cd0000        	call	_Display_LCD_String
-4425  0677 2046          	jra	L5162
-4426  0679               L3752:
-4427                     ; 457 						else{ Display_LCD_String("        /"); }
-4429  0679 ae00f5        	ldw	x,#L7752
-4430  067c cd0000        	call	_Display_LCD_String
-4432  067f 203e          	jra	L5162
-4433  0681               L1752:
-4434                     ; 459 					else if(uc_Test_Data_Select_Num == (U8)(1)){
-4436  0681 c60002        	ld	a,_uc_Test_Data_Select_Num
-4437  0684 a101          	cp	a,#1
-4438  0686 2637          	jrne	L5162
-4439                     ; 460 						if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
-4441  0688 c60000        	ld	a,_uc_LCD_Blink_Reg
-4442  068b a502          	bcp	a,#2
-4443  068d 270e          	jreq	L5062
-4446  068f 7b16          	ld	a,(OFST+0,sp)
-4447  0691 97            	ld	xl,a
-4448  0692 a610          	ld	a,#16
-4449  0694 42            	mul	x,a
-4450  0695 1c0000        	addw	x,#_LCD_Dis_Data
-4451  0698 cd0000        	call	_Display_LCD_String
-4454  069b 2022          	jra	L5162
-4455  069d               L5062:
-4456                     ; 461 						else{ Display_LCD_String("        Fd:"); }
-4458  069d ae00e9        	ldw	x,#L1162
-4459  06a0 cd0000        	call	_Display_LCD_String
-4461  06a3 201a          	jra	L5162
-4462  06a5               L7652:
-4463                     ; 464 				else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]); }
-4465  06a5 7b16          	ld	a,(OFST+0,sp)
-4466  06a7 97            	ld	xl,a
-4467  06a8 a610          	ld	a,#16
-4468  06aa 42            	mul	x,a
-4469  06ab 1c0000        	addw	x,#_LCD_Dis_Data
-4470  06ae cd0000        	call	_Display_LCD_String
-4472  06b1 200c          	jra	L5162
-4473  06b3               L5652:
-4474                     ; 465 			}else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]); }
-4476  06b3 7b16          	ld	a,(OFST+0,sp)
-4477  06b5 97            	ld	xl,a
-4478  06b6 a610          	ld	a,#16
-4479  06b8 42            	mul	x,a
-4480  06b9 1c0000        	addw	x,#_LCD_Dis_Data
-4481  06bc cd0000        	call	_Display_LCD_String
-4483  06bf               L5162:
-4484                     ; 468 			if(uc_line_index == (U8)(0)){		// LINE 1
-4486  06bf 0d16          	tnz	(OFST+0,sp)
-4487  06c1 2703          	jreq	L26
-4488  06c3 cc077e        	jp	L7162
-4489  06c6               L26:
-4490                     ; 471 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
-4492  06c6 7b16          	ld	a,(OFST+0,sp)
-4493  06c8 5f            	clrw	x
-4494  06c9 97            	ld	xl,a
-4495  06ca d60000        	ld	a,(_LCD_Line,x)
-4496  06cd ab03          	add	a,#3
-4497  06cf cd0000        	call	_Set_LCD_Address
-4499                     ; 473 				if((b_Data_Setting_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
-4501  06d2 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-4502  06d5 a504          	bcp	a,#4
-4503  06d7 2718          	jreq	L1262
-4505  06d9 7b16          	ld	a,(OFST+0,sp)
-4506  06db c10002        	cp	a,_uc_Test_Data_Select_Num
-4507  06de 2611          	jrne	L1262
-4508                     ; 474 					if(b_Blink_250_Flag){ Num_Display_LCD(uc_Heater_Enable_Flag); 	}	
-4510  06e0 c60000        	ld	a,_uc_LCD_Blink_Reg
-4511  06e3 a502          	bcp	a,#2
-4512  06e5 2712          	jreq	L5262
-4515  06e7 c60009        	ld	a,_uc_Heater_Enable_Flag
-4516  06ea 5f            	clrw	x
-4517  06eb 97            	ld	xl,a
-4518  06ec cd0000        	call	_Num_Display_LCD
-4520  06ef 2008          	jra	L5262
-4521  06f1               L1262:
-4522                     ; 475 				}else{ Num_Display_LCD(uc_Heater_Enable_Flag); }
-4524  06f1 c60009        	ld	a,_uc_Heater_Enable_Flag
-4525  06f4 5f            	clrw	x
-4526  06f5 97            	ld	xl,a
-4527  06f6 cd0000        	call	_Num_Display_LCD
-4529  06f9               L5262:
-4530                     ; 479 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 5));
-4532  06f9 7b16          	ld	a,(OFST+0,sp)
-4533  06fb 5f            	clrw	x
-4534  06fc 97            	ld	xl,a
-4535  06fd d60000        	ld	a,(_LCD_Line,x)
-4536  0700 ab05          	add	a,#5
-4537  0702 cd0000        	call	_Set_LCD_Address
-4539                     ; 480 				if (HEATER_zone_status == HTR_ZONE_1)
-4541  0705 725d0000      	tnz	_HEATER_zone_status
-4542  0709 2608          	jrne	L7262
-4543                     ; 481 				Display_LCD_String("Z1");
-4545  070b ae00e6        	ldw	x,#L1362
-4546  070e cd0000        	call	_Display_LCD_String
-4549  0711 2006          	jra	L3362
-4550  0713               L7262:
-4551                     ; 482 				else Display_LCD_String("Z2");
-4553  0713 ae00e3        	ldw	x,#L5362
-4554  0716 cd0000        	call	_Display_LCD_String
-4556  0719               L3362:
-4557                     ; 484 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 9));
-4559  0719 7b16          	ld	a,(OFST+0,sp)
-4560  071b 5f            	clrw	x
-4561  071c 97            	ld	xl,a
-4562  071d d60000        	ld	a,(_LCD_Line,x)
-4563  0720 ab09          	add	a,#9
-4564  0722 cd0000        	call	_Set_LCD_Address
-4566                     ; 486 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-4568  0725 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-4569  0728 a501          	bcp	a,#1
-4570  072a 270a          	jreq	L7362
-4573  072c ae00e0        	ldw	x,#L1462
-4574  072f cd0000        	call	_Display_LCD_String
-4577  0732 ac9f0b9f      	jpf	L3762
-4578  0736               L7362:
-4579                     ; 489 					uc_buffer = (U8)((can_data[0] & 0x06) >> 1);//YJS
-4581  0736 7b0d          	ld	a,(OFST-9,sp)
-4582  0738 a406          	and	a,#6
-4583  073a 44            	srl	a
-4584  073b 6b15          	ld	(OFST-1,sp),a
-4585                     ; 490 					if(uc_buffer == (U8)(0)){ Display_LCD_String("Stop");   }
-4587  073d 0d15          	tnz	(OFST-1,sp)
-4588  073f 260a          	jrne	L5462
-4591  0741 ae00db        	ldw	x,#L7462
-4592  0744 cd0000        	call	_Display_LCD_String
-4595  0747 ac9f0b9f      	jpf	L3762
-4596  074b               L5462:
-4597                     ; 491 					else if(uc_buffer == (U8)(1)){ Display_LCD_String("Oper"); }
-4599  074b 7b15          	ld	a,(OFST-1,sp)
-4600  074d a101          	cp	a,#1
-4601  074f 260a          	jrne	L3562
-4604  0751 ae00d6        	ldw	x,#L5562
-4605  0754 cd0000        	call	_Display_LCD_String
-4608  0757 ac9f0b9f      	jpf	L3762
-4609  075b               L3562:
-4610                     ; 492 					else if(uc_buffer == (U8)(2)){ Display_LCD_String("Flt"); }
-4612  075b 7b15          	ld	a,(OFST-1,sp)
-4613  075d a102          	cp	a,#2
-4614  075f 260a          	jrne	L1662
-4617  0761 ae00d2        	ldw	x,#L3662
-4618  0764 cd0000        	call	_Display_LCD_String
-4621  0767 ac9f0b9f      	jpf	L3762
-4622  076b               L1662:
-4623                     ; 493 					else if(uc_buffer == (U8)(3)){ Display_LCD_String("Lmit"); }
-4625  076b 7b15          	ld	a,(OFST-1,sp)
-4626  076d a103          	cp	a,#3
-4627  076f 2703          	jreq	L46
-4628  0771 cc0b9f        	jp	L3762
-4629  0774               L46:
-4632  0774 ae00cd        	ldw	x,#L1762
-4633  0777 cd0000        	call	_Display_LCD_String
-4635  077a ac9f0b9f      	jpf	L3762
-4636  077e               L7162:
-4637                     ; 502 			else if(uc_line_index == (U8)(1)){	// LINE 2
-4639  077e 7b16          	ld	a,(OFST+0,sp)
-4640  0780 a101          	cp	a,#1
-4641  0782 2703          	jreq	L66
-4642  0784 cc0a93        	jp	L5762
-4643  0787               L66:
-4644                     ; 505 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
-4646  0787 7b16          	ld	a,(OFST+0,sp)
-4647  0789 5f            	clrw	x
-4648  078a 97            	ld	xl,a
-4649  078b d60000        	ld	a,(_LCD_Line,x)
-4650  078e ab03          	add	a,#3
-4651  0790 cd0000        	call	_Set_LCD_Address
-4653                     ; 506 				if((b_Data_Setting_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
-4655  0793 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-4656  0796 a504          	bcp	a,#4
-4657  0798 2603          	jrne	L07
-4658  079a cc0901        	jp	L7762
-4659  079d               L07:
-4661  079d 7b16          	ld	a,(OFST+0,sp)
-4662  079f c10002        	cp	a,_uc_Test_Data_Select_Num
-4663  07a2 2703          	jreq	L27
-4664  07a4 cc0901        	jp	L7762
-4665  07a7               L27:
-4666                     ; 507 					if(b_Blink_250_Flag){
-4668  07a7 c60000        	ld	a,_uc_LCD_Blink_Reg
-4669  07aa a502          	bcp	a,#2
-4670  07ac 2603          	jrne	L47
-4671  07ae cc0a41        	jp	L5772
-4672  07b1               L47:
-4673                     ; 508 						if(!uc_Target_Display_Mode){	// Percentage_Display
-4675  07b1 725d0000      	tnz	_uc_Target_Display_Mode
-4676  07b5 2676          	jrne	L3072
-4677                     ; 509 if (HEATER_zone_status == HTR_ZONE_1)
-4679  07b7 725d0000      	tnz	_HEATER_zone_status
-4680  07bb 2638          	jrne	L5072
-4681                     ; 511 							Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_1] /(U8)(2));
-4683  07bd c6000a        	ld	a,_uc_Target_Duty_Perc
-4684  07c0 44            	srl	a
-4685  07c1 5f            	clrw	x
-4686  07c2 97            	ld	xl,a
-4687  07c3 cd0000        	call	_Num_Display_LCD
-4689                     ; 512 							if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(200)){
-4691  07c6 c6000a        	ld	a,_uc_Target_Duty_Perc
-4692  07c9 a1c8          	cp	a,#200
-4693  07cb 2503          	jrult	L67
-4694  07cd cc0a41        	jp	L5772
-4695  07d0               L67:
-4696                     ; 513 								Display_LCD_String(".");
-4698  07d0 ae0105        	ldw	x,#L7352
-4699  07d3 cd0000        	call	_Display_LCD_String
-4701                     ; 514 								uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_1] % (U8)(2);
-4703  07d6 c6000a        	ld	a,_uc_Target_Duty_Perc
-4704  07d9 a401          	and	a,#1
-4705  07db 6b15          	ld	(OFST-1,sp),a
-4706                     ; 515 								if(uc_buffer){ Display_LCD_String("5"); }
-4708  07dd 0d15          	tnz	(OFST-1,sp)
-4709  07df 270a          	jreq	L1172
-4712  07e1 ae0103        	ldw	x,#L3452
-4713  07e4 cd0000        	call	_Display_LCD_String
-4716  07e7 ac410a41      	jpf	L5772
-4717  07eb               L1172:
-4718                     ; 516 								else{ Display_LCD_String("0"); }
-4720  07eb ae0101        	ldw	x,#L7452
-4721  07ee cd0000        	call	_Display_LCD_String
-4723  07f1 ac410a41      	jpf	L5772
-4724  07f5               L5072:
-4725                     ; 521 							Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_2] /(U8)(2));
-4727  07f5 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4728  07f8 44            	srl	a
-4729  07f9 5f            	clrw	x
-4730  07fa 97            	ld	xl,a
-4731  07fb cd0000        	call	_Num_Display_LCD
-4733                     ; 522 							if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(200)){
-4735  07fe c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4736  0801 a1c8          	cp	a,#200
-4737  0803 2503          	jrult	L001
-4738  0805 cc0a41        	jp	L5772
-4739  0808               L001:
-4740                     ; 523 								Display_LCD_String(".");
-4742  0808 ae0105        	ldw	x,#L7352
-4743  080b cd0000        	call	_Display_LCD_String
-4745                     ; 524 								uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_2] % (U8)(2);
-4747  080e c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4748  0811 a401          	and	a,#1
-4749  0813 6b15          	ld	(OFST-1,sp),a
-4750                     ; 525 								if(uc_buffer){ Display_LCD_String("5"); }
-4752  0815 0d15          	tnz	(OFST-1,sp)
-4753  0817 270a          	jreq	L1272
-4756  0819 ae0103        	ldw	x,#L3452
-4757  081c cd0000        	call	_Display_LCD_String
-4760  081f ac410a41      	jpf	L5772
-4761  0823               L1272:
-4762                     ; 526 								else{ Display_LCD_String("0"); }
-4764  0823 ae0101        	ldw	x,#L7452
-4765  0826 cd0000        	call	_Display_LCD_String
-4767  0829 ac410a41      	jpf	L5772
-4768  082d               L3072:
-4769                     ; 531 if (HEATER_zone_status == HTR_ZONE_1)
-4771  082d 725d0000      	tnz	_HEATER_zone_status
-4772  0831 2667          	jrne	L7272
-4773                     ; 533 							if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ Num_Display_LCD(0u); }
-4775  0833 c6000a        	ld	a,_uc_Target_Duty_Perc
-4776  0836 a114          	cp	a,#20
-4777  0838 2408          	jruge	L1372
-4780  083a 5f            	clrw	x
-4781  083b cd0000        	call	_Num_Display_LCD
-4784  083e ac410a41      	jpf	L5772
-4785  0842               L1372:
-4786                     ; 534 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(20)){ Num_Display_LCD(100u); }
-4788  0842 c6000a        	ld	a,_uc_Target_Duty_Perc
-4789  0845 a114          	cp	a,#20
-4790  0847 260a          	jrne	L5372
-4793  0849 ae0064        	ldw	x,#100
-4794  084c cd0000        	call	_Num_Display_LCD
-4797  084f ac410a41      	jpf	L5772
-4798  0853               L5372:
-4799                     ; 535 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ Num_Display_LCD(6200u); }
-4801  0853 c6000a        	ld	a,_uc_Target_Duty_Perc
-4802  0856 a1b4          	cp	a,#180
-4803  0858 260a          	jrne	L1472
-4806  085a ae1838        	ldw	x,#6200
-4807  085d cd0000        	call	_Num_Display_LCD
-4810  0860 ac410a41      	jpf	L5772
-4811  0864               L1472:
-4812                     ; 536 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(190)){ Display_LCD_String("MAX"); }
-4814  0864 c6000a        	ld	a,_uc_Target_Duty_Perc
-4815  0867 a1be          	cp	a,#190
-4816  0869 260a          	jrne	L5472
-4819  086b ae00c9        	ldw	x,#L7472
-4820  086e cd0000        	call	_Display_LCD_String
-4823  0871 ac410a41      	jpf	L5772
-4824  0875               L5472:
-4825                     ; 537 							else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_1]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
-4827  0875 c6000a        	ld	a,_uc_Target_Duty_Perc
-4828  0878 5f            	clrw	x
-4829  0879 97            	ld	xl,a
-4830  087a 1d0014        	subw	x,#20
-4831  087d 90ae94ed      	ldw	y,#38125
-4832  0881 cd0000        	call	c_umul
-4834  0884 ae0000        	ldw	x,#L25
-4835  0887 cd0000        	call	c_ludv
-4837  088a be02          	ldw	x,c_lreg+2
-4838  088c 1c0064        	addw	x,#100
-4839  088f 1f0b          	ldw	(OFST-11,sp),x
-4842  0891 1e0b          	ldw	x,(OFST-11,sp)
-4843  0893 cd0000        	call	_Num_Display_LCD
-4845  0896 ac410a41      	jpf	L5772
-4846  089a               L7272:
-4847                     ; 541 							if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ Num_Display_LCD(0u); }
-4849  089a c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4850  089d a114          	cp	a,#20
-4851  089f 2408          	jruge	L5572
-4854  08a1 5f            	clrw	x
-4855  08a2 cd0000        	call	_Num_Display_LCD
-4858  08a5 ac410a41      	jpf	L5772
-4859  08a9               L5572:
-4860                     ; 542 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(20)){ Num_Display_LCD(100u); }
-4862  08a9 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4863  08ac a114          	cp	a,#20
-4864  08ae 260a          	jrne	L1672
-4867  08b0 ae0064        	ldw	x,#100
-4868  08b3 cd0000        	call	_Num_Display_LCD
-4871  08b6 ac410a41      	jpf	L5772
-4872  08ba               L1672:
-4873                     ; 543 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ Num_Display_LCD(6200u); }
-4875  08ba c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4876  08bd a1b4          	cp	a,#180
-4877  08bf 260a          	jrne	L5672
-4880  08c1 ae1838        	ldw	x,#6200
-4881  08c4 cd0000        	call	_Num_Display_LCD
-4884  08c7 ac410a41      	jpf	L5772
-4885  08cb               L5672:
-4886                     ; 544 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(190)){ Display_LCD_String("MAX"); }
-4888  08cb c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4889  08ce a1be          	cp	a,#190
-4890  08d0 260a          	jrne	L1772
-4893  08d2 ae00c9        	ldw	x,#L7472
-4894  08d5 cd0000        	call	_Display_LCD_String
-4897  08d8 ac410a41      	jpf	L5772
-4898  08dc               L1772:
-4899                     ; 545 							else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_2]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
-4901  08dc c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4902  08df 5f            	clrw	x
-4903  08e0 97            	ld	xl,a
-4904  08e1 1d0014        	subw	x,#20
-4905  08e4 90ae94ed      	ldw	y,#38125
-4906  08e8 cd0000        	call	c_umul
-4908  08eb ae0000        	ldw	x,#L25
-4909  08ee cd0000        	call	c_ludv
-4911  08f1 be02          	ldw	x,c_lreg+2
-4912  08f3 1c0064        	addw	x,#100
-4913  08f6 1f0b          	ldw	(OFST-11,sp),x
-4916  08f8 1e0b          	ldw	x,(OFST-11,sp)
-4917  08fa cd0000        	call	_Num_Display_LCD
-4919  08fd ac410a41      	jpf	L5772
-4920  0901               L7762:
-4921                     ; 550 					if(!uc_Target_Display_Mode){
-4923  0901 725d0000      	tnz	_uc_Target_Display_Mode
-4924  0905 2676          	jrne	L7772
-4925                     ; 551 if (HEATER_zone_status == HTR_ZONE_1)
-4927  0907 725d0000      	tnz	_HEATER_zone_status
-4928  090b 2638          	jrne	L1003
-4929                     ; 553 						Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_1] /(U8)(2));
-4931  090d c6000a        	ld	a,_uc_Target_Duty_Perc
-4932  0910 44            	srl	a
-4933  0911 5f            	clrw	x
-4934  0912 97            	ld	xl,a
-4935  0913 cd0000        	call	_Num_Display_LCD
-4937                     ; 554 						if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(200)){
-4939  0916 c6000a        	ld	a,_uc_Target_Duty_Perc
-4940  0919 a1c8          	cp	a,#200
-4941  091b 2503          	jrult	L201
-4942  091d cc0a41        	jp	L5772
-4943  0920               L201:
-4944                     ; 555 							Display_LCD_String(".");
-4946  0920 ae0105        	ldw	x,#L7352
-4947  0923 cd0000        	call	_Display_LCD_String
-4949                     ; 556 							uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_1] % (U8)(2);
-4951  0926 c6000a        	ld	a,_uc_Target_Duty_Perc
-4952  0929 a401          	and	a,#1
-4953  092b 6b15          	ld	(OFST-1,sp),a
-4954                     ; 557 							if(uc_buffer){ Display_LCD_String("5"); }
-4956  092d 0d15          	tnz	(OFST-1,sp)
-4957  092f 270a          	jreq	L5003
-4960  0931 ae0103        	ldw	x,#L3452
-4961  0934 cd0000        	call	_Display_LCD_String
-4964  0937 ac410a41      	jpf	L5772
-4965  093b               L5003:
-4966                     ; 558 							else{ Display_LCD_String("0"); }
-4968  093b ae0101        	ldw	x,#L7452
-4969  093e cd0000        	call	_Display_LCD_String
-4971  0941 ac410a41      	jpf	L5772
-4972  0945               L1003:
-4973                     ; 563 						Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_2] /(U8)(2));
-4975  0945 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4976  0948 44            	srl	a
-4977  0949 5f            	clrw	x
-4978  094a 97            	ld	xl,a
-4979  094b cd0000        	call	_Num_Display_LCD
-4981                     ; 564 						if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(200)){
-4983  094e c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4984  0951 a1c8          	cp	a,#200
-4985  0953 2503          	jrult	L401
-4986  0955 cc0a41        	jp	L5772
-4987  0958               L401:
-4988                     ; 565 							Display_LCD_String(".");
-4990  0958 ae0105        	ldw	x,#L7352
-4991  095b cd0000        	call	_Display_LCD_String
-4993                     ; 566 							uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_2] % (U8)(2);
-4995  095e c6000b        	ld	a,_uc_Target_Duty_Perc+1
-4996  0961 a401          	and	a,#1
-4997  0963 6b15          	ld	(OFST-1,sp),a
-4998                     ; 567 							if(uc_buffer){ Display_LCD_String("5"); }
-5000  0965 0d15          	tnz	(OFST-1,sp)
-5001  0967 270a          	jreq	L5103
-5004  0969 ae0103        	ldw	x,#L3452
-5005  096c cd0000        	call	_Display_LCD_String
-5008  096f ac410a41      	jpf	L5772
-5009  0973               L5103:
-5010                     ; 568 							else{ Display_LCD_String("0"); }
-5012  0973 ae0101        	ldw	x,#L7452
-5013  0976 cd0000        	call	_Display_LCD_String
-5015  0979 ac410a41      	jpf	L5772
-5016  097d               L7772:
-5017                     ; 573 if (HEATER_zone_status == HTR_ZONE_1)
-5019  097d 725d0000      	tnz	_HEATER_zone_status
-5020  0981 2663          	jrne	L3203
-5021                     ; 575 						if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ Num_Display_LCD(0u); }
-5023  0983 c6000a        	ld	a,_uc_Target_Duty_Perc
-5024  0986 a114          	cp	a,#20
-5025  0988 2408          	jruge	L5203
-5028  098a 5f            	clrw	x
-5029  098b cd0000        	call	_Num_Display_LCD
-5032  098e ac410a41      	jpf	L5772
-5033  0992               L5203:
-5034                     ; 576 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(20)){ Num_Display_LCD(100u); }
-5036  0992 c6000a        	ld	a,_uc_Target_Duty_Perc
-5037  0995 a114          	cp	a,#20
-5038  0997 260a          	jrne	L1303
-5041  0999 ae0064        	ldw	x,#100
-5042  099c cd0000        	call	_Num_Display_LCD
-5045  099f ac410a41      	jpf	L5772
-5046  09a3               L1303:
-5047                     ; 577 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ Num_Display_LCD(6200u); }
-5049  09a3 c6000a        	ld	a,_uc_Target_Duty_Perc
-5050  09a6 a1b4          	cp	a,#180
-5051  09a8 260a          	jrne	L5303
-5054  09aa ae1838        	ldw	x,#6200
-5055  09ad cd0000        	call	_Num_Display_LCD
-5058  09b0 ac410a41      	jpf	L5772
-5059  09b4               L5303:
-5060                     ; 578 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] > (U8)(180)){ Display_LCD_String("MAX"); }
-5062  09b4 c6000a        	ld	a,_uc_Target_Duty_Perc
-5063  09b7 a1b5          	cp	a,#181
-5064  09b9 2508          	jrult	L1403
-5067  09bb ae00c9        	ldw	x,#L7472
-5068  09be cd0000        	call	_Display_LCD_String
-5071  09c1 207e          	jra	L5772
-5072  09c3               L1403:
-5073                     ; 579 						else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_1]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
-5075  09c3 c6000a        	ld	a,_uc_Target_Duty_Perc
-5076  09c6 5f            	clrw	x
-5077  09c7 97            	ld	xl,a
-5078  09c8 1d0014        	subw	x,#20
-5079  09cb 90ae94ed      	ldw	y,#38125
-5080  09cf cd0000        	call	c_umul
-5082  09d2 ae0000        	ldw	x,#L25
-5083  09d5 cd0000        	call	c_ludv
-5085  09d8 be02          	ldw	x,c_lreg+2
-5086  09da 1c0064        	addw	x,#100
-5087  09dd 1f0b          	ldw	(OFST-11,sp),x
-5090  09df 1e0b          	ldw	x,(OFST-11,sp)
-5091  09e1 cd0000        	call	_Num_Display_LCD
-5093  09e4 205b          	jra	L5772
-5094  09e6               L3203:
-5095                     ; 583 						if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ Num_Display_LCD(0u); }
-5097  09e6 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-5098  09e9 a114          	cp	a,#20
-5099  09eb 2406          	jruge	L7403
-5102  09ed 5f            	clrw	x
-5103  09ee cd0000        	call	_Num_Display_LCD
-5106  09f1 204e          	jra	L5772
-5107  09f3               L7403:
-5108                     ; 584 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(20)){ Num_Display_LCD(100u); }
-5110  09f3 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-5111  09f6 a114          	cp	a,#20
-5112  09f8 2608          	jrne	L3503
-5115  09fa ae0064        	ldw	x,#100
-5116  09fd cd0000        	call	_Num_Display_LCD
-5119  0a00 203f          	jra	L5772
-5120  0a02               L3503:
-5121                     ; 585 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ Num_Display_LCD(6200u); }
-5123  0a02 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-5124  0a05 a1b4          	cp	a,#180
-5125  0a07 2608          	jrne	L7503
-5128  0a09 ae1838        	ldw	x,#6200
-5129  0a0c cd0000        	call	_Num_Display_LCD
-5132  0a0f 2030          	jra	L5772
-5133  0a11               L7503:
-5134                     ; 586 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] > (U8)(180)){ Display_LCD_String("MAX"); }
-5136  0a11 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-5137  0a14 a1b5          	cp	a,#181
-5138  0a16 2508          	jrult	L3603
-5141  0a18 ae00c9        	ldw	x,#L7472
-5142  0a1b cd0000        	call	_Display_LCD_String
-5145  0a1e 2021          	jra	L5772
-5146  0a20               L3603:
-5147                     ; 587 						else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_2]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
-5149  0a20 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-5150  0a23 5f            	clrw	x
-5151  0a24 97            	ld	xl,a
-5152  0a25 1d0014        	subw	x,#20
-5153  0a28 90ae94ed      	ldw	y,#38125
-5154  0a2c cd0000        	call	c_umul
-5156  0a2f ae0000        	ldw	x,#L25
-5157  0a32 cd0000        	call	c_ludv
-5159  0a35 be02          	ldw	x,c_lreg+2
-5160  0a37 1c0064        	addw	x,#100
-5161  0a3a 1f0b          	ldw	(OFST-11,sp),x
-5164  0a3c 1e0b          	ldw	x,(OFST-11,sp)
-5165  0a3e cd0000        	call	_Num_Display_LCD
-5167  0a41               L5772:
-5168                     ; 593 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
-5170  0a41 7b16          	ld	a,(OFST+0,sp)
-5171  0a43 5f            	clrw	x
-5172  0a44 97            	ld	xl,a
-5173  0a45 d60000        	ld	a,(_LCD_Line,x)
-5174  0a48 ab0b          	add	a,#11
-5175  0a4a cd0000        	call	_Set_LCD_Address
-5177                     ; 594 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-5179  0a4d c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5180  0a50 a501          	bcp	a,#1
-5181  0a52 270a          	jreq	L7603
-5184  0a54 ae00e0        	ldw	x,#L1462
-5185  0a57 cd0000        	call	_Display_LCD_String
-5188  0a5a ac9f0b9f      	jpf	L3762
-5189  0a5e               L7603:
-5190                     ; 596 					Num_Display_LCD(can_data[6] /(U8)(2));
-5192  0a5e 7b13          	ld	a,(OFST-3,sp)
-5193  0a60 44            	srl	a
-5194  0a61 5f            	clrw	x
-5195  0a62 97            	ld	xl,a
-5196  0a63 cd0000        	call	_Num_Display_LCD
-5198                     ; 597 					if(can_data[6] < (U8)(200)){
-5200  0a66 7b13          	ld	a,(OFST-3,sp)
-5201  0a68 a1c8          	cp	a,#200
-5202  0a6a 2503          	jrult	L601
-5203  0a6c cc0b9f        	jp	L3762
-5204  0a6f               L601:
-5205                     ; 598 						Display_LCD_String(".");
-5207  0a6f ae0105        	ldw	x,#L7352
-5208  0a72 cd0000        	call	_Display_LCD_String
-5210                     ; 599 						uc_buffer = can_data[6] % (U8)(2);
-5212  0a75 7b13          	ld	a,(OFST-3,sp)
-5213  0a77 a401          	and	a,#1
-5214  0a79 6b15          	ld	(OFST-1,sp),a
-5215                     ; 600 						if(uc_buffer){ Display_LCD_String("5"); }
-5217  0a7b 0d15          	tnz	(OFST-1,sp)
-5218  0a7d 270a          	jreq	L5703
-5221  0a7f ae0103        	ldw	x,#L3452
-5222  0a82 cd0000        	call	_Display_LCD_String
-5225  0a85 ac9f0b9f      	jpf	L3762
-5226  0a89               L5703:
-5227                     ; 601 						else{ Display_LCD_String("0"); }
-5229  0a89 ae0101        	ldw	x,#L7452
-5230  0a8c cd0000        	call	_Display_LCD_String
-5232  0a8f ac9f0b9f      	jpf	L3762
-5233  0a93               L5762:
-5234                     ; 607 			else if(uc_line_index == (U8)(2)){	// LINE 3
-5236  0a93 7b16          	ld	a,(OFST+0,sp)
-5237  0a95 a102          	cp	a,#2
-5238  0a97 2703          	jreq	L011
-5239  0a99 cc0b26        	jp	L3013
-5240  0a9c               L011:
-5241                     ; 610 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 2));
-5243  0a9c 7b16          	ld	a,(OFST+0,sp)
-5244  0a9e 5f            	clrw	x
-5245  0a9f 97            	ld	xl,a
-5246  0aa0 d60000        	ld	a,(_LCD_Line,x)
-5247  0aa3 ab02          	add	a,#2
-5248  0aa5 cd0000        	call	_Set_LCD_Address
-5250                     ; 611 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("N"); }		// No Communication
-5252  0aa8 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5253  0aab a501          	bcp	a,#1
-5254  0aad 2708          	jreq	L5013
-5257  0aaf ae00c7        	ldw	x,#L7013
-5258  0ab2 cd0000        	call	_Display_LCD_String
-5261  0ab5 2014          	jra	L1113
-5262  0ab7               L5013:
-5263                     ; 613 					if(can_data[0] & 0x01){ Display_LCD_String("1"); }
-5265  0ab7 7b0d          	ld	a,(OFST-9,sp)
-5266  0ab9 a501          	bcp	a,#1
-5267  0abb 2708          	jreq	L3113
-5270  0abd ae00c5        	ldw	x,#L5113
-5271  0ac0 cd0000        	call	_Display_LCD_String
-5274  0ac3 2006          	jra	L1113
-5275  0ac5               L3113:
-5276                     ; 614 					else{ Display_LCD_String("0"); }
-5278  0ac5 ae0101        	ldw	x,#L7452
-5279  0ac8 cd0000        	call	_Display_LCD_String
-5281  0acb               L1113:
-5282                     ; 617 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 6));
-5284  0acb 7b16          	ld	a,(OFST+0,sp)
-5285  0acd 5f            	clrw	x
-5286  0ace 97            	ld	xl,a
-5287  0acf d60000        	ld	a,(_LCD_Line,x)
-5288  0ad2 ab06          	add	a,#6
-5289  0ad4 cd0000        	call	_Set_LCD_Address
-5291                     ; 618 				if(b_Rx2_Msg_TimeOut_Flag){ Display_LCD_String("N"); }		// No Communication
-5293  0ad7 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5294  0ada a502          	bcp	a,#2
-5295  0adc 2708          	jreq	L1213
-5298  0ade ae00c7        	ldw	x,#L7013
-5299  0ae1 cd0000        	call	_Display_LCD_String
-5302  0ae4 2014          	jra	L3213
-5303  0ae6               L1213:
-5304                     ; 620 					if(can_diag[0] & 0x01){ Display_LCD_String("1"); }
-5306  0ae6 7b03          	ld	a,(OFST-19,sp)
-5307  0ae8 a501          	bcp	a,#1
-5308  0aea 2708          	jreq	L5213
-5311  0aec ae00c5        	ldw	x,#L5113
-5312  0aef cd0000        	call	_Display_LCD_String
-5315  0af2 2006          	jra	L3213
-5316  0af4               L5213:
-5317                     ; 621 					else{ Display_LCD_String("0"); }
-5319  0af4 ae0101        	ldw	x,#L7452
-5320  0af7 cd0000        	call	_Display_LCD_String
-5322  0afa               L3213:
-5323                     ; 624 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
-5325  0afa 7b16          	ld	a,(OFST+0,sp)
-5326  0afc 5f            	clrw	x
-5327  0afd 97            	ld	xl,a
-5328  0afe d60000        	ld	a,(_LCD_Line,x)
-5329  0b01 ab0b          	add	a,#11
-5330  0b03 cd0000        	call	_Set_LCD_Address
-5332                     ; 625 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-5334  0b06 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5335  0b09 a501          	bcp	a,#1
-5336  0b0b 270a          	jreq	L1313
-5339  0b0d ae00e0        	ldw	x,#L1462
-5340  0b10 cd0000        	call	_Display_LCD_String
-5343  0b13 ac9f0b9f      	jpf	L3762
-5344  0b17               L1313:
-5345                     ; 627 					ui_buffer = (U16)(can_data[4]) * (U16)(4);//YJS 2->4
-5347  0b17 7b11          	ld	a,(OFST-5,sp)
-5348  0b19 97            	ld	xl,a
-5349  0b1a a604          	ld	a,#4
-5350  0b1c 42            	mul	x,a
-5351  0b1d 1f0b          	ldw	(OFST-11,sp),x
-5352                     ; 628 					Num_Display_LCD(ui_buffer);
-5354  0b1f 1e0b          	ldw	x,(OFST-11,sp)
-5355  0b21 cd0000        	call	_Num_Display_LCD
-5357  0b24 2079          	jra	L3762
-5358  0b26               L3013:
-5359                     ; 633 			else if(uc_line_index == (U8)(3)){	// LINE 4
-5361  0b26 7b16          	ld	a,(OFST+0,sp)
-5362  0b28 a103          	cp	a,#3
-5363  0b2a 2673          	jrne	L3762
-5364                     ; 636 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
-5366  0b2c 7b16          	ld	a,(OFST+0,sp)
-5367  0b2e 5f            	clrw	x
-5368  0b2f 97            	ld	xl,a
-5369  0b30 d60000        	ld	a,(_LCD_Line,x)
-5370  0b33 ab03          	add	a,#3
-5371  0b35 cd0000        	call	_Set_LCD_Address
-5373                     ; 638 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-5375  0b38 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5376  0b3b a501          	bcp	a,#1
-5377  0b3d 2708          	jreq	L1413
-5380  0b3f ae00e0        	ldw	x,#L1462
-5381  0b42 cd0000        	call	_Display_LCD_String
-5384  0b45 2027          	jra	L3413
-5385  0b47               L1413:
-5386                     ; 640 					Num_Display_LCD(can_data[5] / (U8)(5));
-5388  0b47 7b12          	ld	a,(OFST-4,sp)
-5389  0b49 5f            	clrw	x
-5390  0b4a 97            	ld	xl,a
-5391  0b4b a605          	ld	a,#5
-5392  0b4d cd0000        	call	c_sdivx
-5394  0b50 cd0000        	call	_Num_Display_LCD
-5396                     ; 641 					Display_LCD_String(".");
-5398  0b53 ae0105        	ldw	x,#L7352
-5399  0b56 cd0000        	call	_Display_LCD_String
-5401                     ; 642 					uc_buffer = can_data[5] % (U8)(5);
-5403  0b59 7b12          	ld	a,(OFST-4,sp)
-5404  0b5b ae0005        	ldw	x,#5
-5405  0b5e 51            	exgw	x,y
-5406  0b5f 5f            	clrw	x
-5407  0b60 97            	ld	xl,a
-5408  0b61 65            	divw	x,y
-5409  0b62 909f          	ld	a,yl
-5410  0b64 6b15          	ld	(OFST-1,sp),a
-5411                     ; 643 					Num_Display_LCD(uc_buffer * (U8)(2));
-5413  0b66 7b15          	ld	a,(OFST-1,sp)
-5414  0b68 5f            	clrw	x
-5415  0b69 97            	ld	xl,a
-5416  0b6a 58            	sllw	x
-5417  0b6b cd0000        	call	_Num_Display_LCD
-5419  0b6e               L3413:
-5420                     ; 649 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
-5422  0b6e 7b16          	ld	a,(OFST+0,sp)
-5423  0b70 5f            	clrw	x
-5424  0b71 97            	ld	xl,a
-5425  0b72 d60000        	ld	a,(_LCD_Line,x)
-5426  0b75 ab0b          	add	a,#11
-5427  0b77 cd0000        	call	_Set_LCD_Address
-5429                     ; 651 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-5431  0b7a c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5432  0b7d a501          	bcp	a,#1
-5433  0b7f 2708          	jreq	L5413
-5436  0b81 ae00e0        	ldw	x,#L1462
-5437  0b84 cd0000        	call	_Display_LCD_String
-5440  0b87 2016          	jra	L3762
-5441  0b89               L5413:
-5442                     ; 653 					ui_buffer = (U16)(can_data[3] << 8) + (U16)(can_data[2]);
-5444  0b89 7b0f          	ld	a,(OFST-7,sp)
-5445  0b8b 5f            	clrw	x
-5446  0b8c 97            	ld	xl,a
-5447  0b8d 1f01          	ldw	(OFST-21,sp),x
-5448  0b8f 7b10          	ld	a,(OFST-6,sp)
-5449  0b91 5f            	clrw	x
-5450  0b92 97            	ld	xl,a
-5451  0b93 4f            	clr	a
-5452  0b94 02            	rlwa	x,a
-5453  0b95 72fb01        	addw	x,(OFST-21,sp)
-5454  0b98 1f0b          	ldw	(OFST-11,sp),x
-5455                     ; 654 					Num_Display_LCD(ui_buffer);
-5457  0b9a 1e0b          	ldw	x,(OFST-11,sp)
-5458  0b9c cd0000        	call	_Num_Display_LCD
-5460  0b9f               L3762:
-5461                     ; 449 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-5463  0b9f 0c16          	inc	(OFST+0,sp)
-5466  0ba1 7b16          	ld	a,(OFST+0,sp)
-5467  0ba3 a104          	cp	a,#4
-5468  0ba5 2403          	jruge	L211
-5469  0ba7 cc063f        	jp	L7552
-5470  0baa               L211:
-5472  0baa ac6d106d      	jpf	L1513
-5473  0bae               L5552:
-5474                     ; 664 	else if(uc_Test_Page_Now == (U8)(1)){
-5476  0bae c60004        	ld	a,_uc_Test_Page_Now
-5477  0bb1 a101          	cp	a,#1
-5478  0bb3 2703          	jreq	L411
-5479  0bb5 cc0c66        	jp	L3513
-5480  0bb8               L411:
-5481                     ; 665 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-5483  0bb8 0f16          	clr	(OFST+0,sp)
-5484  0bba               L5513:
-5485                     ; 667 			Set_LCD_Address(LCD_Line[uc_line_index]);
-5487  0bba 7b16          	ld	a,(OFST+0,sp)
-5488  0bbc 5f            	clrw	x
-5489  0bbd 97            	ld	xl,a
-5490  0bbe d60000        	ld	a,(_LCD_Line,x)
-5491  0bc1 cd0000        	call	_Set_LCD_Address
-5493                     ; 668 			Display_LCD_String(LCD_Dis_Data[uc_line_index]);
-5495  0bc4 7b16          	ld	a,(OFST+0,sp)
-5496  0bc6 97            	ld	xl,a
-5497  0bc7 a610          	ld	a,#16
-5498  0bc9 42            	mul	x,a
-5499  0bca 1c0000        	addw	x,#_LCD_Dis_Data
-5500  0bcd cd0000        	call	_Display_LCD_String
-5502                     ; 671 			if(uc_line_index == (U8)(0)){		// LINE 1
-5504  0bd0 0d16          	tnz	(OFST+0,sp)
-5505  0bd2 2641          	jrne	L3613
-5506                     ; 674 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
-5508  0bd4 7b16          	ld	a,(OFST+0,sp)
-5509  0bd6 5f            	clrw	x
-5510  0bd7 97            	ld	xl,a
-5511  0bd8 d60000        	ld	a,(_LCD_Line,x)
-5512  0bdb ab03          	add	a,#3
-5513  0bdd cd0000        	call	_Set_LCD_Address
-5515                     ; 675 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-5517  0be0 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5518  0be3 a501          	bcp	a,#1
-5519  0be5 2708          	jreq	L5613
-5522  0be7 ae00e0        	ldw	x,#L1462
-5523  0bea cd0000        	call	_Display_LCD_String
-5526  0bed 2026          	jra	L3613
-5527  0bef               L5613:
-5528                     ; 677 					if(can_data[1] < (U8)(40)){
-5530  0bef 7b0e          	ld	a,(OFST-8,sp)
-5531  0bf1 a128          	cp	a,#40
-5532  0bf3 2416          	jruge	L1713
-5533                     ; 678 						Display_LCD_String("-");
-5535  0bf5 ae00c3        	ldw	x,#L3713
-5536  0bf8 cd0000        	call	_Display_LCD_String
-5538                     ; 679 						Num_Display_LCD((U8)(40) - can_data[1]);
-5540  0bfb a600          	ld	a,#0
-5541  0bfd 97            	ld	xl,a
-5542  0bfe a628          	ld	a,#40
-5543  0c00 100e          	sub	a,(OFST-8,sp)
-5544  0c02 2401          	jrnc	L45
-5545  0c04 5a            	decw	x
-5546  0c05               L45:
-5547  0c05 02            	rlwa	x,a
-5548  0c06 cd0000        	call	_Num_Display_LCD
-5551  0c09 200a          	jra	L3613
-5552  0c0b               L1713:
-5553                     ; 682 						Num_Display_LCD(can_data[1] - (U8)(40));
-5555  0c0b 7b0e          	ld	a,(OFST-8,sp)
-5556  0c0d 5f            	clrw	x
-5557  0c0e 97            	ld	xl,a
-5558  0c0f 1d0028        	subw	x,#40
-5559  0c12 cd0000        	call	_Num_Display_LCD
-5561  0c15               L3613:
-5562                     ; 688 			if(uc_line_index == (U8)(1)){		// LINE 2
-5564  0c15 7b16          	ld	a,(OFST+0,sp)
-5565  0c17 a101          	cp	a,#1
-5566  0c19 2634          	jrne	L7713
-5567                     ; 691 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 4));
-5569  0c1b 7b16          	ld	a,(OFST+0,sp)
-5570  0c1d 5f            	clrw	x
-5571  0c1e 97            	ld	xl,a
-5572  0c1f d60000        	ld	a,(_LCD_Line,x)
-5573  0c22 ab04          	add	a,#4
-5574  0c24 cd0000        	call	_Set_LCD_Address
-5576                     ; 692 				if(b_Rx2_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-5578  0c27 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5579  0c2a a502          	bcp	a,#2
-5580  0c2c 2708          	jreq	L1023
-5583  0c2e ae00e0        	ldw	x,#L1462
-5584  0c31 cd0000        	call	_Display_LCD_String
-5587  0c34 2019          	jra	L7713
-5588  0c36               L1023:
-5589                     ; 699 					Num_Display_LCD(can_diag[6] >> 4);  				//SoftWare Version Display
-5591  0c36 7b09          	ld	a,(OFST-13,sp)
-5592  0c38 4e            	swap	a
-5593  0c39 a40f          	and	a,#15
-5594  0c3b 5f            	clrw	x
-5595  0c3c 97            	ld	xl,a
-5596  0c3d cd0000        	call	_Num_Display_LCD
-5598                     ; 700 					Display_LCD_String(".");
-5600  0c40 ae0105        	ldw	x,#L7352
-5601  0c43 cd0000        	call	_Display_LCD_String
-5603                     ; 701 					Num_Display_LCD(can_diag[6] & 0x0F);  			//SoftWare Version Display
-5605  0c46 7b09          	ld	a,(OFST-13,sp)
-5606  0c48 a40f          	and	a,#15
-5607  0c4a 5f            	clrw	x
-5608  0c4b 97            	ld	xl,a
-5609  0c4c cd0000        	call	_Num_Display_LCD
-5611  0c4f               L7713:
-5612                     ; 707 			if(uc_line_index == (U8)(2)){		// LINE 2
-5614  0c4f 7b16          	ld	a,(OFST+0,sp)
-5615  0c51 a102          	cp	a,#2
-5616                     ; 712 			if(uc_line_index == (U8)(3)){		// LINE 3
-5618  0c53 7b16          	ld	a,(OFST+0,sp)
-5619  0c55 a103          	cp	a,#3
-5620                     ; 665 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-5622  0c57 0c16          	inc	(OFST+0,sp)
-5625  0c59 7b16          	ld	a,(OFST+0,sp)
-5626  0c5b a104          	cp	a,#4
-5627  0c5d 2403          	jruge	L611
-5628  0c5f cc0bba        	jp	L5513
-5629  0c62               L611:
-5631  0c62 ac6d106d      	jpf	L1513
-5632  0c66               L3513:
-5633                     ; 719 		if(b_Rx2_Msg_TimeOut_Flag){
-5635  0c66 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-5636  0c69 a502          	bcp	a,#2
-5637  0c6b 2710          	jreq	L3123
-5638                     ; 720 			Set_LCD_Address(LCD_Line[0]);	
-5640  0c6d c60000        	ld	a,_LCD_Line
-5641  0c70 cd0000        	call	_Set_LCD_Address
-5643                     ; 721 			Display_LCD_String("NC");
-5645  0c73 ae00e0        	ldw	x,#L1462
-5646  0c76 cd0000        	call	_Display_LCD_String
-5649  0c79 ac6d106d      	jpf	L1513
-5650  0c7d               L3123:
-5651                     ; 724 			uc_fault_cnt = (U8)(0);
-5653  0c7d 0f16          	clr	(OFST+0,sp)
-5654                     ; 726 			if(can_diag[1] & (U8)(0x01)){
-5656  0c7f 7b04          	ld	a,(OFST-18,sp)
-5657  0c81 a501          	bcp	a,#1
-5658  0c83 273c          	jreq	L7123
-5659                     ; 727 				uc_fault_cnt++;
-5661  0c85 0c16          	inc	(OFST+0,sp)
-5662                     ; 728 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-5662                     ; 729 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-5662                     ; 730 				){
-5664  0c87 0d16          	tnz	(OFST+0,sp)
-5665  0c89 270d          	jreq	L5223
-5667  0c8b 7b16          	ld	a,(OFST+0,sp)
-5668  0c8d a105          	cp	a,#5
-5669  0c8f 2407          	jruge	L5223
-5671  0c91 c60004        	ld	a,_uc_Test_Page_Now
-5672  0c94 a102          	cp	a,#2
-5673  0c96 2713          	jreq	L3223
-5674  0c98               L5223:
-5676  0c98 7b16          	ld	a,(OFST+0,sp)
-5677  0c9a a105          	cp	a,#5
-5678  0c9c 2523          	jrult	L7123
-5680  0c9e 7b16          	ld	a,(OFST+0,sp)
-5681  0ca0 a109          	cp	a,#9
-5682  0ca2 241d          	jruge	L7123
-5684  0ca4 c60004        	ld	a,_uc_Test_Page_Now
-5685  0ca7 a103          	cp	a,#3
-5686  0ca9 2616          	jrne	L7123
-5687  0cab               L3223:
-5688                     ; 731 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-5690  0cab 7b16          	ld	a,(OFST+0,sp)
-5691  0cad 5f            	clrw	x
-5692  0cae 97            	ld	xl,a
-5693  0caf 5a            	decw	x
-5694  0cb0 a604          	ld	a,#4
-5695  0cb2 cd0000        	call	c_smodx
-5697  0cb5 d60000        	ld	a,(_LCD_Line,x)
-5698  0cb8 cd0000        	call	_Set_LCD_Address
-5700                     ; 732 					Display_LCD_String("Flt_LVLow");
-5702  0cbb ae00b9        	ldw	x,#L1323
-5703  0cbe cd0000        	call	_Display_LCD_String
-5705  0cc1               L7123:
-5706                     ; 736 			if(can_diag[1] & (U8)(0x02)){
-5708  0cc1 7b04          	ld	a,(OFST-18,sp)
-5709  0cc3 a502          	bcp	a,#2
-5710  0cc5 273c          	jreq	L3323
-5711                     ; 737 				uc_fault_cnt++;
-5713  0cc7 0c16          	inc	(OFST+0,sp)
-5714                     ; 738 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-5714                     ; 739 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-5714                     ; 740 				){
-5716  0cc9 0d16          	tnz	(OFST+0,sp)
-5717  0ccb 270d          	jreq	L1423
-5719  0ccd 7b16          	ld	a,(OFST+0,sp)
-5720  0ccf a105          	cp	a,#5
-5721  0cd1 2407          	jruge	L1423
-5723  0cd3 c60004        	ld	a,_uc_Test_Page_Now
-5724  0cd6 a102          	cp	a,#2
-5725  0cd8 2713          	jreq	L7323
-5726  0cda               L1423:
-5728  0cda 7b16          	ld	a,(OFST+0,sp)
-5729  0cdc a105          	cp	a,#5
-5730  0cde 2523          	jrult	L3323
-5732  0ce0 7b16          	ld	a,(OFST+0,sp)
-5733  0ce2 a109          	cp	a,#9
-5734  0ce4 241d          	jruge	L3323
-5736  0ce6 c60004        	ld	a,_uc_Test_Page_Now
-5737  0ce9 a103          	cp	a,#3
-5738  0ceb 2616          	jrne	L3323
-5739  0ced               L7323:
-5740                     ; 741 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-5742  0ced 7b16          	ld	a,(OFST+0,sp)
-5743  0cef 5f            	clrw	x
-5744  0cf0 97            	ld	xl,a
-5745  0cf1 5a            	decw	x
-5746  0cf2 a604          	ld	a,#4
-5747  0cf4 cd0000        	call	c_smodx
-5749  0cf7 d60000        	ld	a,(_LCD_Line,x)
-5750  0cfa cd0000        	call	_Set_LCD_Address
-5752                     ; 742 					Display_LCD_String("Flt_LVHigh");
-5754  0cfd ae00ae        	ldw	x,#L5423
-5755  0d00 cd0000        	call	_Display_LCD_String
-5757  0d03               L3323:
-5758                     ; 746 			if(can_diag[1] & (U8)(0x04)){
-5760  0d03 7b04          	ld	a,(OFST-18,sp)
-5761  0d05 a504          	bcp	a,#4
-5762  0d07 273c          	jreq	L7423
-5763                     ; 747 				uc_fault_cnt++;
-5765  0d09 0c16          	inc	(OFST+0,sp)
-5766                     ; 748 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-5766                     ; 749 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-5766                     ; 750 				){
-5768  0d0b 0d16          	tnz	(OFST+0,sp)
-5769  0d0d 270d          	jreq	L5523
-5771  0d0f 7b16          	ld	a,(OFST+0,sp)
-5772  0d11 a105          	cp	a,#5
-5773  0d13 2407          	jruge	L5523
-5775  0d15 c60004        	ld	a,_uc_Test_Page_Now
-5776  0d18 a102          	cp	a,#2
-5777  0d1a 2713          	jreq	L3523
-5778  0d1c               L5523:
-5780  0d1c 7b16          	ld	a,(OFST+0,sp)
-5781  0d1e a105          	cp	a,#5
-5782  0d20 2523          	jrult	L7423
-5784  0d22 7b16          	ld	a,(OFST+0,sp)
-5785  0d24 a109          	cp	a,#9
-5786  0d26 241d          	jruge	L7423
-5788  0d28 c60004        	ld	a,_uc_Test_Page_Now
-5789  0d2b a103          	cp	a,#3
-5790  0d2d 2616          	jrne	L7423
-5791  0d2f               L3523:
-5792                     ; 751 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-5794  0d2f 7b16          	ld	a,(OFST+0,sp)
-5795  0d31 5f            	clrw	x
-5796  0d32 97            	ld	xl,a
-5797  0d33 5a            	decw	x
-5798  0d34 a604          	ld	a,#4
-5799  0d36 cd0000        	call	c_smodx
-5801  0d39 d60000        	ld	a,(_LCD_Line,x)
-5802  0d3c cd0000        	call	_Set_LCD_Address
-5804                     ; 752 					Display_LCD_String("Flt_HVLow");
-5806  0d3f ae00a4        	ldw	x,#L1623
-5807  0d42 cd0000        	call	_Display_LCD_String
-5809  0d45               L7423:
-5810                     ; 756 			if(can_diag[1] & (U8)(0x08)){
-5812  0d45 7b04          	ld	a,(OFST-18,sp)
-5813  0d47 a508          	bcp	a,#8
-5814  0d49 273c          	jreq	L3623
-5815                     ; 757 				uc_fault_cnt++;
-5817  0d4b 0c16          	inc	(OFST+0,sp)
-5818                     ; 758 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-5818                     ; 759 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-5818                     ; 760 				){
-5820  0d4d 0d16          	tnz	(OFST+0,sp)
-5821  0d4f 270d          	jreq	L1723
-5823  0d51 7b16          	ld	a,(OFST+0,sp)
-5824  0d53 a105          	cp	a,#5
-5825  0d55 2407          	jruge	L1723
-5827  0d57 c60004        	ld	a,_uc_Test_Page_Now
-5828  0d5a a102          	cp	a,#2
-5829  0d5c 2713          	jreq	L7623
-5830  0d5e               L1723:
-5832  0d5e 7b16          	ld	a,(OFST+0,sp)
-5833  0d60 a105          	cp	a,#5
-5834  0d62 2523          	jrult	L3623
-5836  0d64 7b16          	ld	a,(OFST+0,sp)
-5837  0d66 a109          	cp	a,#9
-5838  0d68 241d          	jruge	L3623
-5840  0d6a c60004        	ld	a,_uc_Test_Page_Now
-5841  0d6d a103          	cp	a,#3
-5842  0d6f 2616          	jrne	L3623
-5843  0d71               L7623:
-5844                     ; 761 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);	
-5846  0d71 7b16          	ld	a,(OFST+0,sp)
-5847  0d73 5f            	clrw	x
-5848  0d74 97            	ld	xl,a
-5849  0d75 5a            	decw	x
-5850  0d76 a604          	ld	a,#4
-5851  0d78 cd0000        	call	c_smodx
-5853  0d7b d60000        	ld	a,(_LCD_Line,x)
-5854  0d7e cd0000        	call	_Set_LCD_Address
-5856                     ; 762 					Display_LCD_String("Flt_HVHigh");
-5858  0d81 ae0099        	ldw	x,#L5723
-5859  0d84 cd0000        	call	_Display_LCD_String
-5861  0d87               L3623:
-5862                     ; 766 			if(can_diag[1] & (U8)(0x10)){
-5864  0d87 7b04          	ld	a,(OFST-18,sp)
-5865  0d89 a510          	bcp	a,#16
-5866  0d8b 273c          	jreq	L7723
-5867                     ; 767 				uc_fault_cnt++;
-5869  0d8d 0c16          	inc	(OFST+0,sp)
-5870                     ; 768 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-5870                     ; 769 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-5870                     ; 770 				){
-5872  0d8f 0d16          	tnz	(OFST+0,sp)
-5873  0d91 270d          	jreq	L5033
-5875  0d93 7b16          	ld	a,(OFST+0,sp)
-5876  0d95 a105          	cp	a,#5
-5877  0d97 2407          	jruge	L5033
-5879  0d99 c60004        	ld	a,_uc_Test_Page_Now
-5880  0d9c a102          	cp	a,#2
-5881  0d9e 2713          	jreq	L3033
-5882  0da0               L5033:
-5884  0da0 7b16          	ld	a,(OFST+0,sp)
-5885  0da2 a105          	cp	a,#5
-5886  0da4 2523          	jrult	L7723
-5888  0da6 7b16          	ld	a,(OFST+0,sp)
-5889  0da8 a109          	cp	a,#9
-5890  0daa 241d          	jruge	L7723
-5892  0dac c60004        	ld	a,_uc_Test_Page_Now
-5893  0daf a103          	cp	a,#3
-5894  0db1 2616          	jrne	L7723
-5895  0db3               L3033:
-5896                     ; 771 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-5898  0db3 7b16          	ld	a,(OFST+0,sp)
-5899  0db5 5f            	clrw	x
-5900  0db6 97            	ld	xl,a
-5901  0db7 5a            	decw	x
-5902  0db8 a604          	ld	a,#4
-5903  0dba cd0000        	call	c_smodx
-5905  0dbd d60000        	ld	a,(_LCD_Line,x)
-5906  0dc0 cd0000        	call	_Set_LCD_Address
-5908                     ; 772 					Display_LCD_String("Flt_OverCur");
-5910  0dc3 ae008d        	ldw	x,#L1133
-5911  0dc6 cd0000        	call	_Display_LCD_String
-5913  0dc9               L7723:
-5914                     ; 778 			if(can_diag[1] & (U8)(0x20)){
-5916  0dc9 7b04          	ld	a,(OFST-18,sp)
-5917  0dcb a520          	bcp	a,#32
-5918  0dcd 273c          	jreq	L3133
-5919                     ; 780 				uc_fault_cnt++;
-5921  0dcf 0c16          	inc	(OFST+0,sp)
-5922                     ; 781 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-5922                     ; 782 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-5922                     ; 783 				){
-5924  0dd1 0d16          	tnz	(OFST+0,sp)
-5925  0dd3 270d          	jreq	L1233
-5927  0dd5 7b16          	ld	a,(OFST+0,sp)
-5928  0dd7 a105          	cp	a,#5
-5929  0dd9 2407          	jruge	L1233
-5931  0ddb c60004        	ld	a,_uc_Test_Page_Now
-5932  0dde a102          	cp	a,#2
-5933  0de0 2713          	jreq	L7133
-5934  0de2               L1233:
-5936  0de2 7b16          	ld	a,(OFST+0,sp)
-5937  0de4 a105          	cp	a,#5
-5938  0de6 2523          	jrult	L3133
-5940  0de8 7b16          	ld	a,(OFST+0,sp)
-5941  0dea a109          	cp	a,#9
-5942  0dec 241d          	jruge	L3133
-5944  0dee c60004        	ld	a,_uc_Test_Page_Now
-5945  0df1 a103          	cp	a,#3
-5946  0df3 2616          	jrne	L3133
-5947  0df5               L7133:
-5948                     ; 784 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-5950  0df5 7b16          	ld	a,(OFST+0,sp)
-5951  0df7 5f            	clrw	x
-5952  0df8 97            	ld	xl,a
-5953  0df9 5a            	decw	x
-5954  0dfa a604          	ld	a,#4
-5955  0dfc cd0000        	call	c_smodx
-5957  0dff d60000        	ld	a,(_LCD_Line,x)
-5958  0e02 cd0000        	call	_Set_LCD_Address
-5960                     ; 785 					Display_LCD_String("Flt_ThmShut");
-5962  0e05 ae0081        	ldw	x,#L5233
-5963  0e08 cd0000        	call	_Display_LCD_String
-5965  0e0b               L3133:
-5966                     ; 791 			if(can_diag[1] & (U8)(0x40)){
-5968  0e0b 7b04          	ld	a,(OFST-18,sp)
-5969  0e0d a540          	bcp	a,#64
-5970  0e0f 273c          	jreq	L7233
-5971                     ; 793 				uc_fault_cnt++;
-5973  0e11 0c16          	inc	(OFST+0,sp)
-5974                     ; 794 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-5974                     ; 795 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-5974                     ; 796 				){
-5976  0e13 0d16          	tnz	(OFST+0,sp)
-5977  0e15 270d          	jreq	L5333
-5979  0e17 7b16          	ld	a,(OFST+0,sp)
-5980  0e19 a105          	cp	a,#5
-5981  0e1b 2407          	jruge	L5333
-5983  0e1d c60004        	ld	a,_uc_Test_Page_Now
-5984  0e20 a102          	cp	a,#2
-5985  0e22 2713          	jreq	L3333
-5986  0e24               L5333:
-5988  0e24 7b16          	ld	a,(OFST+0,sp)
-5989  0e26 a105          	cp	a,#5
-5990  0e28 2523          	jrult	L7233
-5992  0e2a 7b16          	ld	a,(OFST+0,sp)
-5993  0e2c a109          	cp	a,#9
-5994  0e2e 241d          	jruge	L7233
-5996  0e30 c60004        	ld	a,_uc_Test_Page_Now
-5997  0e33 a103          	cp	a,#3
-5998  0e35 2616          	jrne	L7233
-5999  0e37               L3333:
-6000                     ; 797 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);			
-6002  0e37 7b16          	ld	a,(OFST+0,sp)
-6003  0e39 5f            	clrw	x
-6004  0e3a 97            	ld	xl,a
-6005  0e3b 5a            	decw	x
-6006  0e3c a604          	ld	a,#4
-6007  0e3e cd0000        	call	c_smodx
-6009  0e41 d60000        	ld	a,(_LCD_Line,x)
-6010  0e44 cd0000        	call	_Set_LCD_Address
-6012                     ; 798 					Display_LCD_String("Flt_PCBThmShut");
-6014  0e47 ae0072        	ldw	x,#L1433
-6015  0e4a cd0000        	call	_Display_LCD_String
-6017  0e4d               L7233:
-6018                     ; 802 			if(can_diag[3] & (U8)(0x01)){
-6020  0e4d 7b06          	ld	a,(OFST-16,sp)
-6021  0e4f a501          	bcp	a,#1
-6022  0e51 273c          	jreq	L3433
-6023                     ; 803 				uc_fault_cnt++;
-6025  0e53 0c16          	inc	(OFST+0,sp)
-6026                     ; 804 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-6026                     ; 805 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-6026                     ; 806 				){
-6028  0e55 0d16          	tnz	(OFST+0,sp)
-6029  0e57 270d          	jreq	L1533
-6031  0e59 7b16          	ld	a,(OFST+0,sp)
-6032  0e5b a105          	cp	a,#5
-6033  0e5d 2407          	jruge	L1533
-6035  0e5f c60004        	ld	a,_uc_Test_Page_Now
-6036  0e62 a102          	cp	a,#2
-6037  0e64 2713          	jreq	L7433
-6038  0e66               L1533:
-6040  0e66 7b16          	ld	a,(OFST+0,sp)
-6041  0e68 a105          	cp	a,#5
-6042  0e6a 2523          	jrult	L3433
-6044  0e6c 7b16          	ld	a,(OFST+0,sp)
-6045  0e6e a109          	cp	a,#9
-6046  0e70 241d          	jruge	L3433
-6048  0e72 c60004        	ld	a,_uc_Test_Page_Now
-6049  0e75 a103          	cp	a,#3
-6050  0e77 2616          	jrne	L3433
-6051  0e79               L7433:
-6052                     ; 807 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-6054  0e79 7b16          	ld	a,(OFST+0,sp)
-6055  0e7b 5f            	clrw	x
-6056  0e7c 97            	ld	xl,a
-6057  0e7d 5a            	decw	x
-6058  0e7e a604          	ld	a,#4
-6059  0e80 cd0000        	call	c_smodx
-6061  0e83 d60000        	ld	a,(_LCD_Line,x)
-6062  0e86 cd0000        	call	_Set_LCD_Address
-6064                     ; 808 					Display_LCD_String("Flt_MsgTimeOut");
-6066  0e89 ae0063        	ldw	x,#L5533
-6067  0e8c cd0000        	call	_Display_LCD_String
-6069  0e8f               L3433:
-6070                     ; 812 			if(can_diag[4] & (U8)(0x01)){
-6072  0e8f 7b07          	ld	a,(OFST-15,sp)
-6073  0e91 a501          	bcp	a,#1
-6074  0e93 273c          	jreq	L7533
-6075                     ; 813 				uc_fault_cnt++;
-6077  0e95 0c16          	inc	(OFST+0,sp)
-6078                     ; 814 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-6078                     ; 815 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-6078                     ; 816 				){
-6080  0e97 0d16          	tnz	(OFST+0,sp)
-6081  0e99 270d          	jreq	L5633
-6083  0e9b 7b16          	ld	a,(OFST+0,sp)
-6084  0e9d a105          	cp	a,#5
-6085  0e9f 2407          	jruge	L5633
-6087  0ea1 c60004        	ld	a,_uc_Test_Page_Now
-6088  0ea4 a102          	cp	a,#2
-6089  0ea6 2713          	jreq	L3633
-6090  0ea8               L5633:
-6092  0ea8 7b16          	ld	a,(OFST+0,sp)
-6093  0eaa a105          	cp	a,#5
-6094  0eac 2523          	jrult	L7533
-6096  0eae 7b16          	ld	a,(OFST+0,sp)
-6097  0eb0 a109          	cp	a,#9
-6098  0eb2 241d          	jruge	L7533
-6100  0eb4 c60004        	ld	a,_uc_Test_Page_Now
-6101  0eb7 a103          	cp	a,#3
-6102  0eb9 2616          	jrne	L7533
-6103  0ebb               L3633:
-6104                     ; 817 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-6106  0ebb 7b16          	ld	a,(OFST+0,sp)
-6107  0ebd 5f            	clrw	x
-6108  0ebe 97            	ld	xl,a
-6109  0ebf 5a            	decw	x
-6110  0ec0 a604          	ld	a,#4
-6111  0ec2 cd0000        	call	c_smodx
-6113  0ec5 d60000        	ld	a,(_LCD_Line,x)
-6114  0ec8 cd0000        	call	_Set_LCD_Address
-6116                     ; 818 					Display_LCD_String("Fail_HVSen");
-6118  0ecb ae0058        	ldw	x,#L1733
-6119  0ece cd0000        	call	_Display_LCD_String
-6121  0ed1               L7533:
-6122                     ; 822 			if(can_diag[4] & (U8)(0x02)){
-6124  0ed1 7b07          	ld	a,(OFST-15,sp)
-6125  0ed3 a502          	bcp	a,#2
-6126  0ed5 273c          	jreq	L3733
-6127                     ; 823 				uc_fault_cnt++;
-6129  0ed7 0c16          	inc	(OFST+0,sp)
-6130                     ; 824 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-6130                     ; 825 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-6130                     ; 826 				){
-6132  0ed9 0d16          	tnz	(OFST+0,sp)
-6133  0edb 270d          	jreq	L1043
-6135  0edd 7b16          	ld	a,(OFST+0,sp)
-6136  0edf a105          	cp	a,#5
-6137  0ee1 2407          	jruge	L1043
-6139  0ee3 c60004        	ld	a,_uc_Test_Page_Now
-6140  0ee6 a102          	cp	a,#2
-6141  0ee8 2713          	jreq	L7733
-6142  0eea               L1043:
-6144  0eea 7b16          	ld	a,(OFST+0,sp)
-6145  0eec a105          	cp	a,#5
-6146  0eee 2523          	jrult	L3733
-6148  0ef0 7b16          	ld	a,(OFST+0,sp)
-6149  0ef2 a109          	cp	a,#9
-6150  0ef4 241d          	jruge	L3733
-6152  0ef6 c60004        	ld	a,_uc_Test_Page_Now
-6153  0ef9 a103          	cp	a,#3
-6154  0efb 2616          	jrne	L3733
-6155  0efd               L7733:
-6156                     ; 827 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-6158  0efd 7b16          	ld	a,(OFST+0,sp)
-6159  0eff 5f            	clrw	x
-6160  0f00 97            	ld	xl,a
-6161  0f01 5a            	decw	x
-6162  0f02 a604          	ld	a,#4
-6163  0f04 cd0000        	call	c_smodx
-6165  0f07 d60000        	ld	a,(_LCD_Line,x)
-6166  0f0a cd0000        	call	_Set_LCD_Address
-6168                     ; 828 					Display_LCD_String("Fail_LVSen");
-6170  0f0d ae004d        	ldw	x,#L5043
-6171  0f10 cd0000        	call	_Display_LCD_String
-6173  0f13               L3733:
-6174                     ; 832 			if(can_diag[4] & (U8)(0x04)){
-6176  0f13 7b07          	ld	a,(OFST-15,sp)
-6177  0f15 a504          	bcp	a,#4
-6178  0f17 273c          	jreq	L7043
-6179                     ; 833 				uc_fault_cnt++;
-6181  0f19 0c16          	inc	(OFST+0,sp)
-6182                     ; 834 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-6182                     ; 835 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-6182                     ; 836 				){
-6184  0f1b 0d16          	tnz	(OFST+0,sp)
-6185  0f1d 270d          	jreq	L5143
-6187  0f1f 7b16          	ld	a,(OFST+0,sp)
-6188  0f21 a105          	cp	a,#5
-6189  0f23 2407          	jruge	L5143
-6191  0f25 c60004        	ld	a,_uc_Test_Page_Now
-6192  0f28 a102          	cp	a,#2
-6193  0f2a 2713          	jreq	L3143
-6194  0f2c               L5143:
-6196  0f2c 7b16          	ld	a,(OFST+0,sp)
-6197  0f2e a105          	cp	a,#5
-6198  0f30 2523          	jrult	L7043
-6200  0f32 7b16          	ld	a,(OFST+0,sp)
-6201  0f34 a109          	cp	a,#9
-6202  0f36 241d          	jruge	L7043
-6204  0f38 c60004        	ld	a,_uc_Test_Page_Now
-6205  0f3b a103          	cp	a,#3
-6206  0f3d 2616          	jrne	L7043
-6207  0f3f               L3143:
-6208                     ; 837 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-6210  0f3f 7b16          	ld	a,(OFST+0,sp)
-6211  0f41 5f            	clrw	x
-6212  0f42 97            	ld	xl,a
-6213  0f43 5a            	decw	x
-6214  0f44 a604          	ld	a,#4
-6215  0f46 cd0000        	call	c_smodx
-6217  0f49 d60000        	ld	a,(_LCD_Line,x)
-6218  0f4c cd0000        	call	_Set_LCD_Address
-6220                     ; 838 					Display_LCD_String("Fail_CurSen");
-6222  0f4f ae0041        	ldw	x,#L1243
-6223  0f52 cd0000        	call	_Display_LCD_String
-6225  0f55               L7043:
-6226                     ; 844 			if(can_diag[4] & (U8)(0x08)){
-6228  0f55 7b07          	ld	a,(OFST-15,sp)
-6229  0f57 a508          	bcp	a,#8
-6230  0f59 273c          	jreq	L3243
-6231                     ; 846 				uc_fault_cnt++;
-6233  0f5b 0c16          	inc	(OFST+0,sp)
-6234                     ; 847 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-6234                     ; 848 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-6234                     ; 849 				){
-6236  0f5d 0d16          	tnz	(OFST+0,sp)
-6237  0f5f 270d          	jreq	L1343
-6239  0f61 7b16          	ld	a,(OFST+0,sp)
-6240  0f63 a105          	cp	a,#5
-6241  0f65 2407          	jruge	L1343
-6243  0f67 c60004        	ld	a,_uc_Test_Page_Now
-6244  0f6a a102          	cp	a,#2
-6245  0f6c 2713          	jreq	L7243
-6246  0f6e               L1343:
-6248  0f6e 7b16          	ld	a,(OFST+0,sp)
-6249  0f70 a105          	cp	a,#5
-6250  0f72 2523          	jrult	L3243
-6252  0f74 7b16          	ld	a,(OFST+0,sp)
-6253  0f76 a109          	cp	a,#9
-6254  0f78 241d          	jruge	L3243
-6256  0f7a c60004        	ld	a,_uc_Test_Page_Now
-6257  0f7d a103          	cp	a,#3
-6258  0f7f 2616          	jrne	L3243
-6259  0f81               L7243:
-6260                     ; 850 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);	
-6262  0f81 7b16          	ld	a,(OFST+0,sp)
-6263  0f83 5f            	clrw	x
-6264  0f84 97            	ld	xl,a
-6265  0f85 5a            	decw	x
-6266  0f86 a604          	ld	a,#4
-6267  0f88 cd0000        	call	c_smodx
-6269  0f8b d60000        	ld	a,(_LCD_Line,x)
-6270  0f8e cd0000        	call	_Set_LCD_Address
-6272                     ; 851 					Display_LCD_String("Fail_CoreTemp");
-6274  0f91 ae0033        	ldw	x,#L5343
-6275  0f94 cd0000        	call	_Display_LCD_String
-6277  0f97               L3243:
-6278                     ; 857 			if(can_diag[4] & (U8)(0x10)){
-6280  0f97 7b07          	ld	a,(OFST-15,sp)
-6281  0f99 a510          	bcp	a,#16
-6282  0f9b 273c          	jreq	L7343
-6283                     ; 859 				uc_fault_cnt++;
-6285  0f9d 0c16          	inc	(OFST+0,sp)
-6286                     ; 860 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-6286                     ; 861 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-6286                     ; 862 				){
-6288  0f9f 0d16          	tnz	(OFST+0,sp)
-6289  0fa1 270d          	jreq	L5443
-6291  0fa3 7b16          	ld	a,(OFST+0,sp)
-6292  0fa5 a105          	cp	a,#5
-6293  0fa7 2407          	jruge	L5443
-6295  0fa9 c60004        	ld	a,_uc_Test_Page_Now
-6296  0fac a102          	cp	a,#2
-6297  0fae 2713          	jreq	L3443
-6298  0fb0               L5443:
-6300  0fb0 7b16          	ld	a,(OFST+0,sp)
-6301  0fb2 a105          	cp	a,#5
-6302  0fb4 2523          	jrult	L7343
-6304  0fb6 7b16          	ld	a,(OFST+0,sp)
-6305  0fb8 a109          	cp	a,#9
-6306  0fba 241d          	jruge	L7343
-6308  0fbc c60004        	ld	a,_uc_Test_Page_Now
-6309  0fbf a103          	cp	a,#3
-6310  0fc1 2616          	jrne	L7343
-6311  0fc3               L3443:
-6312                     ; 863 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-6314  0fc3 7b16          	ld	a,(OFST+0,sp)
-6315  0fc5 5f            	clrw	x
-6316  0fc6 97            	ld	xl,a
-6317  0fc7 5a            	decw	x
-6318  0fc8 a604          	ld	a,#4
-6319  0fca cd0000        	call	c_smodx
-6321  0fcd d60000        	ld	a,(_LCD_Line,x)
-6322  0fd0 cd0000        	call	_Set_LCD_Address
-6324                     ; 864 					Display_LCD_String("Fail_PCB1Temp");
-6326  0fd3 ae0025        	ldw	x,#L1543
-6327  0fd6 cd0000        	call	_Display_LCD_String
-6329  0fd9               L7343:
-6330                     ; 870 			if(can_diag[4] & (U8)(0x20)){
-6332  0fd9 7b07          	ld	a,(OFST-15,sp)
-6333  0fdb a520          	bcp	a,#32
-6334  0fdd 273c          	jreq	L3543
-6335                     ; 872 				uc_fault_cnt++;
-6337  0fdf 0c16          	inc	(OFST+0,sp)
-6338                     ; 873 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-6338                     ; 874 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-6338                     ; 875 				){
-6340  0fe1 0d16          	tnz	(OFST+0,sp)
-6341  0fe3 270d          	jreq	L1643
-6343  0fe5 7b16          	ld	a,(OFST+0,sp)
-6344  0fe7 a105          	cp	a,#5
-6345  0fe9 2407          	jruge	L1643
-6347  0feb c60004        	ld	a,_uc_Test_Page_Now
-6348  0fee a102          	cp	a,#2
-6349  0ff0 2713          	jreq	L7543
-6350  0ff2               L1643:
-6352  0ff2 7b16          	ld	a,(OFST+0,sp)
-6353  0ff4 a105          	cp	a,#5
-6354  0ff6 2523          	jrult	L3543
-6356  0ff8 7b16          	ld	a,(OFST+0,sp)
-6357  0ffa a109          	cp	a,#9
-6358  0ffc 241d          	jruge	L3543
-6360  0ffe c60004        	ld	a,_uc_Test_Page_Now
-6361  1001 a103          	cp	a,#3
-6362  1003 2616          	jrne	L3543
-6363  1005               L7543:
-6364                     ; 876 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-6366  1005 7b16          	ld	a,(OFST+0,sp)
-6367  1007 5f            	clrw	x
-6368  1008 97            	ld	xl,a
-6369  1009 5a            	decw	x
-6370  100a a604          	ld	a,#4
-6371  100c cd0000        	call	c_smodx
-6373  100f d60000        	ld	a,(_LCD_Line,x)
-6374  1012 cd0000        	call	_Set_LCD_Address
-6376                     ; 877 					Display_LCD_String("Fail_IGBT");
-6378  1015 ae001b        	ldw	x,#L5643
-6379  1018 cd0000        	call	_Display_LCD_String
-6381  101b               L3543:
-6382                     ; 881 			if(can_diag[4] & (U8)(0x40)){
-6384  101b 7b07          	ld	a,(OFST-15,sp)
-6385  101d a540          	bcp	a,#64
-6386  101f 273c          	jreq	L7643
-6387                     ; 882 				uc_fault_cnt++;
-6389  1021 0c16          	inc	(OFST+0,sp)
+   2                     ; Parser V4.12.6 - 16 Dec 2021
+   3                     ; Generator (Limited) V4.5.4 - 16 Dec 2021
+2654                     	switch	.data
+2655  0000               _uc_Rx_Data:
+2656  0000 00            	dc.b	0
+2657  0001 000000000000  	ds.b	31
+2693                     ; 37 void First_Switch_Control(void)
+2693                     ; 38 {
+2695                     	switch	.text
+2696  0000               _First_Switch_Control:
+2700                     ; 39 	if(b_ENTER_Button_Flag){
+2702  0000 c60000        	ld	a,_uc_Button_Status_Reg
+2703  0003 a520          	bcp	a,#32
+2704  0005 2718          	jreq	L1271
+2705                     ; 40 		b_First_Logic_On = ON;
+2707  0007 72100000      	bset	_uc_System_Ctrl_Reg,#0
+2708                     ; 41 		b_Model_Select_flag = OFF;		// Model_Selection_Skipped
+2710  000b 7211000d      	bres	_uc_Test_Ctrl_Reg,#0
+2711                     ; 42 		b_Data_Select_flag = OFF;
+2713  000f 7213000d      	bres	_uc_Test_Ctrl_Reg,#1
+2714                     ; 44 		uc_Test_Page_Pre = (U8)(1);
+2716  0013 35010003      	mov	_uc_Test_Page_Pre,#1
+2717                     ; 45 		uc_Test_Data_Select_Num = (U8)(0);
+2719  0017 725f0002      	clr	_uc_Test_Data_Select_Num
+2720                     ; 47 		b_ENTER_Button_Flag = OFF;
+2722  001b 721b0000      	bres	_uc_Button_Status_Reg,#5
+2723  001f               L1271:
+2724                     ; 50 	return;
+2727  001f 81            	ret
+2754                     ; 55 void Test_Controller_First_Routine(void)
+2754                     ; 56 {
+2755                     	switch	.text
+2756  0020               _Test_Controller_First_Routine:
+2760                     ; 57 	Start_Zig_Display();
+2762  0020 cd0000        	call	_Start_Zig_Display
+2764                     ; 58 	First_Switch_Control();
+2766  0023 addb          	call	_First_Switch_Control
+2768                     ; 59 	b_Com_On_flag = OFF;//YJS 20230314
+2770  0025 7217000d      	bres	_uc_Test_Ctrl_Reg,#3
+2771                     ; 60 	return;
+2774  0029 81            	ret
+2801                     ; 66 void Model_Select_Display_Handling(void)
+2801                     ; 67 {
+2802                     	switch	.text
+2803  002a               _Model_Select_Display_Handling:
+2807                     ; 68 	switch(uc_Test_Page_Now){
+2809  002a 725d0004      	tnz	_uc_Test_Page_Now
+2810  002e 262a          	jrne	L5371
+2813  0030               L3371:
+2814                     ; 71 		case 0:	strcpy(LCD_Dis_Data[0],"*HVCC Model*");	
+2816  0030 ae0000        	ldw	x,#_LCD_Dis_Data
+2817  0033 90ae017a      	ldw	y,#L3571
+2818  0037 cd0000        	call	c_strcpx
+2820                     ; 72 				strcpy(LCD_Dis_Data[1],"");	// 
+2822  003a ae0010        	ldw	x,#_LCD_Dis_Data+16
+2823  003d 90ae0179      	ldw	y,#L5571
+2824  0041 cd0000        	call	c_strcpx
+2826                     ; 73 				strcpy(LCD_Dis_Data[2],"");	// 
+2828  0044 ae0020        	ldw	x,#_LCD_Dis_Data+32
+2829  0047 90ae0179      	ldw	y,#L5571
+2830  004b cd0000        	call	c_strcpx
+2832                     ; 74 				strcpy(LCD_Dis_Data[3],"");		
+2834  004e ae0030        	ldw	x,#_LCD_Dis_Data+48
+2835  0051 90ae0179      	ldw	y,#L5571
+2836  0055 cd0000        	call	c_strcpx
+2838                     ; 76 				break;
+2840  0058 2028          	jra	L1571
+2841  005a               L5371:
+2842                     ; 78 		default: 
+2842                     ; 79 				strcpy(LCD_Dis_Data[0],"");	// Null
+2844  005a ae0000        	ldw	x,#_LCD_Dis_Data
+2845  005d 90ae0179      	ldw	y,#L5571
+2846  0061 cd0000        	call	c_strcpx
+2848                     ; 80 				strcpy(LCD_Dis_Data[1],"");	// Null
+2850  0064 ae0010        	ldw	x,#_LCD_Dis_Data+16
+2851  0067 90ae0179      	ldw	y,#L5571
+2852  006b cd0000        	call	c_strcpx
+2854                     ; 81 				strcpy(LCD_Dis_Data[2],"");	// Null
+2856  006e ae0020        	ldw	x,#_LCD_Dis_Data+32
+2857  0071 90ae0179      	ldw	y,#L5571
+2858  0075 cd0000        	call	c_strcpx
+2860                     ; 82 				strcpy(LCD_Dis_Data[3],"");	// Null
+2862  0078 ae0030        	ldw	x,#_LCD_Dis_Data+48
+2863  007b 90ae0179      	ldw	y,#L5571
+2864  007f cd0000        	call	c_strcpx
+2866                     ; 84 				break;
+2867  0082               L1571:
+2868                     ; 87 	return;
+2871  0082 81            	ret
+2896                     ; 93 void Model_Select_Switch_Control(void)
+2896                     ; 94 {
+2897                     	switch	.text
+2898  0083               _Model_Select_Switch_Control:
+2902                     ; 95 	if(b_UP_Button_Flag){
+2904  0083 c60000        	ld	a,_uc_Button_Status_Reg
+2905  0086 a502          	bcp	a,#2
+2906  0088 2704          	jreq	L1771
+2907                     ; 97 		b_UP_Button_Flag = OFF;
+2909  008a 72130000      	bres	_uc_Button_Status_Reg,#1
+2910  008e               L1771:
+2911                     ; 100 	if(b_DOWN_Button_Flag){
+2913  008e c60000        	ld	a,_uc_Button_Status_Reg
+2914  0091 a504          	bcp	a,#4
+2915  0093 2704          	jreq	L3771
+2916                     ; 102 		b_DOWN_Button_Flag = OFF;
+2918  0095 72150000      	bres	_uc_Button_Status_Reg,#2
+2919  0099               L3771:
+2920                     ; 105 	if(b_ENTER_Button_Flag){
+2922  0099 c60000        	ld	a,_uc_Button_Status_Reg
+2923  009c a520          	bcp	a,#32
+2924  009e 2704          	jreq	L5771
+2925                     ; 107 		b_ENTER_Button_Flag = OFF;
+2927  00a0 721b0000      	bres	_uc_Button_Status_Reg,#5
+2928  00a4               L5771:
+2929                     ; 111 	return;
+2932  00a4 81            	ret
+2975                     ; 117 void Model_Select_LCD_Display_Control(void)
+2975                     ; 118 {
+2976                     	switch	.text
+2977  00a5               _Model_Select_LCD_Display_Control:
+2979  00a5 88            	push	a
+2980       00000001      OFST:	set	1
+2983                     ; 121 	if(uc_Test_Page_Now != uc_Test_Page_Pre){ Model_Select_Display_Handling();}
+2985  00a6 c60004        	ld	a,_uc_Test_Page_Now
+2986  00a9 c10003        	cp	a,_uc_Test_Page_Pre
+2987  00ac 2703          	jreq	L3102
+2990  00ae cd002a        	call	_Model_Select_Display_Handling
+2992  00b1               L3102:
+2993                     ; 122 	uc_Test_Page_Pre = uc_Test_Page_Now ;
+2995  00b1 5500040003    	mov	_uc_Test_Page_Pre,_uc_Test_Page_Now
+2996                     ; 125 	if(uc_Test_Page_Now == (U8)(0)){			//page 1
+2998  00b6 725d0004      	tnz	_uc_Test_Page_Now
+2999  00ba 2643          	jrne	L5102
+3000                     ; 126 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+3002  00bc 0f01          	clr	(OFST+0,sp)
+3004  00be               L7102:
+3005                     ; 127 			Set_LCD_Address(LCD_Line[uc_line_index]);
+3007  00be 7b01          	ld	a,(OFST+0,sp)
+3008  00c0 5f            	clrw	x
+3009  00c1 97            	ld	xl,a
+3010  00c2 d60000        	ld	a,(_LCD_Line,x)
+3011  00c5 cd0000        	call	_Set_LCD_Address
+3013                     ; 129 			if((b_Data_Select_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
+3015  00c8 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3016  00cb a502          	bcp	a,#2
+3017  00cd 271c          	jreq	L5202
+3019  00cf 7b01          	ld	a,(OFST+0,sp)
+3020  00d1 c10002        	cp	a,_uc_Test_Data_Select_Num
+3021  00d4 2615          	jrne	L5202
+3022                     ; 130 				if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
+3024  00d6 c60000        	ld	a,_uc_LCD_Blink_Reg
+3025  00d9 a502          	bcp	a,#2
+3026  00db 271a          	jreq	L1302
+3029  00dd 7b01          	ld	a,(OFST+0,sp)
+3030  00df 97            	ld	xl,a
+3031  00e0 a610          	ld	a,#16
+3032  00e2 42            	mul	x,a
+3033  00e3 1c0000        	addw	x,#_LCD_Dis_Data
+3034  00e6 cd0000        	call	_Display_LCD_String
+3036  00e9 200c          	jra	L1302
+3037  00eb               L5202:
+3038                     ; 131 			}else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
+3040  00eb 7b01          	ld	a,(OFST+0,sp)
+3041  00ed 97            	ld	xl,a
+3042  00ee a610          	ld	a,#16
+3043  00f0 42            	mul	x,a
+3044  00f1 1c0000        	addw	x,#_LCD_Dis_Data
+3045  00f4 cd0000        	call	_Display_LCD_String
+3047  00f7               L1302:
+3048                     ; 126 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+3050  00f7 0c01          	inc	(OFST+0,sp)
+3054  00f9 7b01          	ld	a,(OFST+0,sp)
+3055  00fb a104          	cp	a,#4
+3056  00fd 25bf          	jrult	L7102
+3057  00ff               L5102:
+3058                     ; 135 	return;
+3061  00ff 84            	pop	a
+3062  0100 81            	ret
+3088                     ; 140 void Model_Select_Routine(void)
+3088                     ; 141 {
+3089                     	switch	.text
+3090  0101               _Model_Select_Routine:
+3094                     ; 142 	Model_Select_LCD_Display_Control();
+3096  0101 ada2          	call	_Model_Select_LCD_Display_Control
+3098                     ; 143 	Model_Select_Switch_Control();	
+3100  0103 cd0083        	call	_Model_Select_Switch_Control
+3102                     ; 145 	return;
+3105  0106 81            	ret
+3151                     ; 151 void Test_Ctrl_Value_Change(U8 uc_st)
+3151                     ; 152 {
+3152                     	switch	.text
+3153  0107               _Test_Ctrl_Value_Change:
+3155  0107 88            	push	a
+3156  0108 5204          	subw	sp,#4
+3157       00000004      OFST:	set	4
+3160                     ; 157 	if(uc_st == 1){	
+3162  010a a101          	cp	a,#1
+3163  010c 2703          	jreq	L22
+3164  010e cc024b        	jp	L1602
+3165  0111               L22:
+3166                     ; 158   		if(uc_Test_Data_Select_Num == (U8)(0)){ uc_Heater_Enable_Flag ^= ON; }
+3168  0111 725d0002      	tnz	_uc_Test_Data_Select_Num
+3169  0115 2608          	jrne	L3602
+3172  0117 90100009      	bcpl	_uc_Heater_Enable_Flag,#0
+3174  011b acf902f9      	jpf	L5512
+3175  011f               L3602:
+3176                     ; 159 		else if(uc_Test_Data_Select_Num == (U8)(1)){			
+3178  011f c60002        	ld	a,_uc_Test_Data_Select_Num
+3179  0122 a101          	cp	a,#1
+3180  0124 2703          	jreq	L42
+3181  0126 cc02f9        	jp	L5512
+3182  0129               L42:
+3183                     ; 160 			if(uc_Target_Display_Mode == (U8)(1)){	// Power_Display_Mode		
+3185  0129 c60000        	ld	a,_uc_Target_Display_Mode
+3186  012c a101          	cp	a,#1
+3187  012e 2703          	jreq	L62
+3188  0130 cc01f3        	jp	L1702
+3189  0133               L62:
+3190                     ; 161 if (HEATER_zone_status == HTR_ZONE_1)
+3192  0133 725d0000      	tnz	_HEATER_zone_status
+3193  0137 265d          	jrne	L3702
+3194                     ; 163 				if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(20); }
+3196  0139 c6000a        	ld	a,_uc_Target_Duty_Perc
+3197  013c a114          	cp	a,#20
+3198  013e 2408          	jruge	L5702
+3201  0140 3514000a      	mov	_uc_Target_Duty_Perc,#20
+3203  0144 acf902f9      	jpf	L5512
+3204  0148               L5702:
+3205                     ; 165 					ui_buffer = (U16)(uc_Target_Duty_Perc[HTR_ZONE_1]) + (U16)(uc_Perc_Unit);
+3207  0148 c60001        	ld	a,_uc_Perc_Unit
+3208  014b 5f            	clrw	x
+3209  014c 97            	ld	xl,a
+3210  014d 1f01          	ldw	(OFST-3,sp),x
+3212  014f c6000a        	ld	a,_uc_Target_Duty_Perc
+3213  0152 5f            	clrw	x
+3214  0153 97            	ld	xl,a
+3215  0154 72fb01        	addw	x,(OFST-3,sp)
+3216  0157 1f03          	ldw	(OFST-1,sp),x
+3218                     ; 167 					if((uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(180)) && (ui_buffer >= (U16)(180))){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(180); }
+3220  0159 c6000a        	ld	a,_uc_Target_Duty_Perc
+3221  015c a1b4          	cp	a,#180
+3222  015e 240f          	jruge	L1012
+3224  0160 1e03          	ldw	x,(OFST-1,sp)
+3225  0162 a300b4        	cpw	x,#180
+3226  0165 2508          	jrult	L1012
+3229  0167 35b4000a      	mov	_uc_Target_Duty_Perc,#180
+3231  016b acf902f9      	jpf	L5512
+3232  016f               L1012:
+3233                     ; 168 					else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(190); }
+3235  016f c6000a        	ld	a,_uc_Target_Duty_Perc
+3236  0172 a1b4          	cp	a,#180
+3237  0174 2608          	jrne	L5012
+3240  0176 35be000a      	mov	_uc_Target_Duty_Perc,#190
+3242  017a acf902f9      	jpf	L5512
+3243  017e               L5012:
+3244                     ; 169 					else if(ui_buffer > (U16)(190)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(190); }
+3246  017e 1e03          	ldw	x,(OFST-1,sp)
+3247  0180 a300bf        	cpw	x,#191
+3248  0183 2508          	jrult	L1112
+3251  0185 35be000a      	mov	_uc_Target_Duty_Perc,#190
+3253  0189 acf902f9      	jpf	L5512
+3254  018d               L1112:
+3255                     ; 170 					else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(ui_buffer); }
+3257  018d 7b04          	ld	a,(OFST+0,sp)
+3258  018f c7000a        	ld	_uc_Target_Duty_Perc,a
+3259  0192 acf902f9      	jpf	L5512
+3260  0196               L3702:
+3261                     ; 175 				if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(20); }
+3263  0196 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3264  0199 a114          	cp	a,#20
+3265  019b 2408          	jruge	L7112
+3268  019d 3514000b      	mov	_uc_Target_Duty_Perc+1,#20
+3270  01a1 acf902f9      	jpf	L5512
+3271  01a5               L7112:
+3272                     ; 177 					ui_buffer = (U16)(uc_Target_Duty_Perc[HTR_ZONE_2]) + (U16)(uc_Perc_Unit);
+3274  01a5 c60001        	ld	a,_uc_Perc_Unit
+3275  01a8 5f            	clrw	x
+3276  01a9 97            	ld	xl,a
+3277  01aa 1f01          	ldw	(OFST-3,sp),x
+3279  01ac c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3280  01af 5f            	clrw	x
+3281  01b0 97            	ld	xl,a
+3282  01b1 72fb01        	addw	x,(OFST-3,sp)
+3283  01b4 1f03          	ldw	(OFST-1,sp),x
+3285                     ; 179 					if((uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(180)) && (ui_buffer >= (U16)(180))){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(180); }
+3287  01b6 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3288  01b9 a1b4          	cp	a,#180
+3289  01bb 240f          	jruge	L3212
+3291  01bd 1e03          	ldw	x,(OFST-1,sp)
+3292  01bf a300b4        	cpw	x,#180
+3293  01c2 2508          	jrult	L3212
+3296  01c4 35b4000b      	mov	_uc_Target_Duty_Perc+1,#180
+3298  01c8 acf902f9      	jpf	L5512
+3299  01cc               L3212:
+3300                     ; 180 					else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(190); }
+3302  01cc c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3303  01cf a1b4          	cp	a,#180
+3304  01d1 2608          	jrne	L7212
+3307  01d3 35be000b      	mov	_uc_Target_Duty_Perc+1,#190
+3309  01d7 acf902f9      	jpf	L5512
+3310  01db               L7212:
+3311                     ; 181 					else if(ui_buffer > (U16)(190)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(190); }
+3313  01db 1e03          	ldw	x,(OFST-1,sp)
+3314  01dd a300bf        	cpw	x,#191
+3315  01e0 2508          	jrult	L3312
+3318  01e2 35be000b      	mov	_uc_Target_Duty_Perc+1,#190
+3320  01e6 acf902f9      	jpf	L5512
+3321  01ea               L3312:
+3322                     ; 182 					else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(ui_buffer); }
+3324  01ea 7b04          	ld	a,(OFST+0,sp)
+3325  01ec c7000b        	ld	_uc_Target_Duty_Perc+1,a
+3326  01ef acf902f9      	jpf	L5512
+3327  01f3               L1702:
+3328                     ; 187 if (HEATER_zone_status == HTR_ZONE_1)
+3330  01f3 725d0000      	tnz	_HEATER_zone_status
+3331  01f7 2629          	jrne	L1412
+3332                     ; 189 				ui_buffer = (U16)(uc_Target_Duty_Perc[HTR_ZONE_1]) + (U16)(uc_Perc_Unit);
+3334  01f9 c60001        	ld	a,_uc_Perc_Unit
+3335  01fc 5f            	clrw	x
+3336  01fd 97            	ld	xl,a
+3337  01fe 1f01          	ldw	(OFST-3,sp),x
+3339  0200 c6000a        	ld	a,_uc_Target_Duty_Perc
+3340  0203 5f            	clrw	x
+3341  0204 97            	ld	xl,a
+3342  0205 72fb01        	addw	x,(OFST-3,sp)
+3343  0208 1f03          	ldw	(OFST-1,sp),x
+3345                     ; 190 				if(ui_buffer >= (U16)(200)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(200); }
+3347  020a 1e03          	ldw	x,(OFST-1,sp)
+3348  020c a300c8        	cpw	x,#200
+3349  020f 2508          	jrult	L3412
+3352  0211 35c8000a      	mov	_uc_Target_Duty_Perc,#200
+3354  0215 acf902f9      	jpf	L5512
+3355  0219               L3412:
+3356                     ; 191 				else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(ui_buffer); }
+3358  0219 7b04          	ld	a,(OFST+0,sp)
+3359  021b c7000a        	ld	_uc_Target_Duty_Perc,a
+3360  021e acf902f9      	jpf	L5512
+3361  0222               L1412:
+3362                     ; 195 				ui_buffer = (U16)(uc_Target_Duty_Perc[HTR_ZONE_2]) + (U16)(uc_Perc_Unit);
+3364  0222 c60001        	ld	a,_uc_Perc_Unit
+3365  0225 5f            	clrw	x
+3366  0226 97            	ld	xl,a
+3367  0227 1f01          	ldw	(OFST-3,sp),x
+3369  0229 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3370  022c 5f            	clrw	x
+3371  022d 97            	ld	xl,a
+3372  022e 72fb01        	addw	x,(OFST-3,sp)
+3373  0231 1f03          	ldw	(OFST-1,sp),x
+3375                     ; 196 				if(ui_buffer >= (U16)(200)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(200); }
+3377  0233 1e03          	ldw	x,(OFST-1,sp)
+3378  0235 a300c8        	cpw	x,#200
+3379  0238 2508          	jrult	L1512
+3382  023a 35c8000b      	mov	_uc_Target_Duty_Perc+1,#200
+3384  023e acf902f9      	jpf	L5512
+3385  0242               L1512:
+3386                     ; 197 				else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(ui_buffer); }
+3388  0242 7b04          	ld	a,(OFST+0,sp)
+3389  0244 c7000b        	ld	_uc_Target_Duty_Perc+1,a
+3390  0247 acf902f9      	jpf	L5512
+3391  024b               L1602:
+3392                     ; 204 	else if(uc_st == 0){	
+3394  024b 0d05          	tnz	(OFST+1,sp)
+3395  024d 2703          	jreq	L03
+3396  024f cc02f9        	jp	L5512
+3397  0252               L03:
+3398                     ; 205 		if(uc_Test_Data_Select_Num == (U8)(0)){ uc_Heater_Enable_Flag ^= ON; }
+3400  0252 725d0002      	tnz	_uc_Test_Data_Select_Num
+3401  0256 2608          	jrne	L1612
+3404  0258 90100009      	bcpl	_uc_Heater_Enable_Flag,#0
+3406  025c acf902f9      	jpf	L5512
+3407  0260               L1612:
+3408                     ; 206 		else if(uc_Test_Data_Select_Num == (U8)(1)){
+3410  0260 c60002        	ld	a,_uc_Test_Data_Select_Num
+3411  0263 a101          	cp	a,#1
+3412  0265 2703          	jreq	L23
+3413  0267 cc02f9        	jp	L5512
+3414  026a               L23:
+3415                     ; 207 			if(uc_Target_Display_Mode == (U8)(1)){	// Power_Display_Mode	
+3417  026a c60000        	ld	a,_uc_Target_Display_Mode
+3418  026d a101          	cp	a,#1
+3419  026f 2652          	jrne	L7612
+3420                     ; 208 if (HEATER_zone_status == HTR_ZONE_1)
+3422  0271 725d0000      	tnz	_HEATER_zone_status
+3423  0275 2626          	jrne	L1712
+3424                     ; 210 				if(uc_Target_Duty_Perc[HTR_ZONE_1] >= uc_Perc_Unit){ 
+3426  0277 c6000a        	ld	a,_uc_Target_Duty_Perc
+3427  027a c10001        	cp	a,_uc_Perc_Unit
+3428  027d 2518          	jrult	L3712
+3429                     ; 212 					if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(190)){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(180); }
+3431  027f c6000a        	ld	a,_uc_Target_Duty_Perc
+3432  0282 a1be          	cp	a,#190
+3433  0284 2606          	jrne	L5712
+3436  0286 35b4000a      	mov	_uc_Target_Duty_Perc,#180
+3438  028a 206d          	jra	L5512
+3439  028c               L5712:
+3440                     ; 213 					else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(uc_Target_Duty_Perc[HTR_ZONE_1] - uc_Perc_Unit); }
+3442  028c c6000a        	ld	a,_uc_Target_Duty_Perc
+3443  028f c00001        	sub	a,_uc_Perc_Unit
+3444  0292 c7000a        	ld	_uc_Target_Duty_Perc,a
+3445  0295 2062          	jra	L5512
+3446  0297               L3712:
+3447                     ; 215 				else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(0); }
+3449  0297 725f000a      	clr	_uc_Target_Duty_Perc
+3450  029b 205c          	jra	L5512
+3451  029d               L1712:
+3452                     ; 219 				if(uc_Target_Duty_Perc[HTR_ZONE_2] >= uc_Perc_Unit){ 
+3454  029d c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3455  02a0 c10001        	cp	a,_uc_Perc_Unit
+3456  02a3 2518          	jrult	L5022
+3457                     ; 221 					if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(190)){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(180); }
+3459  02a5 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3460  02a8 a1be          	cp	a,#190
+3461  02aa 2606          	jrne	L7022
+3464  02ac 35b4000b      	mov	_uc_Target_Duty_Perc+1,#180
+3466  02b0 2047          	jra	L5512
+3467  02b2               L7022:
+3468                     ; 222 					else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(uc_Target_Duty_Perc[HTR_ZONE_2] - uc_Perc_Unit); }
+3470  02b2 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3471  02b5 c00001        	sub	a,_uc_Perc_Unit
+3472  02b8 c7000b        	ld	_uc_Target_Duty_Perc+1,a
+3473  02bb 203c          	jra	L5512
+3474  02bd               L5022:
+3475                     ; 224 				else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(0); }
+3477  02bd 725f000b      	clr	_uc_Target_Duty_Perc+1
+3478  02c1 2036          	jra	L5512
+3479  02c3               L7612:
+3480                     ; 228 if (HEATER_zone_status == HTR_ZONE_1)
+3482  02c3 725d0000      	tnz	_HEATER_zone_status
+3483  02c7 2619          	jrne	L7122
+3484                     ; 230 				if(uc_Target_Duty_Perc[HTR_ZONE_1] >= uc_Perc_Unit){ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(uc_Target_Duty_Perc[HTR_ZONE_1] - uc_Perc_Unit); }
+3486  02c9 c6000a        	ld	a,_uc_Target_Duty_Perc
+3487  02cc c10001        	cp	a,_uc_Perc_Unit
+3488  02cf 250b          	jrult	L1222
+3491  02d1 c6000a        	ld	a,_uc_Target_Duty_Perc
+3492  02d4 c00001        	sub	a,_uc_Perc_Unit
+3493  02d7 c7000a        	ld	_uc_Target_Duty_Perc,a
+3495  02da 201d          	jra	L5512
+3496  02dc               L1222:
+3497                     ; 231 				else{ uc_Target_Duty_Perc[HTR_ZONE_1] = (U8)(0); }
+3499  02dc 725f000a      	clr	_uc_Target_Duty_Perc
+3500  02e0 2017          	jra	L5512
+3501  02e2               L7122:
+3502                     ; 235 				if(uc_Target_Duty_Perc[HTR_ZONE_2] >= uc_Perc_Unit){ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(uc_Target_Duty_Perc[HTR_ZONE_2] - uc_Perc_Unit); }
+3504  02e2 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3505  02e5 c10001        	cp	a,_uc_Perc_Unit
+3506  02e8 250b          	jrult	L7222
+3509  02ea c6000b        	ld	a,_uc_Target_Duty_Perc+1
+3510  02ed c00001        	sub	a,_uc_Perc_Unit
+3511  02f0 c7000b        	ld	_uc_Target_Duty_Perc+1,a
+3513  02f3 2004          	jra	L5512
+3514  02f5               L7222:
+3515                     ; 236 				else{ uc_Target_Duty_Perc[HTR_ZONE_2] = (U8)(0); }
+3517  02f5 725f000b      	clr	_uc_Target_Duty_Perc+1
+3518  02f9               L5512:
+3519                     ; 242 	return ;
+3522  02f9 5b05          	addw	sp,#5
+3523  02fb 81            	ret
+3557                     ; 247 void Test_Ctrl_Swtich_Control(void)
+3557                     ; 248 {
+3558                     	switch	.text
+3559  02fc               _Test_Ctrl_Swtich_Control:
+3563                     ; 250 	if(b_UP_Button_Flag== ON){
+3565  02fc c60000        	ld	a,_uc_Button_Status_Reg
+3566  02ff a502          	bcp	a,#2
+3567  0301 2762          	jreq	L3422
+3568                     ; 252 		if(b_Test_Option_flag == ON){ if(uc_Perc_Unit < (U8)(130)){ uc_Perc_Unit++;}}
+3570  0303 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3571  0306 a510          	bcp	a,#16
+3572  0308 270d          	jreq	L5422
+3575  030a c60001        	ld	a,_uc_Perc_Unit
+3576  030d a182          	cp	a,#130
+3577  030f 244e          	jruge	L1522
+3580  0311 725c0001      	inc	_uc_Perc_Unit
+3581  0315 2048          	jra	L1522
+3582  0317               L5422:
+3583                     ; 254 			if(b_Data_Setting_flag == ON){	Test_Ctrl_Value_Change(1);}
+3585  0317 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3586  031a a504          	bcp	a,#4
+3587  031c 2707          	jreq	L3522
+3590  031e a601          	ld	a,#1
+3591  0320 cd0107        	call	_Test_Ctrl_Value_Change
+3594  0323 203a          	jra	L1522
+3595  0325               L3522:
+3596                     ; 255 			else if(b_Data_Select_flag == ON){
+3598  0325 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3599  0328 a502          	bcp	a,#2
+3600  032a 2712          	jreq	L7522
+3601                     ; 256 				if(uc_Test_Page_Now == (U8)(0)){
+3603  032c 725d0004      	tnz	_uc_Test_Page_Now
+3604  0330 262d          	jrne	L1522
+3605                     ; 257 					if(uc_Test_Data_Select_Num > 0){ uc_Test_Data_Select_Num--; }
+3607  0332 725d0002      	tnz	_uc_Test_Data_Select_Num
+3608  0336 2727          	jreq	L1522
+3611  0338 725a0002      	dec	_uc_Test_Data_Select_Num
+3612  033c 2021          	jra	L1522
+3613  033e               L7522:
+3614                     ; 260 				if(uc_Test_Page_Now > 0){
+3616  033e 725d0004      	tnz	_uc_Test_Page_Now
+3617  0342 271b          	jreq	L1522
+3618                     ; 261 					uc_Test_Page_Now--;
+3620  0344 725a0004      	dec	_uc_Test_Page_Now
+3621                     ; 262 					if(uc_Test_Page_Now == (U8)(0)){ uc_Test_Data_Select_Num = 0; }
+3623  0348 725d0004      	tnz	_uc_Test_Page_Now
+3624  034c 2606          	jrne	L1722
+3627  034e 725f0002      	clr	_uc_Test_Data_Select_Num
+3629  0352 200b          	jra	L1522
+3630  0354               L1722:
+3631                     ; 263 					else if(uc_Test_Page_Now == (U8)(1)){ uc_Test_Data_Select_Num = 4; }
+3633  0354 c60004        	ld	a,_uc_Test_Page_Now
+3634  0357 a101          	cp	a,#1
+3635  0359 2604          	jrne	L1522
+3638  035b 35040002      	mov	_uc_Test_Data_Select_Num,#4
+3639  035f               L1522:
+3640                     ; 267 		b_UP_Button_Flag = OFF;
+3642  035f 72130000      	bres	_uc_Button_Status_Reg,#1
+3644  0363 2067          	jra	L7722
+3645  0365               L3422:
+3646                     ; 271 	else if(b_DOWN_Button_Flag== ON){ 
+3648  0365 c60000        	ld	a,_uc_Button_Status_Reg
+3649  0368 a504          	bcp	a,#4
+3650  036a 2760          	jreq	L7722
+3651                     ; 273 		if(b_Test_Option_flag == ON){ if(uc_Perc_Unit > (U8)(1)){ uc_Perc_Unit--;}}
+3653  036c c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3654  036f a510          	bcp	a,#16
+3655  0371 270d          	jreq	L3032
+3658  0373 c60001        	ld	a,_uc_Perc_Unit
+3659  0376 a102          	cp	a,#2
+3660  0378 254e          	jrult	L7032
+3663  037a 725a0001      	dec	_uc_Perc_Unit
+3664  037e 2048          	jra	L7032
+3665  0380               L3032:
+3666                     ; 276 			if(b_Data_Setting_flag == ON){	Test_Ctrl_Value_Change(0);}
+3668  0380 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3669  0383 a504          	bcp	a,#4
+3670  0385 2706          	jreq	L1132
+3673  0387 4f            	clr	a
+3674  0388 cd0107        	call	_Test_Ctrl_Value_Change
+3677  038b 203b          	jra	L7032
+3678  038d               L1132:
+3679                     ; 278 			else if(b_Data_Select_flag == ON){
+3681  038d c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3682  0390 a502          	bcp	a,#2
+3683  0392 2712          	jreq	L5132
+3684                     ; 279 				if(uc_Test_Page_Now == (U8)(0)){
+3686  0394 725d0004      	tnz	_uc_Test_Page_Now
+3687  0398 262e          	jrne	L7032
+3688                     ; 280 					if(uc_Test_Data_Select_Num < 1){ uc_Test_Data_Select_Num++; }
+3690  039a 725d0002      	tnz	_uc_Test_Data_Select_Num
+3691  039e 2628          	jrne	L7032
+3694  03a0 725c0002      	inc	_uc_Test_Data_Select_Num
+3695  03a4 2022          	jra	L7032
+3696  03a6               L5132:
+3697                     ; 283 				if(uc_Test_Page_Now < 4){
+3699  03a6 c60004        	ld	a,_uc_Test_Page_Now
+3700  03a9 a104          	cp	a,#4
+3701  03ab 241b          	jruge	L7032
+3702                     ; 284 					uc_Test_Page_Now++;
+3704  03ad 725c0004      	inc	_uc_Test_Page_Now
+3705                     ; 286 					if(uc_Test_Page_Now == (U8)(0)){ uc_Test_Data_Select_Num = 0; }
+3707  03b1 725d0004      	tnz	_uc_Test_Page_Now
+3708  03b5 2606          	jrne	L7232
+3711  03b7 725f0002      	clr	_uc_Test_Data_Select_Num
+3713  03bb 200b          	jra	L7032
+3714  03bd               L7232:
+3715                     ; 287 					else if(uc_Test_Page_Now == (U8)(1)){ uc_Test_Data_Select_Num = 4; }
+3717  03bd c60004        	ld	a,_uc_Test_Page_Now
+3718  03c0 a101          	cp	a,#1
+3719  03c2 2604          	jrne	L7032
+3722  03c4 35040002      	mov	_uc_Test_Data_Select_Num,#4
+3723  03c8               L7032:
+3724                     ; 291 		b_DOWN_Button_Flag = OFF;
+3726  03c8 72150000      	bres	_uc_Button_Status_Reg,#2
+3727  03cc               L7722:
+3728                     ; 295 	if(b_SET_Button_Flag== ON){
+3730  03cc c60000        	ld	a,_uc_Button_Status_Reg
+3731  03cf a508          	bcp	a,#8
+3732  03d1 2742          	jreq	L5332
+3733                     ; 296 		if(b_Test_Option_flag){ uc_Target_Display_Mode ^= ON; uc_Test_Page_Pre = (U8)(10);}
+3735  03d3 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3736  03d6 a510          	bcp	a,#16
+3737  03d8 270a          	jreq	L7332
+3740  03da 90100000      	bcpl	_uc_Target_Display_Mode,#0
+3743  03de 350a0003      	mov	_uc_Test_Page_Pre,#10
+3745  03e2 202d          	jra	L1432
+3746  03e4               L7332:
+3747                     ; 297 		else if(uc_Test_Page_Now < 2){
+3749  03e4 c60004        	ld	a,_uc_Test_Page_Now
+3750  03e7 a102          	cp	a,#2
+3751  03e9 2426          	jruge	L1432
+3752                     ; 299 			if(b_Data_Select_flag == OFF){b_Data_Select_flag= ON;}
+3754  03eb c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3755  03ee a502          	bcp	a,#2
+3756  03f0 2606          	jrne	L5432
+3759  03f2 7212000d      	bset	_uc_Test_Ctrl_Reg,#1
+3761  03f6 2015          	jra	L7432
+3762  03f8               L5432:
+3763                     ; 301 				if(b_Data_Setting_flag == OFF){
+3765  03f8 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3766  03fb a504          	bcp	a,#4
+3767  03fd 2606          	jrne	L1532
+3768                     ; 302 					b_Data_Setting_flag = ON;
+3770  03ff 7214000d      	bset	_uc_Test_Ctrl_Reg,#2
+3772  0403 2008          	jra	L7432
+3773  0405               L1532:
+3774                     ; 304 					b_Data_Setting_flag = OFF;
+3776  0405 7215000d      	bres	_uc_Test_Ctrl_Reg,#2
+3777                     ; 305 					b_Data_Select_flag = OFF;
+3779  0409 7213000d      	bres	_uc_Test_Ctrl_Reg,#1
+3780  040d               L7432:
+3781                     ; 308 			b_SET_Button_Flag = OFF;
+3783  040d 72170000      	bres	_uc_Button_Status_Reg,#3
+3784  0411               L1432:
+3785                     ; 311 		b_SET_Button_Flag = OFF;
+3787  0411 72170000      	bres	_uc_Button_Status_Reg,#3
+3788  0415               L5332:
+3789                     ; 315 	if(b_ONOFF_Button_Flag== ON){
+3791  0415 c60000        	ld	a,_uc_Button_Status_Reg
+3792  0418 a501          	bcp	a,#1
+3793  041a 2704          	jreq	L5532
+3794                     ; 320 		b_ONOFF_Button_Flag = OFF;
+3796  041c 72110000      	bres	_uc_Button_Status_Reg,#0
+3797  0420               L5532:
+3798                     ; 324 	if(b_OPTION_Button_Flag == ON){
+3800  0420 c60000        	ld	a,_uc_Button_Status_Reg
+3801  0423 a510          	bcp	a,#16
+3802  0425 2715          	jreq	L7532
+3803                     ; 326 		if(b_Test_Option_flag == OFF){b_Test_Option_flag = ON; }
+3805  0427 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+3806  042a a510          	bcp	a,#16
+3807  042c 2606          	jrne	L1632
+3810  042e 7218000d      	bset	_uc_Test_Ctrl_Reg,#4
+3812  0432 2004          	jra	L3632
+3813  0434               L1632:
+3814                     ; 327 		else{b_Test_Option_flag = OFF; }
+3816  0434 7219000d      	bres	_uc_Test_Ctrl_Reg,#4
+3817  0438               L3632:
+3818                     ; 329 		b_OPTION_Button_Flag = OFF;
+3820  0438 72190000      	bres	_uc_Button_Status_Reg,#4
+3821  043c               L7532:
+3822                     ; 334 	if(b_ENTER_Button_Flag == ON){
+3824  043c c60000        	ld	a,_uc_Button_Status_Reg
+3825  043f a520          	bcp	a,#32
+3826  0441 2721          	jreq	L5632
+3827                     ; 335 		if(!b_First_Logic_On){ b_First_Logic_On= ON; }
+3829  0443 c60000        	ld	a,_uc_System_Ctrl_Reg
+3830  0446 a501          	bcp	a,#1
+3831  0448 2606          	jrne	L7632
+3834  044a 72100000      	bset	_uc_System_Ctrl_Reg,#0
+3836  044e 2010          	jra	L1732
+3837  0450               L7632:
+3838                     ; 341 if (HEATER_zone_status != HTR_ZONE_1)
+3840  0450 725d0000      	tnz	_HEATER_zone_status
+3841  0454 2706          	jreq	L3732
+3842                     ; 342 HEATER_zone_status = HTR_ZONE_1;
+3844  0456 725f0000      	clr	_HEATER_zone_status
+3846  045a 2004          	jra	L1732
+3847  045c               L3732:
+3848                     ; 343 else HEATER_zone_status=HTR_ZONE_2;
+3850  045c 35010000      	mov	_HEATER_zone_status,#1
+3851  0460               L1732:
+3852                     ; 346 		b_ENTER_Button_Flag = OFF;
+3854  0460 721b0000      	bres	_uc_Button_Status_Reg,#5
+3855  0464               L5632:
+3856                     ; 349 	return;
+3859  0464 81            	ret
+3887                     ; 354 void Test_Ctrl_Text_Display_Handling(void)
+3887                     ; 355 {
+3888                     	switch	.text
+3889  0465               _Test_Ctrl_Text_Display_Handling:
+3893                     ; 356 	switch(uc_Test_Page_Now){
+3895  0465 c60004        	ld	a,_uc_Test_Page_Now
+3897                     ; 379 				break;
+3898  0468 4d            	tnz	a
+3899  0469 272d          	jreq	L7732
+3900  046b 4a            	dec	a
+3901  046c 2766          	jreq	L1042
+3902  046e               L3042:
+3903                     ; 373 		default:
+3903                     ; 374 				strcpy(LCD_Dis_Data[0],"");	// Null
+3905  046e ae0000        	ldw	x,#_LCD_Dis_Data
+3906  0471 90ae0179      	ldw	y,#L5571
+3907  0475 cd0000        	call	c_strcpx
+3909                     ; 375 				strcpy(LCD_Dis_Data[1],"");	// Null
+3911  0478 ae0010        	ldw	x,#_LCD_Dis_Data+16
+3912  047b 90ae0179      	ldw	y,#L5571
+3913  047f cd0000        	call	c_strcpx
+3915                     ; 376 				strcpy(LCD_Dis_Data[2],"");	// Null
+3917  0482 ae0020        	ldw	x,#_LCD_Dis_Data+32
+3918  0485 90ae0179      	ldw	y,#L5571
+3919  0489 cd0000        	call	c_strcpx
+3921                     ; 377 				strcpy(LCD_Dis_Data[3],"");	// Null
+3923  048c ae0030        	ldw	x,#_LCD_Dis_Data+48
+3924  048f 90ae0179      	ldw	y,#L5571
+3925  0493 cd0000        	call	c_strcpx
+3927                     ; 379 				break;
+3929  0496 2064          	jra	L7142
+3930  0498               L7732:
+3931                     ; 359 		case 0:	strcpy(LCD_Dis_Data[0],"Al:     /");		// PTC_Allowance: / Status 
+3933  0498 ae0000        	ldw	x,#_LCD_Dis_Data
+3934  049b 90ae016f      	ldw	y,#L1242
+3935  049f cd0000        	call	c_strcpx
+3937                     ; 360 				if(!uc_Target_Display_Mode){ strcpy(LCD_Dis_Data[1],"Td:     Fd:"); }	// Target Duty:   / Feedback Duty:
+3939  04a2 725d0000      	tnz	_uc_Target_Display_Mode
+3940  04a6 260c          	jrne	L3242
+3943  04a8 ae0010        	ldw	x,#_LCD_Dis_Data+16
+3944  04ab 90ae0163      	ldw	y,#L5242
+3945  04af cd0000        	call	c_strcpx
+3948  04b2 200a          	jra	L7242
+3949  04b4               L3242:
+3950                     ; 361 				else{ strcpy(LCD_Dis_Data[1],"Tp:     Fd:"); }	// Target Duty:   / Feedback Duty:
+3952  04b4 ae0010        	ldw	x,#_LCD_Dis_Data+16
+3953  04b7 90ae0157      	ldw	y,#L1342
+3954  04bb cd0000        	call	c_strcpx
+3956  04be               L7242:
+3957                     ; 362 				strcpy(LCD_Dis_Data[2],"R:  F:  HV:");	// Ready: / Fault: / HV:
+3959  04be ae0020        	ldw	x,#_LCD_Dis_Data+32
+3960  04c1 90ae014b      	ldw	y,#L3342
+3961  04c5 cd0000        	call	c_strcpx
+3963                     ; 363 				strcpy(LCD_Dis_Data[3],"Cr:     Pw:");	// Current:  / Power:
+3965  04c8 ae0030        	ldw	x,#_LCD_Dis_Data+48
+3966  04cb 90ae013f      	ldw	y,#L5342
+3967  04cf cd0000        	call	c_strcpx
+3969                     ; 364 				break;
+3971  04d2 2028          	jra	L7142
+3972  04d4               L1042:
+3973                     ; 367 		case 1:	strcpy(LCD_Dis_Data[0],"Ct:");			// Core Temp:
+3975  04d4 ae0000        	ldw	x,#_LCD_Dis_Data
+3976  04d7 90ae013b      	ldw	y,#L7342
+3977  04db cd0000        	call	c_strcpx
+3979                     ; 368 				strcpy(LCD_Dis_Data[1],"Ver:");		// Software_Version:
+3981  04de ae0010        	ldw	x,#_LCD_Dis_Data+16
+3982  04e1 90ae0136      	ldw	y,#L1442
+3983  04e5 cd0000        	call	c_strcpx
+3985                     ; 369 				strcpy(LCD_Dis_Data[2],"");	// Core Temp:
+3987  04e8 ae0020        	ldw	x,#_LCD_Dis_Data+32
+3988  04eb 90ae0179      	ldw	y,#L5571
+3989  04ef cd0000        	call	c_strcpx
+3991                     ; 370 				strcpy(LCD_Dis_Data[3],"");	// Core Temp
+3993  04f2 ae0030        	ldw	x,#_LCD_Dis_Data+48
+3994  04f5 90ae0179      	ldw	y,#L5571
+3995  04f9 cd0000        	call	c_strcpx
+3997                     ; 371 				break;
+3999  04fc               L7142:
+4000                     ; 382 	return;
+4003  04fc 81            	ret
+4095                     .const:	section	.text
+4096  0000               L25:
+4097  0000 000003e8      	dc.l	1000
+4098                     ; 387 static void MV_Ctrl_LCD_Display_Control(void)
+4098                     ; 388 {
+4099                     	switch	.text
+4100  04fd               L3442_MV_Ctrl_LCD_Display_Control:
+4102  04fd 5216          	subw	sp,#22
+4103       00000016      OFST:	set	22
+4106                     ; 395 if (HEATER_zone_status==HTR_ZONE_1)
+4108  04ff 725d0000      	tnz	_HEATER_zone_status
+4109  0503 263a          	jrne	L7742
+4110                     ; 397 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
+4112  0505 0f15          	clr	(OFST-1,sp)
+4114  0507               L1052:
+4115                     ; 399 		can_data[uc_buffer]=uc_Rx_Data[HTR_STATUS1][uc_buffer];
+4117  0507 96            	ldw	x,sp
+4118  0508 1c000d        	addw	x,#OFST-9
+4119  050b 9f            	ld	a,xl
+4120  050c 5e            	swapw	x
+4121  050d 1b15          	add	a,(OFST-1,sp)
+4122  050f 2401          	jrnc	L24
+4123  0511 5c            	incw	x
+4124  0512               L24:
+4125  0512 02            	rlwa	x,a
+4126  0513 7b15          	ld	a,(OFST-1,sp)
+4127  0515 905f          	clrw	y
+4128  0517 9097          	ld	yl,a
+4129  0519 90d60000      	ld	a,(_uc_Rx_Data,y)
+4130  051d f7            	ld	(x),a
+4131                     ; 400 		can_diag[uc_buffer]=uc_Rx_Data[HTR_STATUS2][uc_buffer];
+4133  051e 96            	ldw	x,sp
+4134  051f 1c0003        	addw	x,#OFST-19
+4135  0522 9f            	ld	a,xl
+4136  0523 5e            	swapw	x
+4137  0524 1b15          	add	a,(OFST-1,sp)
+4138  0526 2401          	jrnc	L44
+4139  0528 5c            	incw	x
+4140  0529               L44:
+4141  0529 02            	rlwa	x,a
+4142  052a 7b15          	ld	a,(OFST-1,sp)
+4143  052c 905f          	clrw	y
+4144  052e 9097          	ld	yl,a
+4145  0530 90d60008      	ld	a,(_uc_Rx_Data+8,y)
+4146  0534 f7            	ld	(x),a
+4147                     ; 397 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
+4149  0535 0c15          	inc	(OFST-1,sp)
+4153  0537 7b15          	ld	a,(OFST-1,sp)
+4154  0539 a108          	cp	a,#8
+4155  053b 25ca          	jrult	L1052
+4157  053d 2038          	jra	L7052
+4158  053f               L7742:
+4159                     ; 405 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
+4161  053f 0f15          	clr	(OFST-1,sp)
+4163  0541               L1152:
+4164                     ; 407 		can_data[uc_buffer]=uc_Rx_Data[HTR_STATUS3][uc_buffer];
+4166  0541 96            	ldw	x,sp
+4167  0542 1c000d        	addw	x,#OFST-9
+4168  0545 9f            	ld	a,xl
+4169  0546 5e            	swapw	x
+4170  0547 1b15          	add	a,(OFST-1,sp)
+4171  0549 2401          	jrnc	L64
+4172  054b 5c            	incw	x
+4173  054c               L64:
+4174  054c 02            	rlwa	x,a
+4175  054d 7b15          	ld	a,(OFST-1,sp)
+4176  054f 905f          	clrw	y
+4177  0551 9097          	ld	yl,a
+4178  0553 90d60010      	ld	a,(_uc_Rx_Data+16,y)
+4179  0557 f7            	ld	(x),a
+4180                     ; 408 		can_diag[uc_buffer]=uc_Rx_Data[HTR_STATUS4][uc_buffer];
+4182  0558 96            	ldw	x,sp
+4183  0559 1c0003        	addw	x,#OFST-19
+4184  055c 9f            	ld	a,xl
+4185  055d 5e            	swapw	x
+4186  055e 1b15          	add	a,(OFST-1,sp)
+4187  0560 2401          	jrnc	L05
+4188  0562 5c            	incw	x
+4189  0563               L05:
+4190  0563 02            	rlwa	x,a
+4191  0564 7b15          	ld	a,(OFST-1,sp)
+4192  0566 905f          	clrw	y
+4193  0568 9097          	ld	yl,a
+4194  056a 90d60018      	ld	a,(_uc_Rx_Data+24,y)
+4195  056e f7            	ld	(x),a
+4196                     ; 405 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
+4198  056f 0c15          	inc	(OFST-1,sp)
+4202  0571 7b15          	ld	a,(OFST-1,sp)
+4203  0573 a108          	cp	a,#8
+4204  0575 25ca          	jrult	L1152
+4205  0577               L7052:
+4206                     ; 411 	if(b_Test_Option_flag == ON){
+4208  0577 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+4209  057a a510          	bcp	a,#16
+4210  057c 2779          	jreq	L7152
+4211                     ; 412 		Set_LCD_Address(LCD_Line[0]);
+4213  057e c60000        	ld	a,_LCD_Line
+4214  0581 cd0000        	call	_Set_LCD_Address
+4216                     ; 413 		Display_LCD_String("*OPTION*");
+4218  0584 ae012d        	ldw	x,#L1252
+4219  0587 cd0000        	call	_Display_LCD_String
+4221                     ; 415 		if(uc_Target_Display_Mode == (U8)(0)){
+4223  058a 725d0000      	tnz	_uc_Target_Display_Mode
+4224  058e 260e          	jrne	L3252
+4225                     ; 416 			Set_LCD_Address(LCD_Line[1]);
+4227  0590 c60001        	ld	a,_LCD_Line+1
+4228  0593 cd0000        	call	_Set_LCD_Address
+4230                     ; 417 			Display_LCD_String("*Target Perc");
+4232  0596 ae0120        	ldw	x,#L5252
+4233  0599 cd0000        	call	_Display_LCD_String
+4236  059c 200c          	jra	L7252
+4237  059e               L3252:
+4238                     ; 420 			Set_LCD_Address(LCD_Line[1]);
+4240  059e c60001        	ld	a,_LCD_Line+1
+4241  05a1 cd0000        	call	_Set_LCD_Address
+4243                     ; 421 			Display_LCD_String("*Target Watt(OS)");
+4245  05a4 ae010f        	ldw	x,#L1352
+4246  05a7 cd0000        	call	_Display_LCD_String
+4248  05aa               L7252:
+4249                     ; 424 		Set_LCD_Address(LCD_Line[2]);
+4251  05aa c60002        	ld	a,_LCD_Line+2
+4252  05ad cd0000        	call	_Set_LCD_Address
+4254                     ; 425 		Display_LCD_String("D_Unit:");
+4256  05b0 ae0107        	ldw	x,#L3352
+4257  05b3 cd0000        	call	_Display_LCD_String
+4259                     ; 427 		Set_LCD_Address((unsigned char)(LCD_Line[2]+7));
+4261  05b6 c60002        	ld	a,_LCD_Line+2
+4262  05b9 ab07          	add	a,#7
+4263  05bb cd0000        	call	_Set_LCD_Address
+4265                     ; 428 		if(b_Blink_250_Flag){
+4267  05be c60000        	ld	a,_uc_LCD_Blink_Reg
+4268  05c1 a502          	bcp	a,#2
+4269  05c3 272e          	jreq	L5352
+4270                     ; 429 			Num_Display_LCD(uc_Perc_Unit /(U8)(2));
+4272  05c5 c60001        	ld	a,_uc_Perc_Unit
+4273  05c8 5f            	clrw	x
+4274  05c9 97            	ld	xl,a
+4275  05ca 57            	sraw	x
+4276  05cb cd0000        	call	_Num_Display_LCD
+4278                     ; 430 			Display_LCD_String(".");
+4280  05ce ae0105        	ldw	x,#L7352
+4281  05d1 cd0000        	call	_Display_LCD_String
+4283                     ; 431 			uc_buffer = uc_Perc_Unit %(U8)(2);
+4285  05d4 c60001        	ld	a,_uc_Perc_Unit
+4286  05d7 a401          	and	a,#1
+4287  05d9 6b15          	ld	(OFST-1,sp),a
+4289                     ; 432 			if(uc_buffer){ Display_LCD_String("5"); }
+4291  05db 0d15          	tnz	(OFST-1,sp)
+4292  05dd 2708          	jreq	L1452
+4295  05df ae0103        	ldw	x,#L3452
+4296  05e2 cd0000        	call	_Display_LCD_String
+4299  05e5 2006          	jra	L5452
+4300  05e7               L1452:
+4301                     ; 433 			else{ Display_LCD_String("0"); }
+4303  05e7 ae0101        	ldw	x,#L7452
+4304  05ea cd0000        	call	_Display_LCD_String
+4306  05ed               L5452:
+4307                     ; 434 			Display_LCD_String("%");
+4309  05ed ae00ff        	ldw	x,#L1552
+4310  05f0 cd0000        	call	_Display_LCD_String
+4312  05f3               L5352:
+4313                     ; 436 		return;
+4315  05f3 ac6a106a      	jpf	L65
+4316  05f7               L7152:
+4317                     ; 439 	if(uc_Test_Page_Now != uc_Test_Page_Pre){ 
+4319  05f7 c60004        	ld	a,_uc_Test_Page_Now
+4320  05fa c10003        	cp	a,_uc_Test_Page_Pre
+4321  05fd 270f          	jreq	L3552
+4322                     ; 440 		Test_Ctrl_Text_Display_Handling(); 
+4324  05ff cd0465        	call	_Test_Ctrl_Text_Display_Handling
+4326                     ; 441 		b_Data_Select_flag = OFF;
+4328  0602 7213000d      	bres	_uc_Test_Ctrl_Reg,#1
+4329                     ; 442 		b_Data_Setting_flag = OFF;
+4331  0606 7215000d      	bres	_uc_Test_Ctrl_Reg,#2
+4332                     ; 443 		uc_Test_Data_Select_Num = (U8)(0);
+4334  060a 725f0002      	clr	_uc_Test_Data_Select_Num
+4335  060e               L3552:
+4336                     ; 445 	uc_Test_Page_Pre = uc_Test_Page_Now ;
+4338  060e 5500040003    	mov	_uc_Test_Page_Pre,_uc_Test_Page_Now
+4339                     ; 448 	if(uc_Test_Page_Now == (U8)(0)){			//page 1
+4341  0613 725d0004      	tnz	_uc_Test_Page_Now
+4342  0617 2703          	jreq	L06
+4343  0619 cc0b8c        	jp	L5552
+4344  061c               L06:
+4345                     ; 449 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+4347  061c 0f16          	clr	(OFST+0,sp)
+4349  061e               L7552:
+4350                     ; 451 			Set_LCD_Address(LCD_Line[uc_line_index]);
+4352  061e 7b16          	ld	a,(OFST+0,sp)
+4353  0620 5f            	clrw	x
+4354  0621 97            	ld	xl,a
+4355  0622 d60000        	ld	a,(_LCD_Line,x)
+4356  0625 cd0000        	call	_Set_LCD_Address
+4358                     ; 453 			if((b_Data_Select_flag == ON) && (b_Data_Setting_flag == OFF)){
+4360  0628 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+4361  062b a502          	bcp	a,#2
+4362  062d 2763          	jreq	L5652
+4364  062f c6000d        	ld	a,_uc_Test_Ctrl_Reg
+4365  0632 a504          	bcp	a,#4
+4366  0634 265c          	jrne	L5652
+4367                     ; 454 				if(uc_line_index == uc_Test_Data_Select_Num){ 
+4369  0636 7b16          	ld	a,(OFST+0,sp)
+4370  0638 c10002        	cp	a,_uc_Test_Data_Select_Num
+4371  063b 2647          	jrne	L7652
+4372                     ; 455 					if(uc_Test_Data_Select_Num == (U8)(0)){
+4374  063d 725d0002      	tnz	_uc_Test_Data_Select_Num
+4375  0641 261d          	jrne	L1752
+4376                     ; 456 						if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
+4378  0643 c60000        	ld	a,_uc_LCD_Blink_Reg
+4379  0646 a502          	bcp	a,#2
+4380  0648 270e          	jreq	L3752
+4383  064a 7b16          	ld	a,(OFST+0,sp)
+4384  064c 97            	ld	xl,a
+4385  064d a610          	ld	a,#16
+4386  064f 42            	mul	x,a
+4387  0650 1c0000        	addw	x,#_LCD_Dis_Data
+4388  0653 cd0000        	call	_Display_LCD_String
+4391  0656 2046          	jra	L5162
+4392  0658               L3752:
+4393                     ; 457 						else{ Display_LCD_String("        /"); }
+4395  0658 ae00f5        	ldw	x,#L7752
+4396  065b cd0000        	call	_Display_LCD_String
+4398  065e 203e          	jra	L5162
+4399  0660               L1752:
+4400                     ; 459 					else if(uc_Test_Data_Select_Num == (U8)(1)){
+4402  0660 c60002        	ld	a,_uc_Test_Data_Select_Num
+4403  0663 a101          	cp	a,#1
+4404  0665 2637          	jrne	L5162
+4405                     ; 460 						if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
+4407  0667 c60000        	ld	a,_uc_LCD_Blink_Reg
+4408  066a a502          	bcp	a,#2
+4409  066c 270e          	jreq	L5062
+4412  066e 7b16          	ld	a,(OFST+0,sp)
+4413  0670 97            	ld	xl,a
+4414  0671 a610          	ld	a,#16
+4415  0673 42            	mul	x,a
+4416  0674 1c0000        	addw	x,#_LCD_Dis_Data
+4417  0677 cd0000        	call	_Display_LCD_String
+4420  067a 2022          	jra	L5162
+4421  067c               L5062:
+4422                     ; 461 						else{ Display_LCD_String("        Fd:"); }
+4424  067c ae00e9        	ldw	x,#L1162
+4425  067f cd0000        	call	_Display_LCD_String
+4427  0682 201a          	jra	L5162
+4428  0684               L7652:
+4429                     ; 464 				else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]); }
+4431  0684 7b16          	ld	a,(OFST+0,sp)
+4432  0686 97            	ld	xl,a
+4433  0687 a610          	ld	a,#16
+4434  0689 42            	mul	x,a
+4435  068a 1c0000        	addw	x,#_LCD_Dis_Data
+4436  068d cd0000        	call	_Display_LCD_String
+4438  0690 200c          	jra	L5162
+4439  0692               L5652:
+4440                     ; 465 			}else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]); }
+4442  0692 7b16          	ld	a,(OFST+0,sp)
+4443  0694 97            	ld	xl,a
+4444  0695 a610          	ld	a,#16
+4445  0697 42            	mul	x,a
+4446  0698 1c0000        	addw	x,#_LCD_Dis_Data
+4447  069b cd0000        	call	_Display_LCD_String
+4449  069e               L5162:
+4450                     ; 468 			if(uc_line_index == (U8)(0)){		// LINE 1
+4452  069e 0d16          	tnz	(OFST+0,sp)
+4453  06a0 2703          	jreq	L26
+4454  06a2 cc075d        	jp	L7162
+4455  06a5               L26:
+4456                     ; 471 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
+4458  06a5 7b16          	ld	a,(OFST+0,sp)
+4459  06a7 5f            	clrw	x
+4460  06a8 97            	ld	xl,a
+4461  06a9 d60000        	ld	a,(_LCD_Line,x)
+4462  06ac ab03          	add	a,#3
+4463  06ae cd0000        	call	_Set_LCD_Address
+4465                     ; 473 				if((b_Data_Setting_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
+4467  06b1 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+4468  06b4 a504          	bcp	a,#4
+4469  06b6 2718          	jreq	L1262
+4471  06b8 7b16          	ld	a,(OFST+0,sp)
+4472  06ba c10002        	cp	a,_uc_Test_Data_Select_Num
+4473  06bd 2611          	jrne	L1262
+4474                     ; 474 					if(b_Blink_250_Flag){ Num_Display_LCD(uc_Heater_Enable_Flag); 	}	
+4476  06bf c60000        	ld	a,_uc_LCD_Blink_Reg
+4477  06c2 a502          	bcp	a,#2
+4478  06c4 2712          	jreq	L5262
+4481  06c6 c60009        	ld	a,_uc_Heater_Enable_Flag
+4482  06c9 5f            	clrw	x
+4483  06ca 97            	ld	xl,a
+4484  06cb cd0000        	call	_Num_Display_LCD
+4486  06ce 2008          	jra	L5262
+4487  06d0               L1262:
+4488                     ; 475 				}else{ Num_Display_LCD(uc_Heater_Enable_Flag); }
+4490  06d0 c60009        	ld	a,_uc_Heater_Enable_Flag
+4491  06d3 5f            	clrw	x
+4492  06d4 97            	ld	xl,a
+4493  06d5 cd0000        	call	_Num_Display_LCD
+4495  06d8               L5262:
+4496                     ; 479 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 5));
+4498  06d8 7b16          	ld	a,(OFST+0,sp)
+4499  06da 5f            	clrw	x
+4500  06db 97            	ld	xl,a
+4501  06dc d60000        	ld	a,(_LCD_Line,x)
+4502  06df ab05          	add	a,#5
+4503  06e1 cd0000        	call	_Set_LCD_Address
+4505                     ; 480 				if (HEATER_zone_status == HTR_ZONE_1)
+4507  06e4 725d0000      	tnz	_HEATER_zone_status
+4508  06e8 2608          	jrne	L7262
+4509                     ; 481 				Display_LCD_String("Z1");
+4511  06ea ae00e6        	ldw	x,#L1362
+4512  06ed cd0000        	call	_Display_LCD_String
+4515  06f0 2006          	jra	L3362
+4516  06f2               L7262:
+4517                     ; 482 				else Display_LCD_String("Z2");
+4519  06f2 ae00e3        	ldw	x,#L5362
+4520  06f5 cd0000        	call	_Display_LCD_String
+4522  06f8               L3362:
+4523                     ; 484 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 9));
+4525  06f8 7b16          	ld	a,(OFST+0,sp)
+4526  06fa 5f            	clrw	x
+4527  06fb 97            	ld	xl,a
+4528  06fc d60000        	ld	a,(_LCD_Line,x)
+4529  06ff ab09          	add	a,#9
+4530  0701 cd0000        	call	_Set_LCD_Address
+4532                     ; 486 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+4534  0704 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+4535  0707 a501          	bcp	a,#1
+4536  0709 270a          	jreq	L7362
+4539  070b ae00e0        	ldw	x,#L1462
+4540  070e cd0000        	call	_Display_LCD_String
+4543  0711 ac7d0b7d      	jpf	L3762
+4544  0715               L7362:
+4545                     ; 489 					uc_buffer = (U8)((can_data[0] & 0x06) >> 1);//YJS
+4547  0715 7b0d          	ld	a,(OFST-9,sp)
+4548  0717 44            	srl	a
+4549  0718 a403          	and	a,#3
+4550  071a 6b15          	ld	(OFST-1,sp),a
+4552                     ; 490 					if(uc_buffer == (U8)(0)){ Display_LCD_String("Stop");   }
+4554  071c 0d15          	tnz	(OFST-1,sp)
+4555  071e 260a          	jrne	L5462
+4558  0720 ae00db        	ldw	x,#L7462
+4559  0723 cd0000        	call	_Display_LCD_String
+4562  0726 ac7d0b7d      	jpf	L3762
+4563  072a               L5462:
+4564                     ; 491 					else if(uc_buffer == (U8)(1)){ Display_LCD_String("Oper"); }
+4566  072a 7b15          	ld	a,(OFST-1,sp)
+4567  072c a101          	cp	a,#1
+4568  072e 260a          	jrne	L3562
+4571  0730 ae00d6        	ldw	x,#L5562
+4572  0733 cd0000        	call	_Display_LCD_String
+4575  0736 ac7d0b7d      	jpf	L3762
+4576  073a               L3562:
+4577                     ; 492 					else if(uc_buffer == (U8)(2)){ Display_LCD_String("Flt"); }
+4579  073a 7b15          	ld	a,(OFST-1,sp)
+4580  073c a102          	cp	a,#2
+4581  073e 260a          	jrne	L1662
+4584  0740 ae00d2        	ldw	x,#L3662
+4585  0743 cd0000        	call	_Display_LCD_String
+4588  0746 ac7d0b7d      	jpf	L3762
+4589  074a               L1662:
+4590                     ; 493 					else if(uc_buffer == (U8)(3)){ Display_LCD_String("Lmit"); }
+4592  074a 7b15          	ld	a,(OFST-1,sp)
+4593  074c a103          	cp	a,#3
+4594  074e 2703          	jreq	L46
+4595  0750 cc0b7d        	jp	L3762
+4596  0753               L46:
+4599  0753 ae00cd        	ldw	x,#L1762
+4600  0756 cd0000        	call	_Display_LCD_String
+4602  0759 ac7d0b7d      	jpf	L3762
+4603  075d               L7162:
+4604                     ; 502 			else if(uc_line_index == (U8)(1)){	// LINE 2
+4606  075d 7b16          	ld	a,(OFST+0,sp)
+4607  075f a101          	cp	a,#1
+4608  0761 2703          	jreq	L66
+4609  0763 cc0a72        	jp	L5762
+4610  0766               L66:
+4611                     ; 505 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
+4613  0766 7b16          	ld	a,(OFST+0,sp)
+4614  0768 5f            	clrw	x
+4615  0769 97            	ld	xl,a
+4616  076a d60000        	ld	a,(_LCD_Line,x)
+4617  076d ab03          	add	a,#3
+4618  076f cd0000        	call	_Set_LCD_Address
+4620                     ; 506 				if((b_Data_Setting_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
+4622  0772 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+4623  0775 a504          	bcp	a,#4
+4624  0777 2603          	jrne	L07
+4625  0779 cc08e0        	jp	L7762
+4626  077c               L07:
+4628  077c 7b16          	ld	a,(OFST+0,sp)
+4629  077e c10002        	cp	a,_uc_Test_Data_Select_Num
+4630  0781 2703          	jreq	L27
+4631  0783 cc08e0        	jp	L7762
+4632  0786               L27:
+4633                     ; 507 					if(b_Blink_250_Flag){
+4635  0786 c60000        	ld	a,_uc_LCD_Blink_Reg
+4636  0789 a502          	bcp	a,#2
+4637  078b 2603          	jrne	L47
+4638  078d cc0a20        	jp	L5772
+4639  0790               L47:
+4640                     ; 508 						if(!uc_Target_Display_Mode){	// Percentage_Display
+4642  0790 725d0000      	tnz	_uc_Target_Display_Mode
+4643  0794 2676          	jrne	L3072
+4644                     ; 509 if (HEATER_zone_status == HTR_ZONE_1)
+4646  0796 725d0000      	tnz	_HEATER_zone_status
+4647  079a 2638          	jrne	L5072
+4648                     ; 511 							Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_1] /(U8)(2));
+4650  079c c6000a        	ld	a,_uc_Target_Duty_Perc
+4651  079f 5f            	clrw	x
+4652  07a0 97            	ld	xl,a
+4653  07a1 57            	sraw	x
+4654  07a2 cd0000        	call	_Num_Display_LCD
+4656                     ; 512 							if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(200)){
+4658  07a5 c6000a        	ld	a,_uc_Target_Duty_Perc
+4659  07a8 a1c8          	cp	a,#200
+4660  07aa 2503          	jrult	L67
+4661  07ac cc0a20        	jp	L5772
+4662  07af               L67:
+4663                     ; 513 								Display_LCD_String(".");
+4665  07af ae0105        	ldw	x,#L7352
+4666  07b2 cd0000        	call	_Display_LCD_String
+4668                     ; 514 								uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_1] % (U8)(2);
+4670  07b5 c6000a        	ld	a,_uc_Target_Duty_Perc
+4671  07b8 a401          	and	a,#1
+4672  07ba 6b15          	ld	(OFST-1,sp),a
+4674                     ; 515 								if(uc_buffer){ Display_LCD_String("5"); }
+4676  07bc 0d15          	tnz	(OFST-1,sp)
+4677  07be 270a          	jreq	L1172
+4680  07c0 ae0103        	ldw	x,#L3452
+4681  07c3 cd0000        	call	_Display_LCD_String
+4684  07c6 ac200a20      	jpf	L5772
+4685  07ca               L1172:
+4686                     ; 516 								else{ Display_LCD_String("0"); }
+4688  07ca ae0101        	ldw	x,#L7452
+4689  07cd cd0000        	call	_Display_LCD_String
+4691  07d0 ac200a20      	jpf	L5772
+4692  07d4               L5072:
+4693                     ; 521 							Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_2] /(U8)(2));
+4695  07d4 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4696  07d7 5f            	clrw	x
+4697  07d8 97            	ld	xl,a
+4698  07d9 57            	sraw	x
+4699  07da cd0000        	call	_Num_Display_LCD
+4701                     ; 522 							if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(200)){
+4703  07dd c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4704  07e0 a1c8          	cp	a,#200
+4705  07e2 2503          	jrult	L001
+4706  07e4 cc0a20        	jp	L5772
+4707  07e7               L001:
+4708                     ; 523 								Display_LCD_String(".");
+4710  07e7 ae0105        	ldw	x,#L7352
+4711  07ea cd0000        	call	_Display_LCD_String
+4713                     ; 524 								uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_2] % (U8)(2);
+4715  07ed c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4716  07f0 a401          	and	a,#1
+4717  07f2 6b15          	ld	(OFST-1,sp),a
+4719                     ; 525 								if(uc_buffer){ Display_LCD_String("5"); }
+4721  07f4 0d15          	tnz	(OFST-1,sp)
+4722  07f6 270a          	jreq	L1272
+4725  07f8 ae0103        	ldw	x,#L3452
+4726  07fb cd0000        	call	_Display_LCD_String
+4729  07fe ac200a20      	jpf	L5772
+4730  0802               L1272:
+4731                     ; 526 								else{ Display_LCD_String("0"); }
+4733  0802 ae0101        	ldw	x,#L7452
+4734  0805 cd0000        	call	_Display_LCD_String
+4736  0808 ac200a20      	jpf	L5772
+4737  080c               L3072:
+4738                     ; 531 if (HEATER_zone_status == HTR_ZONE_1)
+4740  080c 725d0000      	tnz	_HEATER_zone_status
+4741  0810 2667          	jrne	L7272
+4742                     ; 533 							if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ Num_Display_LCD(0u); }
+4744  0812 c6000a        	ld	a,_uc_Target_Duty_Perc
+4745  0815 a114          	cp	a,#20
+4746  0817 2408          	jruge	L1372
+4749  0819 5f            	clrw	x
+4750  081a cd0000        	call	_Num_Display_LCD
+4753  081d ac200a20      	jpf	L5772
+4754  0821               L1372:
+4755                     ; 534 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(20)){ Num_Display_LCD(100u); }
+4757  0821 c6000a        	ld	a,_uc_Target_Duty_Perc
+4758  0824 a114          	cp	a,#20
+4759  0826 260a          	jrne	L5372
+4762  0828 ae0064        	ldw	x,#100
+4763  082b cd0000        	call	_Num_Display_LCD
+4766  082e ac200a20      	jpf	L5772
+4767  0832               L5372:
+4768                     ; 535 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ Num_Display_LCD(6200u); }
+4770  0832 c6000a        	ld	a,_uc_Target_Duty_Perc
+4771  0835 a1b4          	cp	a,#180
+4772  0837 260a          	jrne	L1472
+4775  0839 ae1838        	ldw	x,#6200
+4776  083c cd0000        	call	_Num_Display_LCD
+4779  083f ac200a20      	jpf	L5772
+4780  0843               L1472:
+4781                     ; 536 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(190)){ Display_LCD_String("MAX"); }
+4783  0843 c6000a        	ld	a,_uc_Target_Duty_Perc
+4784  0846 a1be          	cp	a,#190
+4785  0848 260a          	jrne	L5472
+4788  084a ae00c9        	ldw	x,#L7472
+4789  084d cd0000        	call	_Display_LCD_String
+4792  0850 ac200a20      	jpf	L5772
+4793  0854               L5472:
+4794                     ; 537 							else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_1]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
+4796  0854 c6000a        	ld	a,_uc_Target_Duty_Perc
+4797  0857 5f            	clrw	x
+4798  0858 97            	ld	xl,a
+4799  0859 1d0014        	subw	x,#20
+4800  085c 90ae94ed      	ldw	y,#38125
+4801  0860 cd0000        	call	c_umul
+4803  0863 ae0000        	ldw	x,#L25
+4804  0866 cd0000        	call	c_ludv
+4806  0869 be02          	ldw	x,c_lreg+2
+4807  086b 1c0064        	addw	x,#100
+4808  086e 1f0b          	ldw	(OFST-11,sp),x
+4812  0870 1e0b          	ldw	x,(OFST-11,sp)
+4813  0872 cd0000        	call	_Num_Display_LCD
+4815  0875 ac200a20      	jpf	L5772
+4816  0879               L7272:
+4817                     ; 541 							if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ Num_Display_LCD(0u); }
+4819  0879 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4820  087c a114          	cp	a,#20
+4821  087e 2408          	jruge	L5572
+4824  0880 5f            	clrw	x
+4825  0881 cd0000        	call	_Num_Display_LCD
+4828  0884 ac200a20      	jpf	L5772
+4829  0888               L5572:
+4830                     ; 542 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(20)){ Num_Display_LCD(100u); }
+4832  0888 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4833  088b a114          	cp	a,#20
+4834  088d 260a          	jrne	L1672
+4837  088f ae0064        	ldw	x,#100
+4838  0892 cd0000        	call	_Num_Display_LCD
+4841  0895 ac200a20      	jpf	L5772
+4842  0899               L1672:
+4843                     ; 543 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ Num_Display_LCD(6200u); }
+4845  0899 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4846  089c a1b4          	cp	a,#180
+4847  089e 260a          	jrne	L5672
+4850  08a0 ae1838        	ldw	x,#6200
+4851  08a3 cd0000        	call	_Num_Display_LCD
+4854  08a6 ac200a20      	jpf	L5772
+4855  08aa               L5672:
+4856                     ; 544 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(190)){ Display_LCD_String("MAX"); }
+4858  08aa c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4859  08ad a1be          	cp	a,#190
+4860  08af 260a          	jrne	L1772
+4863  08b1 ae00c9        	ldw	x,#L7472
+4864  08b4 cd0000        	call	_Display_LCD_String
+4867  08b7 ac200a20      	jpf	L5772
+4868  08bb               L1772:
+4869                     ; 545 							else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_2]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
+4871  08bb c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4872  08be 5f            	clrw	x
+4873  08bf 97            	ld	xl,a
+4874  08c0 1d0014        	subw	x,#20
+4875  08c3 90ae94ed      	ldw	y,#38125
+4876  08c7 cd0000        	call	c_umul
+4878  08ca ae0000        	ldw	x,#L25
+4879  08cd cd0000        	call	c_ludv
+4881  08d0 be02          	ldw	x,c_lreg+2
+4882  08d2 1c0064        	addw	x,#100
+4883  08d5 1f0b          	ldw	(OFST-11,sp),x
+4887  08d7 1e0b          	ldw	x,(OFST-11,sp)
+4888  08d9 cd0000        	call	_Num_Display_LCD
+4890  08dc ac200a20      	jpf	L5772
+4891  08e0               L7762:
+4892                     ; 550 					if(!uc_Target_Display_Mode){
+4894  08e0 725d0000      	tnz	_uc_Target_Display_Mode
+4895  08e4 2676          	jrne	L7772
+4896                     ; 551 if (HEATER_zone_status == HTR_ZONE_1)
+4898  08e6 725d0000      	tnz	_HEATER_zone_status
+4899  08ea 2638          	jrne	L1003
+4900                     ; 553 						Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_1] /(U8)(2));
+4902  08ec c6000a        	ld	a,_uc_Target_Duty_Perc
+4903  08ef 5f            	clrw	x
+4904  08f0 97            	ld	xl,a
+4905  08f1 57            	sraw	x
+4906  08f2 cd0000        	call	_Num_Display_LCD
+4908                     ; 554 						if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(200)){
+4910  08f5 c6000a        	ld	a,_uc_Target_Duty_Perc
+4911  08f8 a1c8          	cp	a,#200
+4912  08fa 2503          	jrult	L201
+4913  08fc cc0a20        	jp	L5772
+4914  08ff               L201:
+4915                     ; 555 							Display_LCD_String(".");
+4917  08ff ae0105        	ldw	x,#L7352
+4918  0902 cd0000        	call	_Display_LCD_String
+4920                     ; 556 							uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_1] % (U8)(2);
+4922  0905 c6000a        	ld	a,_uc_Target_Duty_Perc
+4923  0908 a401          	and	a,#1
+4924  090a 6b15          	ld	(OFST-1,sp),a
+4926                     ; 557 							if(uc_buffer){ Display_LCD_String("5"); }
+4928  090c 0d15          	tnz	(OFST-1,sp)
+4929  090e 270a          	jreq	L5003
+4932  0910 ae0103        	ldw	x,#L3452
+4933  0913 cd0000        	call	_Display_LCD_String
+4936  0916 ac200a20      	jpf	L5772
+4937  091a               L5003:
+4938                     ; 558 							else{ Display_LCD_String("0"); }
+4940  091a ae0101        	ldw	x,#L7452
+4941  091d cd0000        	call	_Display_LCD_String
+4943  0920 ac200a20      	jpf	L5772
+4944  0924               L1003:
+4945                     ; 563 						Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_2] /(U8)(2));
+4947  0924 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4948  0927 5f            	clrw	x
+4949  0928 97            	ld	xl,a
+4950  0929 57            	sraw	x
+4951  092a cd0000        	call	_Num_Display_LCD
+4953                     ; 564 						if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(200)){
+4955  092d c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4956  0930 a1c8          	cp	a,#200
+4957  0932 2503          	jrult	L401
+4958  0934 cc0a20        	jp	L5772
+4959  0937               L401:
+4960                     ; 565 							Display_LCD_String(".");
+4962  0937 ae0105        	ldw	x,#L7352
+4963  093a cd0000        	call	_Display_LCD_String
+4965                     ; 566 							uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_2] % (U8)(2);
+4967  093d c6000b        	ld	a,_uc_Target_Duty_Perc+1
+4968  0940 a401          	and	a,#1
+4969  0942 6b15          	ld	(OFST-1,sp),a
+4971                     ; 567 							if(uc_buffer){ Display_LCD_String("5"); }
+4973  0944 0d15          	tnz	(OFST-1,sp)
+4974  0946 270a          	jreq	L5103
+4977  0948 ae0103        	ldw	x,#L3452
+4978  094b cd0000        	call	_Display_LCD_String
+4981  094e ac200a20      	jpf	L5772
+4982  0952               L5103:
+4983                     ; 568 							else{ Display_LCD_String("0"); }
+4985  0952 ae0101        	ldw	x,#L7452
+4986  0955 cd0000        	call	_Display_LCD_String
+4988  0958 ac200a20      	jpf	L5772
+4989  095c               L7772:
+4990                     ; 573 if (HEATER_zone_status == HTR_ZONE_1)
+4992  095c 725d0000      	tnz	_HEATER_zone_status
+4993  0960 2663          	jrne	L3203
+4994                     ; 575 						if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ Num_Display_LCD(0u); }
+4996  0962 c6000a        	ld	a,_uc_Target_Duty_Perc
+4997  0965 a114          	cp	a,#20
+4998  0967 2408          	jruge	L5203
+5001  0969 5f            	clrw	x
+5002  096a cd0000        	call	_Num_Display_LCD
+5005  096d ac200a20      	jpf	L5772
+5006  0971               L5203:
+5007                     ; 576 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(20)){ Num_Display_LCD(100u); }
+5009  0971 c6000a        	ld	a,_uc_Target_Duty_Perc
+5010  0974 a114          	cp	a,#20
+5011  0976 260a          	jrne	L1303
+5014  0978 ae0064        	ldw	x,#100
+5015  097b cd0000        	call	_Num_Display_LCD
+5018  097e ac200a20      	jpf	L5772
+5019  0982               L1303:
+5020                     ; 577 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ Num_Display_LCD(6200u); }
+5022  0982 c6000a        	ld	a,_uc_Target_Duty_Perc
+5023  0985 a1b4          	cp	a,#180
+5024  0987 260a          	jrne	L5303
+5027  0989 ae1838        	ldw	x,#6200
+5028  098c cd0000        	call	_Num_Display_LCD
+5031  098f ac200a20      	jpf	L5772
+5032  0993               L5303:
+5033                     ; 578 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] > (U8)(180)){ Display_LCD_String("MAX"); }
+5035  0993 c6000a        	ld	a,_uc_Target_Duty_Perc
+5036  0996 a1b5          	cp	a,#181
+5037  0998 2508          	jrult	L1403
+5040  099a ae00c9        	ldw	x,#L7472
+5041  099d cd0000        	call	_Display_LCD_String
+5044  09a0 207e          	jra	L5772
+5045  09a2               L1403:
+5046                     ; 579 						else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_1]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
+5048  09a2 c6000a        	ld	a,_uc_Target_Duty_Perc
+5049  09a5 5f            	clrw	x
+5050  09a6 97            	ld	xl,a
+5051  09a7 1d0014        	subw	x,#20
+5052  09aa 90ae94ed      	ldw	y,#38125
+5053  09ae cd0000        	call	c_umul
+5055  09b1 ae0000        	ldw	x,#L25
+5056  09b4 cd0000        	call	c_ludv
+5058  09b7 be02          	ldw	x,c_lreg+2
+5059  09b9 1c0064        	addw	x,#100
+5060  09bc 1f0b          	ldw	(OFST-11,sp),x
+5064  09be 1e0b          	ldw	x,(OFST-11,sp)
+5065  09c0 cd0000        	call	_Num_Display_LCD
+5067  09c3 205b          	jra	L5772
+5068  09c5               L3203:
+5069                     ; 583 						if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ Num_Display_LCD(0u); }
+5071  09c5 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+5072  09c8 a114          	cp	a,#20
+5073  09ca 2406          	jruge	L7403
+5076  09cc 5f            	clrw	x
+5077  09cd cd0000        	call	_Num_Display_LCD
+5080  09d0 204e          	jra	L5772
+5081  09d2               L7403:
+5082                     ; 584 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(20)){ Num_Display_LCD(100u); }
+5084  09d2 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+5085  09d5 a114          	cp	a,#20
+5086  09d7 2608          	jrne	L3503
+5089  09d9 ae0064        	ldw	x,#100
+5090  09dc cd0000        	call	_Num_Display_LCD
+5093  09df 203f          	jra	L5772
+5094  09e1               L3503:
+5095                     ; 585 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ Num_Display_LCD(6200u); }
+5097  09e1 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+5098  09e4 a1b4          	cp	a,#180
+5099  09e6 2608          	jrne	L7503
+5102  09e8 ae1838        	ldw	x,#6200
+5103  09eb cd0000        	call	_Num_Display_LCD
+5106  09ee 2030          	jra	L5772
+5107  09f0               L7503:
+5108                     ; 586 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] > (U8)(180)){ Display_LCD_String("MAX"); }
+5110  09f0 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+5111  09f3 a1b5          	cp	a,#181
+5112  09f5 2508          	jrult	L3603
+5115  09f7 ae00c9        	ldw	x,#L7472
+5116  09fa cd0000        	call	_Display_LCD_String
+5119  09fd 2021          	jra	L5772
+5120  09ff               L3603:
+5121                     ; 587 						else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_2]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
+5123  09ff c6000b        	ld	a,_uc_Target_Duty_Perc+1
+5124  0a02 5f            	clrw	x
+5125  0a03 97            	ld	xl,a
+5126  0a04 1d0014        	subw	x,#20
+5127  0a07 90ae94ed      	ldw	y,#38125
+5128  0a0b cd0000        	call	c_umul
+5130  0a0e ae0000        	ldw	x,#L25
+5131  0a11 cd0000        	call	c_ludv
+5133  0a14 be02          	ldw	x,c_lreg+2
+5134  0a16 1c0064        	addw	x,#100
+5135  0a19 1f0b          	ldw	(OFST-11,sp),x
+5139  0a1b 1e0b          	ldw	x,(OFST-11,sp)
+5140  0a1d cd0000        	call	_Num_Display_LCD
+5142  0a20               L5772:
+5143                     ; 593 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
+5145  0a20 7b16          	ld	a,(OFST+0,sp)
+5146  0a22 5f            	clrw	x
+5147  0a23 97            	ld	xl,a
+5148  0a24 d60000        	ld	a,(_LCD_Line,x)
+5149  0a27 ab0b          	add	a,#11
+5150  0a29 cd0000        	call	_Set_LCD_Address
+5152                     ; 594 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+5154  0a2c c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5155  0a2f a501          	bcp	a,#1
+5156  0a31 270a          	jreq	L7603
+5159  0a33 ae00e0        	ldw	x,#L1462
+5160  0a36 cd0000        	call	_Display_LCD_String
+5163  0a39 ac7d0b7d      	jpf	L3762
+5164  0a3d               L7603:
+5165                     ; 596 					Num_Display_LCD(can_data[6] /(U8)(2));
+5167  0a3d 7b13          	ld	a,(OFST-3,sp)
+5168  0a3f 5f            	clrw	x
+5169  0a40 97            	ld	xl,a
+5170  0a41 57            	sraw	x
+5171  0a42 cd0000        	call	_Num_Display_LCD
+5173                     ; 597 					if(can_data[6] < (U8)(200)){
+5175  0a45 7b13          	ld	a,(OFST-3,sp)
+5176  0a47 a1c8          	cp	a,#200
+5177  0a49 2503          	jrult	L601
+5178  0a4b cc0b7d        	jp	L3762
+5179  0a4e               L601:
+5180                     ; 598 						Display_LCD_String(".");
+5182  0a4e ae0105        	ldw	x,#L7352
+5183  0a51 cd0000        	call	_Display_LCD_String
+5185                     ; 599 						uc_buffer = can_data[6] % (U8)(2);
+5187  0a54 7b13          	ld	a,(OFST-3,sp)
+5188  0a56 a401          	and	a,#1
+5189  0a58 6b15          	ld	(OFST-1,sp),a
+5191                     ; 600 						if(uc_buffer){ Display_LCD_String("5"); }
+5193  0a5a 0d15          	tnz	(OFST-1,sp)
+5194  0a5c 270a          	jreq	L5703
+5197  0a5e ae0103        	ldw	x,#L3452
+5198  0a61 cd0000        	call	_Display_LCD_String
+5201  0a64 ac7d0b7d      	jpf	L3762
+5202  0a68               L5703:
+5203                     ; 601 						else{ Display_LCD_String("0"); }
+5205  0a68 ae0101        	ldw	x,#L7452
+5206  0a6b cd0000        	call	_Display_LCD_String
+5208  0a6e ac7d0b7d      	jpf	L3762
+5209  0a72               L5762:
+5210                     ; 607 			else if(uc_line_index == (U8)(2)){	// LINE 3
+5212  0a72 7b16          	ld	a,(OFST+0,sp)
+5213  0a74 a102          	cp	a,#2
+5214  0a76 2703          	jreq	L011
+5215  0a78 cc0b05        	jp	L3013
+5216  0a7b               L011:
+5217                     ; 610 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 2));
+5219  0a7b 7b16          	ld	a,(OFST+0,sp)
+5220  0a7d 5f            	clrw	x
+5221  0a7e 97            	ld	xl,a
+5222  0a7f d60000        	ld	a,(_LCD_Line,x)
+5223  0a82 ab02          	add	a,#2
+5224  0a84 cd0000        	call	_Set_LCD_Address
+5226                     ; 611 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("N"); }		// No Communication
+5228  0a87 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5229  0a8a a501          	bcp	a,#1
+5230  0a8c 2708          	jreq	L5013
+5233  0a8e ae00c7        	ldw	x,#L7013
+5234  0a91 cd0000        	call	_Display_LCD_String
+5237  0a94 2014          	jra	L1113
+5238  0a96               L5013:
+5239                     ; 613 					if(can_data[0] & 0x01){ Display_LCD_String("1"); }
+5241  0a96 7b0d          	ld	a,(OFST-9,sp)
+5242  0a98 a501          	bcp	a,#1
+5243  0a9a 2708          	jreq	L3113
+5246  0a9c ae00c5        	ldw	x,#L5113
+5247  0a9f cd0000        	call	_Display_LCD_String
+5250  0aa2 2006          	jra	L1113
+5251  0aa4               L3113:
+5252                     ; 614 					else{ Display_LCD_String("0"); }
+5254  0aa4 ae0101        	ldw	x,#L7452
+5255  0aa7 cd0000        	call	_Display_LCD_String
+5257  0aaa               L1113:
+5258                     ; 617 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 6));
+5260  0aaa 7b16          	ld	a,(OFST+0,sp)
+5261  0aac 5f            	clrw	x
+5262  0aad 97            	ld	xl,a
+5263  0aae d60000        	ld	a,(_LCD_Line,x)
+5264  0ab1 ab06          	add	a,#6
+5265  0ab3 cd0000        	call	_Set_LCD_Address
+5267                     ; 618 				if(b_Rx2_Msg_TimeOut_Flag){ Display_LCD_String("N"); }		// No Communication
+5269  0ab6 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5270  0ab9 a502          	bcp	a,#2
+5271  0abb 2708          	jreq	L1213
+5274  0abd ae00c7        	ldw	x,#L7013
+5275  0ac0 cd0000        	call	_Display_LCD_String
+5278  0ac3 2014          	jra	L3213
+5279  0ac5               L1213:
+5280                     ; 620 					if(can_diag[0] & 0x01){ Display_LCD_String("1"); }
+5282  0ac5 7b03          	ld	a,(OFST-19,sp)
+5283  0ac7 a501          	bcp	a,#1
+5284  0ac9 2708          	jreq	L5213
+5287  0acb ae00c5        	ldw	x,#L5113
+5288  0ace cd0000        	call	_Display_LCD_String
+5291  0ad1 2006          	jra	L3213
+5292  0ad3               L5213:
+5293                     ; 621 					else{ Display_LCD_String("0"); }
+5295  0ad3 ae0101        	ldw	x,#L7452
+5296  0ad6 cd0000        	call	_Display_LCD_String
+5298  0ad9               L3213:
+5299                     ; 624 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
+5301  0ad9 7b16          	ld	a,(OFST+0,sp)
+5302  0adb 5f            	clrw	x
+5303  0adc 97            	ld	xl,a
+5304  0add d60000        	ld	a,(_LCD_Line,x)
+5305  0ae0 ab0b          	add	a,#11
+5306  0ae2 cd0000        	call	_Set_LCD_Address
+5308                     ; 625 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+5310  0ae5 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5311  0ae8 a501          	bcp	a,#1
+5312  0aea 270a          	jreq	L1313
+5315  0aec ae00e0        	ldw	x,#L1462
+5316  0aef cd0000        	call	_Display_LCD_String
+5319  0af2 ac7d0b7d      	jpf	L3762
+5320  0af6               L1313:
+5321                     ; 627 					ui_buffer = (U16)(can_data[4]) * (U16)(4);//YJS 2->4
+5323  0af6 7b11          	ld	a,(OFST-5,sp)
+5324  0af8 97            	ld	xl,a
+5325  0af9 a604          	ld	a,#4
+5326  0afb 42            	mul	x,a
+5327  0afc 1f0b          	ldw	(OFST-11,sp),x
+5329                     ; 628 					Num_Display_LCD(ui_buffer);
+5331  0afe 1e0b          	ldw	x,(OFST-11,sp)
+5332  0b00 cd0000        	call	_Num_Display_LCD
+5334  0b03 2078          	jra	L3762
+5335  0b05               L3013:
+5336                     ; 633 			else if(uc_line_index == (U8)(3)){	// LINE 4
+5338  0b05 7b16          	ld	a,(OFST+0,sp)
+5339  0b07 a103          	cp	a,#3
+5340  0b09 2672          	jrne	L3762
+5341                     ; 636 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
+5343  0b0b 7b16          	ld	a,(OFST+0,sp)
+5344  0b0d 5f            	clrw	x
+5345  0b0e 97            	ld	xl,a
+5346  0b0f d60000        	ld	a,(_LCD_Line,x)
+5347  0b12 ab03          	add	a,#3
+5348  0b14 cd0000        	call	_Set_LCD_Address
+5350                     ; 638 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+5352  0b17 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5353  0b1a a501          	bcp	a,#1
+5354  0b1c 2708          	jreq	L1413
+5357  0b1e ae00e0        	ldw	x,#L1462
+5358  0b21 cd0000        	call	_Display_LCD_String
+5361  0b24 2026          	jra	L3413
+5362  0b26               L1413:
+5363                     ; 640 					Num_Display_LCD(can_data[5] / (U8)(5));
+5365  0b26 7b12          	ld	a,(OFST-4,sp)
+5366  0b28 5f            	clrw	x
+5367  0b29 97            	ld	xl,a
+5368  0b2a a605          	ld	a,#5
+5369  0b2c cd0000        	call	c_sdivx
+5371  0b2f cd0000        	call	_Num_Display_LCD
+5373                     ; 641 					Display_LCD_String(".");
+5375  0b32 ae0105        	ldw	x,#L7352
+5376  0b35 cd0000        	call	_Display_LCD_String
+5378                     ; 642 					uc_buffer = can_data[5] % (U8)(5);
+5380  0b38 7b12          	ld	a,(OFST-4,sp)
+5381  0b3a 5f            	clrw	x
+5382  0b3b 97            	ld	xl,a
+5383  0b3c a605          	ld	a,#5
+5384  0b3e 62            	div	x,a
+5385  0b3f 5f            	clrw	x
+5386  0b40 97            	ld	xl,a
+5387  0b41 9f            	ld	a,xl
+5388  0b42 6b15          	ld	(OFST-1,sp),a
+5390                     ; 643 					Num_Display_LCD(uc_buffer * (U8)(2));
+5392  0b44 7b15          	ld	a,(OFST-1,sp)
+5393  0b46 5f            	clrw	x
+5394  0b47 97            	ld	xl,a
+5395  0b48 58            	sllw	x
+5396  0b49 cd0000        	call	_Num_Display_LCD
+5398  0b4c               L3413:
+5399                     ; 649 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
+5401  0b4c 7b16          	ld	a,(OFST+0,sp)
+5402  0b4e 5f            	clrw	x
+5403  0b4f 97            	ld	xl,a
+5404  0b50 d60000        	ld	a,(_LCD_Line,x)
+5405  0b53 ab0b          	add	a,#11
+5406  0b55 cd0000        	call	_Set_LCD_Address
+5408                     ; 651 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+5410  0b58 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5411  0b5b a501          	bcp	a,#1
+5412  0b5d 2708          	jreq	L5413
+5415  0b5f ae00e0        	ldw	x,#L1462
+5416  0b62 cd0000        	call	_Display_LCD_String
+5419  0b65 2016          	jra	L3762
+5420  0b67               L5413:
+5421                     ; 653 					ui_buffer = (U16)(can_data[3] << 8) + (U16)(can_data[2]);
+5423  0b67 7b0f          	ld	a,(OFST-7,sp)
+5424  0b69 5f            	clrw	x
+5425  0b6a 97            	ld	xl,a
+5426  0b6b 1f01          	ldw	(OFST-21,sp),x
+5428  0b6d 7b10          	ld	a,(OFST-6,sp)
+5429  0b6f 5f            	clrw	x
+5430  0b70 97            	ld	xl,a
+5431  0b71 4f            	clr	a
+5432  0b72 02            	rlwa	x,a
+5433  0b73 72fb01        	addw	x,(OFST-21,sp)
+5434  0b76 1f0b          	ldw	(OFST-11,sp),x
+5436                     ; 654 					Num_Display_LCD(ui_buffer);
+5438  0b78 1e0b          	ldw	x,(OFST-11,sp)
+5439  0b7a cd0000        	call	_Num_Display_LCD
+5441  0b7d               L3762:
+5442                     ; 449 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+5444  0b7d 0c16          	inc	(OFST+0,sp)
+5448  0b7f 7b16          	ld	a,(OFST+0,sp)
+5449  0b81 a104          	cp	a,#4
+5450  0b83 2403          	jruge	L211
+5451  0b85 cc061e        	jp	L7552
+5452  0b88               L211:
+5454  0b88 ac4b104b      	jpf	L1513
+5455  0b8c               L5552:
+5456                     ; 664 	else if(uc_Test_Page_Now == (U8)(1)){
+5458  0b8c c60004        	ld	a,_uc_Test_Page_Now
+5459  0b8f a101          	cp	a,#1
+5460  0b91 2703          	jreq	L411
+5461  0b93 cc0c44        	jp	L3513
+5462  0b96               L411:
+5463                     ; 665 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+5465  0b96 0f16          	clr	(OFST+0,sp)
+5467  0b98               L5513:
+5468                     ; 667 			Set_LCD_Address(LCD_Line[uc_line_index]);
+5470  0b98 7b16          	ld	a,(OFST+0,sp)
+5471  0b9a 5f            	clrw	x
+5472  0b9b 97            	ld	xl,a
+5473  0b9c d60000        	ld	a,(_LCD_Line,x)
+5474  0b9f cd0000        	call	_Set_LCD_Address
+5476                     ; 668 			Display_LCD_String(LCD_Dis_Data[uc_line_index]);
+5478  0ba2 7b16          	ld	a,(OFST+0,sp)
+5479  0ba4 97            	ld	xl,a
+5480  0ba5 a610          	ld	a,#16
+5481  0ba7 42            	mul	x,a
+5482  0ba8 1c0000        	addw	x,#_LCD_Dis_Data
+5483  0bab cd0000        	call	_Display_LCD_String
+5485                     ; 671 			if(uc_line_index == (U8)(0)){		// LINE 1
+5487  0bae 0d16          	tnz	(OFST+0,sp)
+5488  0bb0 2641          	jrne	L3613
+5489                     ; 674 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
+5491  0bb2 7b16          	ld	a,(OFST+0,sp)
+5492  0bb4 5f            	clrw	x
+5493  0bb5 97            	ld	xl,a
+5494  0bb6 d60000        	ld	a,(_LCD_Line,x)
+5495  0bb9 ab03          	add	a,#3
+5496  0bbb cd0000        	call	_Set_LCD_Address
+5498                     ; 675 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+5500  0bbe c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5501  0bc1 a501          	bcp	a,#1
+5502  0bc3 2708          	jreq	L5613
+5505  0bc5 ae00e0        	ldw	x,#L1462
+5506  0bc8 cd0000        	call	_Display_LCD_String
+5509  0bcb 2026          	jra	L3613
+5510  0bcd               L5613:
+5511                     ; 677 					if(can_data[1] < (U8)(40)){
+5513  0bcd 7b0e          	ld	a,(OFST-8,sp)
+5514  0bcf a128          	cp	a,#40
+5515  0bd1 2416          	jruge	L1713
+5516                     ; 678 						Display_LCD_String("-");
+5518  0bd3 ae00c3        	ldw	x,#L3713
+5519  0bd6 cd0000        	call	_Display_LCD_String
+5521                     ; 679 						Num_Display_LCD((U8)(40) - can_data[1]);
+5523  0bd9 a600          	ld	a,#0
+5524  0bdb 97            	ld	xl,a
+5525  0bdc a628          	ld	a,#40
+5526  0bde 100e          	sub	a,(OFST-8,sp)
+5527  0be0 2401          	jrnc	L45
+5528  0be2 5a            	decw	x
+5529  0be3               L45:
+5530  0be3 02            	rlwa	x,a
+5531  0be4 cd0000        	call	_Num_Display_LCD
+5534  0be7 200a          	jra	L3613
+5535  0be9               L1713:
+5536                     ; 682 						Num_Display_LCD(can_data[1] - (U8)(40));
+5538  0be9 7b0e          	ld	a,(OFST-8,sp)
+5539  0beb 5f            	clrw	x
+5540  0bec 97            	ld	xl,a
+5541  0bed 1d0028        	subw	x,#40
+5542  0bf0 cd0000        	call	_Num_Display_LCD
+5544  0bf3               L3613:
+5545                     ; 688 			if(uc_line_index == (U8)(1)){		// LINE 2
+5547  0bf3 7b16          	ld	a,(OFST+0,sp)
+5548  0bf5 a101          	cp	a,#1
+5549  0bf7 2634          	jrne	L7713
+5550                     ; 691 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 4));
+5552  0bf9 7b16          	ld	a,(OFST+0,sp)
+5553  0bfb 5f            	clrw	x
+5554  0bfc 97            	ld	xl,a
+5555  0bfd d60000        	ld	a,(_LCD_Line,x)
+5556  0c00 ab04          	add	a,#4
+5557  0c02 cd0000        	call	_Set_LCD_Address
+5559                     ; 692 				if(b_Rx2_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+5561  0c05 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5562  0c08 a502          	bcp	a,#2
+5563  0c0a 2708          	jreq	L1023
+5566  0c0c ae00e0        	ldw	x,#L1462
+5567  0c0f cd0000        	call	_Display_LCD_String
+5570  0c12 2019          	jra	L7713
+5571  0c14               L1023:
+5572                     ; 699 					Num_Display_LCD(can_diag[6] >> 4);  				//SoftWare Version Display
+5574  0c14 7b09          	ld	a,(OFST-13,sp)
+5575  0c16 4e            	swap	a
+5576  0c17 a40f          	and	a,#15
+5577  0c19 5f            	clrw	x
+5578  0c1a 97            	ld	xl,a
+5579  0c1b cd0000        	call	_Num_Display_LCD
+5581                     ; 700 					Display_LCD_String(".");
+5583  0c1e ae0105        	ldw	x,#L7352
+5584  0c21 cd0000        	call	_Display_LCD_String
+5586                     ; 701 					Num_Display_LCD(can_diag[6] & 0x0F);  			//SoftWare Version Display
+5588  0c24 7b09          	ld	a,(OFST-13,sp)
+5589  0c26 a40f          	and	a,#15
+5590  0c28 5f            	clrw	x
+5591  0c29 97            	ld	xl,a
+5592  0c2a cd0000        	call	_Num_Display_LCD
+5594  0c2d               L7713:
+5595                     ; 707 			if(uc_line_index == (U8)(2)){		// LINE 2
+5597  0c2d 7b16          	ld	a,(OFST+0,sp)
+5598  0c2f a102          	cp	a,#2
+5599                     ; 712 			if(uc_line_index == (U8)(3)){		// LINE 3
+5601  0c31 7b16          	ld	a,(OFST+0,sp)
+5602  0c33 a103          	cp	a,#3
+5603                     ; 665 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+5605  0c35 0c16          	inc	(OFST+0,sp)
+5609  0c37 7b16          	ld	a,(OFST+0,sp)
+5610  0c39 a104          	cp	a,#4
+5611  0c3b 2403          	jruge	L611
+5612  0c3d cc0b98        	jp	L5513
+5613  0c40               L611:
+5615  0c40 ac4b104b      	jpf	L1513
+5616  0c44               L3513:
+5617                     ; 719 		if(b_Rx2_Msg_TimeOut_Flag){
+5619  0c44 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+5620  0c47 a502          	bcp	a,#2
+5621  0c49 2710          	jreq	L3123
+5622                     ; 720 			Set_LCD_Address(LCD_Line[0]);	
+5624  0c4b c60000        	ld	a,_LCD_Line
+5625  0c4e cd0000        	call	_Set_LCD_Address
+5627                     ; 721 			Display_LCD_String("NC");
+5629  0c51 ae00e0        	ldw	x,#L1462
+5630  0c54 cd0000        	call	_Display_LCD_String
+5633  0c57 ac4b104b      	jpf	L1513
+5634  0c5b               L3123:
+5635                     ; 724 			uc_fault_cnt = (U8)(0);
+5637  0c5b 0f16          	clr	(OFST+0,sp)
+5639                     ; 726 			if(can_diag[1] & (U8)(0x01)){
+5641  0c5d 7b04          	ld	a,(OFST-18,sp)
+5642  0c5f a501          	bcp	a,#1
+5643  0c61 273c          	jreq	L7123
+5644                     ; 727 				uc_fault_cnt++;
+5646  0c63 0c16          	inc	(OFST+0,sp)
+5648                     ; 728 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+5648                     ; 729 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+5648                     ; 730 				){
+5650  0c65 0d16          	tnz	(OFST+0,sp)
+5651  0c67 270d          	jreq	L5223
+5653  0c69 7b16          	ld	a,(OFST+0,sp)
+5654  0c6b a105          	cp	a,#5
+5655  0c6d 2407          	jruge	L5223
+5657  0c6f c60004        	ld	a,_uc_Test_Page_Now
+5658  0c72 a102          	cp	a,#2
+5659  0c74 2713          	jreq	L3223
+5660  0c76               L5223:
+5662  0c76 7b16          	ld	a,(OFST+0,sp)
+5663  0c78 a105          	cp	a,#5
+5664  0c7a 2523          	jrult	L7123
+5666  0c7c 7b16          	ld	a,(OFST+0,sp)
+5667  0c7e a109          	cp	a,#9
+5668  0c80 241d          	jruge	L7123
+5670  0c82 c60004        	ld	a,_uc_Test_Page_Now
+5671  0c85 a103          	cp	a,#3
+5672  0c87 2616          	jrne	L7123
+5673  0c89               L3223:
+5674                     ; 731 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+5676  0c89 7b16          	ld	a,(OFST+0,sp)
+5677  0c8b 5f            	clrw	x
+5678  0c8c 97            	ld	xl,a
+5679  0c8d 5a            	decw	x
+5680  0c8e a604          	ld	a,#4
+5681  0c90 cd0000        	call	c_smodx
+5683  0c93 d60000        	ld	a,(_LCD_Line,x)
+5684  0c96 cd0000        	call	_Set_LCD_Address
+5686                     ; 732 					Display_LCD_String("Flt_LVLow");
+5688  0c99 ae00b9        	ldw	x,#L1323
+5689  0c9c cd0000        	call	_Display_LCD_String
+5691  0c9f               L7123:
+5692                     ; 736 			if(can_diag[1] & (U8)(0x02)){
+5694  0c9f 7b04          	ld	a,(OFST-18,sp)
+5695  0ca1 a502          	bcp	a,#2
+5696  0ca3 273c          	jreq	L3323
+5697                     ; 737 				uc_fault_cnt++;
+5699  0ca5 0c16          	inc	(OFST+0,sp)
+5701                     ; 738 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+5701                     ; 739 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+5701                     ; 740 				){
+5703  0ca7 0d16          	tnz	(OFST+0,sp)
+5704  0ca9 270d          	jreq	L1423
+5706  0cab 7b16          	ld	a,(OFST+0,sp)
+5707  0cad a105          	cp	a,#5
+5708  0caf 2407          	jruge	L1423
+5710  0cb1 c60004        	ld	a,_uc_Test_Page_Now
+5711  0cb4 a102          	cp	a,#2
+5712  0cb6 2713          	jreq	L7323
+5713  0cb8               L1423:
+5715  0cb8 7b16          	ld	a,(OFST+0,sp)
+5716  0cba a105          	cp	a,#5
+5717  0cbc 2523          	jrult	L3323
+5719  0cbe 7b16          	ld	a,(OFST+0,sp)
+5720  0cc0 a109          	cp	a,#9
+5721  0cc2 241d          	jruge	L3323
+5723  0cc4 c60004        	ld	a,_uc_Test_Page_Now
+5724  0cc7 a103          	cp	a,#3
+5725  0cc9 2616          	jrne	L3323
+5726  0ccb               L7323:
+5727                     ; 741 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+5729  0ccb 7b16          	ld	a,(OFST+0,sp)
+5730  0ccd 5f            	clrw	x
+5731  0cce 97            	ld	xl,a
+5732  0ccf 5a            	decw	x
+5733  0cd0 a604          	ld	a,#4
+5734  0cd2 cd0000        	call	c_smodx
+5736  0cd5 d60000        	ld	a,(_LCD_Line,x)
+5737  0cd8 cd0000        	call	_Set_LCD_Address
+5739                     ; 742 					Display_LCD_String("Flt_LVHigh");
+5741  0cdb ae00ae        	ldw	x,#L5423
+5742  0cde cd0000        	call	_Display_LCD_String
+5744  0ce1               L3323:
+5745                     ; 746 			if(can_diag[1] & (U8)(0x04)){
+5747  0ce1 7b04          	ld	a,(OFST-18,sp)
+5748  0ce3 a504          	bcp	a,#4
+5749  0ce5 273c          	jreq	L7423
+5750                     ; 747 				uc_fault_cnt++;
+5752  0ce7 0c16          	inc	(OFST+0,sp)
+5754                     ; 748 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+5754                     ; 749 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+5754                     ; 750 				){
+5756  0ce9 0d16          	tnz	(OFST+0,sp)
+5757  0ceb 270d          	jreq	L5523
+5759  0ced 7b16          	ld	a,(OFST+0,sp)
+5760  0cef a105          	cp	a,#5
+5761  0cf1 2407          	jruge	L5523
+5763  0cf3 c60004        	ld	a,_uc_Test_Page_Now
+5764  0cf6 a102          	cp	a,#2
+5765  0cf8 2713          	jreq	L3523
+5766  0cfa               L5523:
+5768  0cfa 7b16          	ld	a,(OFST+0,sp)
+5769  0cfc a105          	cp	a,#5
+5770  0cfe 2523          	jrult	L7423
+5772  0d00 7b16          	ld	a,(OFST+0,sp)
+5773  0d02 a109          	cp	a,#9
+5774  0d04 241d          	jruge	L7423
+5776  0d06 c60004        	ld	a,_uc_Test_Page_Now
+5777  0d09 a103          	cp	a,#3
+5778  0d0b 2616          	jrne	L7423
+5779  0d0d               L3523:
+5780                     ; 751 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+5782  0d0d 7b16          	ld	a,(OFST+0,sp)
+5783  0d0f 5f            	clrw	x
+5784  0d10 97            	ld	xl,a
+5785  0d11 5a            	decw	x
+5786  0d12 a604          	ld	a,#4
+5787  0d14 cd0000        	call	c_smodx
+5789  0d17 d60000        	ld	a,(_LCD_Line,x)
+5790  0d1a cd0000        	call	_Set_LCD_Address
+5792                     ; 752 					Display_LCD_String("Flt_HVLow");
+5794  0d1d ae00a4        	ldw	x,#L1623
+5795  0d20 cd0000        	call	_Display_LCD_String
+5797  0d23               L7423:
+5798                     ; 756 			if(can_diag[1] & (U8)(0x08)){
+5800  0d23 7b04          	ld	a,(OFST-18,sp)
+5801  0d25 a508          	bcp	a,#8
+5802  0d27 273c          	jreq	L3623
+5803                     ; 757 				uc_fault_cnt++;
+5805  0d29 0c16          	inc	(OFST+0,sp)
+5807                     ; 758 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+5807                     ; 759 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+5807                     ; 760 				){
+5809  0d2b 0d16          	tnz	(OFST+0,sp)
+5810  0d2d 270d          	jreq	L1723
+5812  0d2f 7b16          	ld	a,(OFST+0,sp)
+5813  0d31 a105          	cp	a,#5
+5814  0d33 2407          	jruge	L1723
+5816  0d35 c60004        	ld	a,_uc_Test_Page_Now
+5817  0d38 a102          	cp	a,#2
+5818  0d3a 2713          	jreq	L7623
+5819  0d3c               L1723:
+5821  0d3c 7b16          	ld	a,(OFST+0,sp)
+5822  0d3e a105          	cp	a,#5
+5823  0d40 2523          	jrult	L3623
+5825  0d42 7b16          	ld	a,(OFST+0,sp)
+5826  0d44 a109          	cp	a,#9
+5827  0d46 241d          	jruge	L3623
+5829  0d48 c60004        	ld	a,_uc_Test_Page_Now
+5830  0d4b a103          	cp	a,#3
+5831  0d4d 2616          	jrne	L3623
+5832  0d4f               L7623:
+5833                     ; 761 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);	
+5835  0d4f 7b16          	ld	a,(OFST+0,sp)
+5836  0d51 5f            	clrw	x
+5837  0d52 97            	ld	xl,a
+5838  0d53 5a            	decw	x
+5839  0d54 a604          	ld	a,#4
+5840  0d56 cd0000        	call	c_smodx
+5842  0d59 d60000        	ld	a,(_LCD_Line,x)
+5843  0d5c cd0000        	call	_Set_LCD_Address
+5845                     ; 762 					Display_LCD_String("Flt_HVHigh");
+5847  0d5f ae0099        	ldw	x,#L5723
+5848  0d62 cd0000        	call	_Display_LCD_String
+5850  0d65               L3623:
+5851                     ; 766 			if(can_diag[1] & (U8)(0x10)){
+5853  0d65 7b04          	ld	a,(OFST-18,sp)
+5854  0d67 a510          	bcp	a,#16
+5855  0d69 273c          	jreq	L7723
+5856                     ; 767 				uc_fault_cnt++;
+5858  0d6b 0c16          	inc	(OFST+0,sp)
+5860                     ; 768 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+5860                     ; 769 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+5860                     ; 770 				){
+5862  0d6d 0d16          	tnz	(OFST+0,sp)
+5863  0d6f 270d          	jreq	L5033
+5865  0d71 7b16          	ld	a,(OFST+0,sp)
+5866  0d73 a105          	cp	a,#5
+5867  0d75 2407          	jruge	L5033
+5869  0d77 c60004        	ld	a,_uc_Test_Page_Now
+5870  0d7a a102          	cp	a,#2
+5871  0d7c 2713          	jreq	L3033
+5872  0d7e               L5033:
+5874  0d7e 7b16          	ld	a,(OFST+0,sp)
+5875  0d80 a105          	cp	a,#5
+5876  0d82 2523          	jrult	L7723
+5878  0d84 7b16          	ld	a,(OFST+0,sp)
+5879  0d86 a109          	cp	a,#9
+5880  0d88 241d          	jruge	L7723
+5882  0d8a c60004        	ld	a,_uc_Test_Page_Now
+5883  0d8d a103          	cp	a,#3
+5884  0d8f 2616          	jrne	L7723
+5885  0d91               L3033:
+5886                     ; 771 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+5888  0d91 7b16          	ld	a,(OFST+0,sp)
+5889  0d93 5f            	clrw	x
+5890  0d94 97            	ld	xl,a
+5891  0d95 5a            	decw	x
+5892  0d96 a604          	ld	a,#4
+5893  0d98 cd0000        	call	c_smodx
+5895  0d9b d60000        	ld	a,(_LCD_Line,x)
+5896  0d9e cd0000        	call	_Set_LCD_Address
+5898                     ; 772 					Display_LCD_String("Flt_OverCur");
+5900  0da1 ae008d        	ldw	x,#L1133
+5901  0da4 cd0000        	call	_Display_LCD_String
+5903  0da7               L7723:
+5904                     ; 778 			if(can_diag[1] & (U8)(0x20)){
+5906  0da7 7b04          	ld	a,(OFST-18,sp)
+5907  0da9 a520          	bcp	a,#32
+5908  0dab 273c          	jreq	L3133
+5909                     ; 780 				uc_fault_cnt++;
+5911  0dad 0c16          	inc	(OFST+0,sp)
+5913                     ; 781 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+5913                     ; 782 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+5913                     ; 783 				){
+5915  0daf 0d16          	tnz	(OFST+0,sp)
+5916  0db1 270d          	jreq	L1233
+5918  0db3 7b16          	ld	a,(OFST+0,sp)
+5919  0db5 a105          	cp	a,#5
+5920  0db7 2407          	jruge	L1233
+5922  0db9 c60004        	ld	a,_uc_Test_Page_Now
+5923  0dbc a102          	cp	a,#2
+5924  0dbe 2713          	jreq	L7133
+5925  0dc0               L1233:
+5927  0dc0 7b16          	ld	a,(OFST+0,sp)
+5928  0dc2 a105          	cp	a,#5
+5929  0dc4 2523          	jrult	L3133
+5931  0dc6 7b16          	ld	a,(OFST+0,sp)
+5932  0dc8 a109          	cp	a,#9
+5933  0dca 241d          	jruge	L3133
+5935  0dcc c60004        	ld	a,_uc_Test_Page_Now
+5936  0dcf a103          	cp	a,#3
+5937  0dd1 2616          	jrne	L3133
+5938  0dd3               L7133:
+5939                     ; 784 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+5941  0dd3 7b16          	ld	a,(OFST+0,sp)
+5942  0dd5 5f            	clrw	x
+5943  0dd6 97            	ld	xl,a
+5944  0dd7 5a            	decw	x
+5945  0dd8 a604          	ld	a,#4
+5946  0dda cd0000        	call	c_smodx
+5948  0ddd d60000        	ld	a,(_LCD_Line,x)
+5949  0de0 cd0000        	call	_Set_LCD_Address
+5951                     ; 785 					Display_LCD_String("Flt_ThmShut");
+5953  0de3 ae0081        	ldw	x,#L5233
+5954  0de6 cd0000        	call	_Display_LCD_String
+5956  0de9               L3133:
+5957                     ; 791 			if(can_diag[1] & (U8)(0x40)){
+5959  0de9 7b04          	ld	a,(OFST-18,sp)
+5960  0deb a540          	bcp	a,#64
+5961  0ded 273c          	jreq	L7233
+5962                     ; 793 				uc_fault_cnt++;
+5964  0def 0c16          	inc	(OFST+0,sp)
+5966                     ; 794 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+5966                     ; 795 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+5966                     ; 796 				){
+5968  0df1 0d16          	tnz	(OFST+0,sp)
+5969  0df3 270d          	jreq	L5333
+5971  0df5 7b16          	ld	a,(OFST+0,sp)
+5972  0df7 a105          	cp	a,#5
+5973  0df9 2407          	jruge	L5333
+5975  0dfb c60004        	ld	a,_uc_Test_Page_Now
+5976  0dfe a102          	cp	a,#2
+5977  0e00 2713          	jreq	L3333
+5978  0e02               L5333:
+5980  0e02 7b16          	ld	a,(OFST+0,sp)
+5981  0e04 a105          	cp	a,#5
+5982  0e06 2523          	jrult	L7233
+5984  0e08 7b16          	ld	a,(OFST+0,sp)
+5985  0e0a a109          	cp	a,#9
+5986  0e0c 241d          	jruge	L7233
+5988  0e0e c60004        	ld	a,_uc_Test_Page_Now
+5989  0e11 a103          	cp	a,#3
+5990  0e13 2616          	jrne	L7233
+5991  0e15               L3333:
+5992                     ; 797 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);			
+5994  0e15 7b16          	ld	a,(OFST+0,sp)
+5995  0e17 5f            	clrw	x
+5996  0e18 97            	ld	xl,a
+5997  0e19 5a            	decw	x
+5998  0e1a a604          	ld	a,#4
+5999  0e1c cd0000        	call	c_smodx
+6001  0e1f d60000        	ld	a,(_LCD_Line,x)
+6002  0e22 cd0000        	call	_Set_LCD_Address
+6004                     ; 798 					Display_LCD_String("Flt_PCBThmShut");
+6006  0e25 ae0072        	ldw	x,#L1433
+6007  0e28 cd0000        	call	_Display_LCD_String
+6009  0e2b               L7233:
+6010                     ; 802 			if(can_diag[3] & (U8)(0x01)){
+6012  0e2b 7b06          	ld	a,(OFST-16,sp)
+6013  0e2d a501          	bcp	a,#1
+6014  0e2f 273c          	jreq	L3433
+6015                     ; 803 				uc_fault_cnt++;
+6017  0e31 0c16          	inc	(OFST+0,sp)
+6019                     ; 804 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+6019                     ; 805 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+6019                     ; 806 				){
+6021  0e33 0d16          	tnz	(OFST+0,sp)
+6022  0e35 270d          	jreq	L1533
+6024  0e37 7b16          	ld	a,(OFST+0,sp)
+6025  0e39 a105          	cp	a,#5
+6026  0e3b 2407          	jruge	L1533
+6028  0e3d c60004        	ld	a,_uc_Test_Page_Now
+6029  0e40 a102          	cp	a,#2
+6030  0e42 2713          	jreq	L7433
+6031  0e44               L1533:
+6033  0e44 7b16          	ld	a,(OFST+0,sp)
+6034  0e46 a105          	cp	a,#5
+6035  0e48 2523          	jrult	L3433
+6037  0e4a 7b16          	ld	a,(OFST+0,sp)
+6038  0e4c a109          	cp	a,#9
+6039  0e4e 241d          	jruge	L3433
+6041  0e50 c60004        	ld	a,_uc_Test_Page_Now
+6042  0e53 a103          	cp	a,#3
+6043  0e55 2616          	jrne	L3433
+6044  0e57               L7433:
+6045                     ; 807 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+6047  0e57 7b16          	ld	a,(OFST+0,sp)
+6048  0e59 5f            	clrw	x
+6049  0e5a 97            	ld	xl,a
+6050  0e5b 5a            	decw	x
+6051  0e5c a604          	ld	a,#4
+6052  0e5e cd0000        	call	c_smodx
+6054  0e61 d60000        	ld	a,(_LCD_Line,x)
+6055  0e64 cd0000        	call	_Set_LCD_Address
+6057                     ; 808 					Display_LCD_String("Flt_MsgTimeOut");
+6059  0e67 ae0063        	ldw	x,#L5533
+6060  0e6a cd0000        	call	_Display_LCD_String
+6062  0e6d               L3433:
+6063                     ; 812 			if(can_diag[4] & (U8)(0x01)){
+6065  0e6d 7b07          	ld	a,(OFST-15,sp)
+6066  0e6f a501          	bcp	a,#1
+6067  0e71 273c          	jreq	L7533
+6068                     ; 813 				uc_fault_cnt++;
+6070  0e73 0c16          	inc	(OFST+0,sp)
+6072                     ; 814 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+6072                     ; 815 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+6072                     ; 816 				){
+6074  0e75 0d16          	tnz	(OFST+0,sp)
+6075  0e77 270d          	jreq	L5633
+6077  0e79 7b16          	ld	a,(OFST+0,sp)
+6078  0e7b a105          	cp	a,#5
+6079  0e7d 2407          	jruge	L5633
+6081  0e7f c60004        	ld	a,_uc_Test_Page_Now
+6082  0e82 a102          	cp	a,#2
+6083  0e84 2713          	jreq	L3633
+6084  0e86               L5633:
+6086  0e86 7b16          	ld	a,(OFST+0,sp)
+6087  0e88 a105          	cp	a,#5
+6088  0e8a 2523          	jrult	L7533
+6090  0e8c 7b16          	ld	a,(OFST+0,sp)
+6091  0e8e a109          	cp	a,#9
+6092  0e90 241d          	jruge	L7533
+6094  0e92 c60004        	ld	a,_uc_Test_Page_Now
+6095  0e95 a103          	cp	a,#3
+6096  0e97 2616          	jrne	L7533
+6097  0e99               L3633:
+6098                     ; 817 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+6100  0e99 7b16          	ld	a,(OFST+0,sp)
+6101  0e9b 5f            	clrw	x
+6102  0e9c 97            	ld	xl,a
+6103  0e9d 5a            	decw	x
+6104  0e9e a604          	ld	a,#4
+6105  0ea0 cd0000        	call	c_smodx
+6107  0ea3 d60000        	ld	a,(_LCD_Line,x)
+6108  0ea6 cd0000        	call	_Set_LCD_Address
+6110                     ; 818 					Display_LCD_String("Fail_HVSen");
+6112  0ea9 ae0058        	ldw	x,#L1733
+6113  0eac cd0000        	call	_Display_LCD_String
+6115  0eaf               L7533:
+6116                     ; 822 			if(can_diag[4] & (U8)(0x02)){
+6118  0eaf 7b07          	ld	a,(OFST-15,sp)
+6119  0eb1 a502          	bcp	a,#2
+6120  0eb3 273c          	jreq	L3733
+6121                     ; 823 				uc_fault_cnt++;
+6123  0eb5 0c16          	inc	(OFST+0,sp)
+6125                     ; 824 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+6125                     ; 825 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+6125                     ; 826 				){
+6127  0eb7 0d16          	tnz	(OFST+0,sp)
+6128  0eb9 270d          	jreq	L1043
+6130  0ebb 7b16          	ld	a,(OFST+0,sp)
+6131  0ebd a105          	cp	a,#5
+6132  0ebf 2407          	jruge	L1043
+6134  0ec1 c60004        	ld	a,_uc_Test_Page_Now
+6135  0ec4 a102          	cp	a,#2
+6136  0ec6 2713          	jreq	L7733
+6137  0ec8               L1043:
+6139  0ec8 7b16          	ld	a,(OFST+0,sp)
+6140  0eca a105          	cp	a,#5
+6141  0ecc 2523          	jrult	L3733
+6143  0ece 7b16          	ld	a,(OFST+0,sp)
+6144  0ed0 a109          	cp	a,#9
+6145  0ed2 241d          	jruge	L3733
+6147  0ed4 c60004        	ld	a,_uc_Test_Page_Now
+6148  0ed7 a103          	cp	a,#3
+6149  0ed9 2616          	jrne	L3733
+6150  0edb               L7733:
+6151                     ; 827 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+6153  0edb 7b16          	ld	a,(OFST+0,sp)
+6154  0edd 5f            	clrw	x
+6155  0ede 97            	ld	xl,a
+6156  0edf 5a            	decw	x
+6157  0ee0 a604          	ld	a,#4
+6158  0ee2 cd0000        	call	c_smodx
+6160  0ee5 d60000        	ld	a,(_LCD_Line,x)
+6161  0ee8 cd0000        	call	_Set_LCD_Address
+6163                     ; 828 					Display_LCD_String("Fail_LVSen");
+6165  0eeb ae004d        	ldw	x,#L5043
+6166  0eee cd0000        	call	_Display_LCD_String
+6168  0ef1               L3733:
+6169                     ; 832 			if(can_diag[4] & (U8)(0x04)){
+6171  0ef1 7b07          	ld	a,(OFST-15,sp)
+6172  0ef3 a504          	bcp	a,#4
+6173  0ef5 273c          	jreq	L7043
+6174                     ; 833 				uc_fault_cnt++;
+6176  0ef7 0c16          	inc	(OFST+0,sp)
+6178                     ; 834 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+6178                     ; 835 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+6178                     ; 836 				){
+6180  0ef9 0d16          	tnz	(OFST+0,sp)
+6181  0efb 270d          	jreq	L5143
+6183  0efd 7b16          	ld	a,(OFST+0,sp)
+6184  0eff a105          	cp	a,#5
+6185  0f01 2407          	jruge	L5143
+6187  0f03 c60004        	ld	a,_uc_Test_Page_Now
+6188  0f06 a102          	cp	a,#2
+6189  0f08 2713          	jreq	L3143
+6190  0f0a               L5143:
+6192  0f0a 7b16          	ld	a,(OFST+0,sp)
+6193  0f0c a105          	cp	a,#5
+6194  0f0e 2523          	jrult	L7043
+6196  0f10 7b16          	ld	a,(OFST+0,sp)
+6197  0f12 a109          	cp	a,#9
+6198  0f14 241d          	jruge	L7043
+6200  0f16 c60004        	ld	a,_uc_Test_Page_Now
+6201  0f19 a103          	cp	a,#3
+6202  0f1b 2616          	jrne	L7043
+6203  0f1d               L3143:
+6204                     ; 837 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+6206  0f1d 7b16          	ld	a,(OFST+0,sp)
+6207  0f1f 5f            	clrw	x
+6208  0f20 97            	ld	xl,a
+6209  0f21 5a            	decw	x
+6210  0f22 a604          	ld	a,#4
+6211  0f24 cd0000        	call	c_smodx
+6213  0f27 d60000        	ld	a,(_LCD_Line,x)
+6214  0f2a cd0000        	call	_Set_LCD_Address
+6216                     ; 838 					Display_LCD_String("Fail_CurSen");
+6218  0f2d ae0041        	ldw	x,#L1243
+6219  0f30 cd0000        	call	_Display_LCD_String
+6221  0f33               L7043:
+6222                     ; 844 			if(can_diag[4] & (U8)(0x08)){
+6224  0f33 7b07          	ld	a,(OFST-15,sp)
+6225  0f35 a508          	bcp	a,#8
+6226  0f37 273c          	jreq	L3243
+6227                     ; 846 				uc_fault_cnt++;
+6229  0f39 0c16          	inc	(OFST+0,sp)
+6231                     ; 847 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+6231                     ; 848 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+6231                     ; 849 				){
+6233  0f3b 0d16          	tnz	(OFST+0,sp)
+6234  0f3d 270d          	jreq	L1343
+6236  0f3f 7b16          	ld	a,(OFST+0,sp)
+6237  0f41 a105          	cp	a,#5
+6238  0f43 2407          	jruge	L1343
+6240  0f45 c60004        	ld	a,_uc_Test_Page_Now
+6241  0f48 a102          	cp	a,#2
+6242  0f4a 2713          	jreq	L7243
+6243  0f4c               L1343:
+6245  0f4c 7b16          	ld	a,(OFST+0,sp)
+6246  0f4e a105          	cp	a,#5
+6247  0f50 2523          	jrult	L3243
+6249  0f52 7b16          	ld	a,(OFST+0,sp)
+6250  0f54 a109          	cp	a,#9
+6251  0f56 241d          	jruge	L3243
+6253  0f58 c60004        	ld	a,_uc_Test_Page_Now
+6254  0f5b a103          	cp	a,#3
+6255  0f5d 2616          	jrne	L3243
+6256  0f5f               L7243:
+6257                     ; 850 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);	
+6259  0f5f 7b16          	ld	a,(OFST+0,sp)
+6260  0f61 5f            	clrw	x
+6261  0f62 97            	ld	xl,a
+6262  0f63 5a            	decw	x
+6263  0f64 a604          	ld	a,#4
+6264  0f66 cd0000        	call	c_smodx
+6266  0f69 d60000        	ld	a,(_LCD_Line,x)
+6267  0f6c cd0000        	call	_Set_LCD_Address
+6269                     ; 851 					Display_LCD_String("Fail_CoreTemp");
+6271  0f6f ae0033        	ldw	x,#L5343
+6272  0f72 cd0000        	call	_Display_LCD_String
+6274  0f75               L3243:
+6275                     ; 857 			if(can_diag[4] & (U8)(0x10)){
+6277  0f75 7b07          	ld	a,(OFST-15,sp)
+6278  0f77 a510          	bcp	a,#16
+6279  0f79 273c          	jreq	L7343
+6280                     ; 859 				uc_fault_cnt++;
+6282  0f7b 0c16          	inc	(OFST+0,sp)
+6284                     ; 860 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+6284                     ; 861 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+6284                     ; 862 				){
+6286  0f7d 0d16          	tnz	(OFST+0,sp)
+6287  0f7f 270d          	jreq	L5443
+6289  0f81 7b16          	ld	a,(OFST+0,sp)
+6290  0f83 a105          	cp	a,#5
+6291  0f85 2407          	jruge	L5443
+6293  0f87 c60004        	ld	a,_uc_Test_Page_Now
+6294  0f8a a102          	cp	a,#2
+6295  0f8c 2713          	jreq	L3443
+6296  0f8e               L5443:
+6298  0f8e 7b16          	ld	a,(OFST+0,sp)
+6299  0f90 a105          	cp	a,#5
+6300  0f92 2523          	jrult	L7343
+6302  0f94 7b16          	ld	a,(OFST+0,sp)
+6303  0f96 a109          	cp	a,#9
+6304  0f98 241d          	jruge	L7343
+6306  0f9a c60004        	ld	a,_uc_Test_Page_Now
+6307  0f9d a103          	cp	a,#3
+6308  0f9f 2616          	jrne	L7343
+6309  0fa1               L3443:
+6310                     ; 863 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+6312  0fa1 7b16          	ld	a,(OFST+0,sp)
+6313  0fa3 5f            	clrw	x
+6314  0fa4 97            	ld	xl,a
+6315  0fa5 5a            	decw	x
+6316  0fa6 a604          	ld	a,#4
+6317  0fa8 cd0000        	call	c_smodx
+6319  0fab d60000        	ld	a,(_LCD_Line,x)
+6320  0fae cd0000        	call	_Set_LCD_Address
+6322                     ; 864 					Display_LCD_String("Fail_PCB1Temp");
+6324  0fb1 ae0025        	ldw	x,#L1543
+6325  0fb4 cd0000        	call	_Display_LCD_String
+6327  0fb7               L7343:
+6328                     ; 870 			if(can_diag[4] & (U8)(0x20)){
+6330  0fb7 7b07          	ld	a,(OFST-15,sp)
+6331  0fb9 a520          	bcp	a,#32
+6332  0fbb 273c          	jreq	L3543
+6333                     ; 872 				uc_fault_cnt++;
+6335  0fbd 0c16          	inc	(OFST+0,sp)
+6337                     ; 873 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+6337                     ; 874 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+6337                     ; 875 				){
+6339  0fbf 0d16          	tnz	(OFST+0,sp)
+6340  0fc1 270d          	jreq	L1643
+6342  0fc3 7b16          	ld	a,(OFST+0,sp)
+6343  0fc5 a105          	cp	a,#5
+6344  0fc7 2407          	jruge	L1643
+6346  0fc9 c60004        	ld	a,_uc_Test_Page_Now
+6347  0fcc a102          	cp	a,#2
+6348  0fce 2713          	jreq	L7543
+6349  0fd0               L1643:
+6351  0fd0 7b16          	ld	a,(OFST+0,sp)
+6352  0fd2 a105          	cp	a,#5
+6353  0fd4 2523          	jrult	L3543
+6355  0fd6 7b16          	ld	a,(OFST+0,sp)
+6356  0fd8 a109          	cp	a,#9
+6357  0fda 241d          	jruge	L3543
+6359  0fdc c60004        	ld	a,_uc_Test_Page_Now
+6360  0fdf a103          	cp	a,#3
+6361  0fe1 2616          	jrne	L3543
+6362  0fe3               L7543:
+6363                     ; 876 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+6365  0fe3 7b16          	ld	a,(OFST+0,sp)
+6366  0fe5 5f            	clrw	x
+6367  0fe6 97            	ld	xl,a
+6368  0fe7 5a            	decw	x
+6369  0fe8 a604          	ld	a,#4
+6370  0fea cd0000        	call	c_smodx
+6372  0fed d60000        	ld	a,(_LCD_Line,x)
+6373  0ff0 cd0000        	call	_Set_LCD_Address
+6375                     ; 877 					Display_LCD_String("Fail_IGBT");
+6377  0ff3 ae001b        	ldw	x,#L5643
+6378  0ff6 cd0000        	call	_Display_LCD_String
+6380  0ff9               L3543:
+6381                     ; 881 			if(can_diag[4] & (U8)(0x40)){
+6383  0ff9 7b07          	ld	a,(OFST-15,sp)
+6384  0ffb a540          	bcp	a,#64
+6385  0ffd 273c          	jreq	L7643
+6386                     ; 882 				uc_fault_cnt++;
+6388  0fff 0c16          	inc	(OFST+0,sp)
 6390                     ; 883 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
 6390                     ; 884 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
 6390                     ; 885 				){
-6392  1023 0d16          	tnz	(OFST+0,sp)
-6393  1025 270d          	jreq	L5743
-6395  1027 7b16          	ld	a,(OFST+0,sp)
-6396  1029 a105          	cp	a,#5
-6397  102b 2407          	jruge	L5743
-6399  102d c60004        	ld	a,_uc_Test_Page_Now
-6400  1030 a102          	cp	a,#2
-6401  1032 2713          	jreq	L3743
-6402  1034               L5743:
-6404  1034 7b16          	ld	a,(OFST+0,sp)
-6405  1036 a105          	cp	a,#5
-6406  1038 2523          	jrult	L7643
-6408  103a 7b16          	ld	a,(OFST+0,sp)
-6409  103c a109          	cp	a,#9
-6410  103e 241d          	jruge	L7643
-6412  1040 c60004        	ld	a,_uc_Test_Page_Now
-6413  1043 a103          	cp	a,#3
-6414  1045 2616          	jrne	L7643
-6415  1047               L3743:
+6392  1001 0d16          	tnz	(OFST+0,sp)
+6393  1003 270d          	jreq	L5743
+6395  1005 7b16          	ld	a,(OFST+0,sp)
+6396  1007 a105          	cp	a,#5
+6397  1009 2407          	jruge	L5743
+6399  100b c60004        	ld	a,_uc_Test_Page_Now
+6400  100e a102          	cp	a,#2
+6401  1010 2713          	jreq	L3743
+6402  1012               L5743:
+6404  1012 7b16          	ld	a,(OFST+0,sp)
+6405  1014 a105          	cp	a,#5
+6406  1016 2523          	jrult	L7643
+6408  1018 7b16          	ld	a,(OFST+0,sp)
+6409  101a a109          	cp	a,#9
+6410  101c 241d          	jruge	L7643
+6412  101e c60004        	ld	a,_uc_Test_Page_Now
+6413  1021 a103          	cp	a,#3
+6414  1023 2616          	jrne	L7643
+6415  1025               L3743:
 6416                     ; 886 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-6418  1047 7b16          	ld	a,(OFST+0,sp)
-6419  1049 5f            	clrw	x
-6420  104a 97            	ld	xl,a
-6421  104b 5a            	decw	x
-6422  104c a604          	ld	a,#4
-6423  104e cd0000        	call	c_smodx
-6425  1051 d60000        	ld	a,(_LCD_Line,x)
-6426  1054 cd0000        	call	_Set_LCD_Address
+6418  1025 7b16          	ld	a,(OFST+0,sp)
+6419  1027 5f            	clrw	x
+6420  1028 97            	ld	xl,a
+6421  1029 5a            	decw	x
+6422  102a a604          	ld	a,#4
+6423  102c cd0000        	call	c_smodx
+6425  102f d60000        	ld	a,(_LCD_Line,x)
+6426  1032 cd0000        	call	_Set_LCD_Address
 6428                     ; 887 					Display_LCD_String("Fail_openLoad");
-6430  1057 ae000d        	ldw	x,#L1053
-6431  105a cd0000        	call	_Display_LCD_String
-6433  105d               L7643:
+6430  1035 ae000d        	ldw	x,#L1053
+6431  1038 cd0000        	call	_Display_LCD_String
+6433  103b               L7643:
 6434                     ; 891 			if(!uc_fault_cnt){
-6436  105d 0d16          	tnz	(OFST+0,sp)
-6437  105f 260c          	jrne	L1513
+6436  103b 0d16          	tnz	(OFST+0,sp)
+6437  103d 260c          	jrne	L1513
 6438                     ; 892 				Set_LCD_Address(LCD_Line[0]);
-6440  1061 c60000        	ld	a,_LCD_Line
-6441  1064 cd0000        	call	_Set_LCD_Address
+6440  103f c60000        	ld	a,_LCD_Line
+6441  1042 cd0000        	call	_Set_LCD_Address
 6443                     ; 893 				Display_LCD_String("Normal");
-6445  1067 ae0006        	ldw	x,#L5053
-6446  106a cd0000        	call	_Display_LCD_String
-6448  106d               L1513:
+6445  1045 ae0006        	ldw	x,#L5053
+6446  1048 cd0000        	call	_Display_LCD_String
+6448  104b               L1513:
 6449                     ; 898 	if((b_Com_On_flag == ON)){
-6451  106d c6000d        	ld	a,_uc_Test_Ctrl_Reg
-6452  1070 a508          	bcp	a,#8
-6453  1072 270d          	jreq	L7053
+6451  104b c6000d        	ld	a,_uc_Test_Ctrl_Reg
+6452  104e a508          	bcp	a,#8
+6453  1050 270d          	jreq	L7053
 6454                     ; 899 		Set_LCD_Address((unsigned char)(0x00+15));
-6456  1074 a60f          	ld	a,#15
-6457  1076 cd0000        	call	_Set_LCD_Address
+6456  1052 a60f          	ld	a,#15
+6457  1054 cd0000        	call	_Set_LCD_Address
 6459                     ; 902 		Display_LCD_String("Y");	// YJS 20230314
-6461  1079 ae0004        	ldw	x,#L1153
-6462  107c cd0000        	call	_Display_LCD_String
-6465  107f 200b          	jra	L3153
-6466  1081               L7053:
+6461  1057 ae0004        	ldw	x,#L1153
+6462  105a cd0000        	call	_Display_LCD_String
+6465  105d 200b          	jra	L3153
+6466  105f               L7053:
 6467                     ; 904 		Set_LCD_Address((unsigned char)(0x00+15));
-6469  1081 a60f          	ld	a,#15
-6470  1083 cd0000        	call	_Set_LCD_Address
+6469  105f a60f          	ld	a,#15
+6470  1061 cd0000        	call	_Set_LCD_Address
 6472                     ; 905 		Display_LCD_String("N");
-6474  1086 ae00c7        	ldw	x,#L7013
-6475  1089 cd0000        	call	_Display_LCD_String
-6477  108c               L3153:
+6474  1064 ae00c7        	ldw	x,#L7013
+6475  1067 cd0000        	call	_Display_LCD_String
+6477  106a               L3153:
 6478                     ; 908 	return;
-6479  108c               L65:
-6482  108c 5b16          	addw	sp,#22
-6483  108e 81            	ret
+6479  106a               L65:
+6482  106a 5b16          	addw	sp,#22
+6483  106c 81            	ret
 6575                     ; 910 static void SU2I_Ctrl_LCD_Display_Control(void)
 6575                     ; 911 {
 6576                     	switch	.text
-6577  108f               L5153_SU2I_Ctrl_LCD_Display_Control:
-6579  108f 5216          	subw	sp,#22
+6577  106d               L5153_SU2I_Ctrl_LCD_Display_Control:
+6579  106d 5216          	subw	sp,#22
 6580       00000016      OFST:	set	22
 6583                     ; 918 if (HEATER_zone_status==HTR_ZONE_1)
-6585  1091 725d0000      	tnz	_HEATER_zone_status
-6586  1095 263a          	jrne	L1553
+6585  106f 725d0000      	tnz	_HEATER_zone_status
+6586  1073 263a          	jrne	L1553
 6587                     ; 920 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
-6589  1097 0f16          	clr	(OFST+0,sp)
-6590  1099               L3553:
-6591                     ; 922 		can_data[uc_buffer]=uc_Rx_Data[HTR_STATUS2][uc_buffer];
-6593  1099 96            	ldw	x,sp
-6594  109a 1c000d        	addw	x,#OFST-9
-6595  109d 9f            	ld	a,xl
-6596  109e 5e            	swapw	x
-6597  109f 1b16          	add	a,(OFST+0,sp)
-6598  10a1 2401          	jrnc	L221
-6599  10a3 5c            	incw	x
-6600  10a4               L221:
-6601  10a4 02            	rlwa	x,a
-6602  10a5 7b16          	ld	a,(OFST+0,sp)
-6603  10a7 905f          	clrw	y
-6604  10a9 9097          	ld	yl,a
-6605  10ab 90d60008      	ld	a,(_uc_Rx_Data+8,y)
-6606  10af f7            	ld	(x),a
-6607                     ; 923 		can_diag[uc_buffer]=uc_Rx_Data[HTR_STATUS4][uc_buffer];
-6609  10b0 96            	ldw	x,sp
-6610  10b1 1c0003        	addw	x,#OFST-19
-6611  10b4 9f            	ld	a,xl
-6612  10b5 5e            	swapw	x
-6613  10b6 1b16          	add	a,(OFST+0,sp)
-6614  10b8 2401          	jrnc	L421
-6615  10ba 5c            	incw	x
-6616  10bb               L421:
-6617  10bb 02            	rlwa	x,a
-6618  10bc 7b16          	ld	a,(OFST+0,sp)
-6619  10be 905f          	clrw	y
-6620  10c0 9097          	ld	yl,a
-6621  10c2 90d60018      	ld	a,(_uc_Rx_Data+24,y)
-6622  10c6 f7            	ld	(x),a
-6623                     ; 920 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
-6625  10c7 0c16          	inc	(OFST+0,sp)
-6628  10c9 7b16          	ld	a,(OFST+0,sp)
-6629  10cb a108          	cp	a,#8
-6630  10cd 25ca          	jrult	L3553
-6632  10cf 2038          	jra	L1653
-6633  10d1               L1553:
-6634                     ; 928 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
-6636  10d1 0f16          	clr	(OFST+0,sp)
-6637  10d3               L3653:
-6638                     ; 930 		can_data[uc_buffer]=uc_Rx_Data[HTR_STATUS3][uc_buffer];
-6640  10d3 96            	ldw	x,sp
-6641  10d4 1c000d        	addw	x,#OFST-9
-6642  10d7 9f            	ld	a,xl
-6643  10d8 5e            	swapw	x
-6644  10d9 1b16          	add	a,(OFST+0,sp)
-6645  10db 2401          	jrnc	L621
-6646  10dd 5c            	incw	x
-6647  10de               L621:
-6648  10de 02            	rlwa	x,a
-6649  10df 7b16          	ld	a,(OFST+0,sp)
-6650  10e1 905f          	clrw	y
-6651  10e3 9097          	ld	yl,a
-6652  10e5 90d60010      	ld	a,(_uc_Rx_Data+16,y)
-6653  10e9 f7            	ld	(x),a
-6654                     ; 931 		can_diag[uc_buffer]=uc_Rx_Data[HTR_STATUS4][uc_buffer];
-6656  10ea 96            	ldw	x,sp
-6657  10eb 1c0003        	addw	x,#OFST-19
-6658  10ee 9f            	ld	a,xl
-6659  10ef 5e            	swapw	x
-6660  10f0 1b16          	add	a,(OFST+0,sp)
-6661  10f2 2401          	jrnc	L031
-6662  10f4 5c            	incw	x
-6663  10f5               L031:
-6664  10f5 02            	rlwa	x,a
-6665  10f6 7b16          	ld	a,(OFST+0,sp)
-6666  10f8 905f          	clrw	y
-6667  10fa 9097          	ld	yl,a
-6668  10fc 90d60018      	ld	a,(_uc_Rx_Data+24,y)
-6669  1100 f7            	ld	(x),a
-6670                     ; 928 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
-6672  1101 0c16          	inc	(OFST+0,sp)
-6675  1103 7b16          	ld	a,(OFST+0,sp)
-6676  1105 a108          	cp	a,#8
-6677  1107 25ca          	jrult	L3653
-6678  1109               L1653:
-6679                     ; 934 	if(b_Test_Option_flag == ON){
-6681  1109 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-6682  110c a510          	bcp	a,#16
-6683  110e 2779          	jreq	L1753
-6684                     ; 935 		Set_LCD_Address(LCD_Line[0]);
-6686  1110 c60000        	ld	a,_LCD_Line
-6687  1113 cd0000        	call	_Set_LCD_Address
-6689                     ; 936 		Display_LCD_String("*OPTION*");
-6691  1116 ae012d        	ldw	x,#L1252
-6692  1119 cd0000        	call	_Display_LCD_String
-6694                     ; 938 		if(uc_Target_Display_Mode == (U8)(0)){
-6696  111c 725d0000      	tnz	_uc_Target_Display_Mode
-6697  1120 260e          	jrne	L3753
-6698                     ; 939 			Set_LCD_Address(LCD_Line[1]);
-6700  1122 c60001        	ld	a,_LCD_Line+1
-6701  1125 cd0000        	call	_Set_LCD_Address
-6703                     ; 940 			Display_LCD_String("*Target Perc");
-6705  1128 ae0120        	ldw	x,#L5252
-6706  112b cd0000        	call	_Display_LCD_String
-6709  112e 200c          	jra	L5753
-6710  1130               L3753:
-6711                     ; 943 			Set_LCD_Address(LCD_Line[1]);
-6713  1130 c60001        	ld	a,_LCD_Line+1
-6714  1133 cd0000        	call	_Set_LCD_Address
-6716                     ; 944 			Display_LCD_String("*Target Watt(OS)");
-6718  1136 ae010f        	ldw	x,#L1352
-6719  1139 cd0000        	call	_Display_LCD_String
-6721  113c               L5753:
-6722                     ; 947 		Set_LCD_Address(LCD_Line[2]);
-6724  113c c60002        	ld	a,_LCD_Line+2
-6725  113f cd0000        	call	_Set_LCD_Address
-6727                     ; 948 		Display_LCD_String("D_Unit:");
-6729  1142 ae0107        	ldw	x,#L3352
-6730  1145 cd0000        	call	_Display_LCD_String
-6732                     ; 950 		Set_LCD_Address((unsigned char)(LCD_Line[2]+7));
-6734  1148 c60002        	ld	a,_LCD_Line+2
-6735  114b ab07          	add	a,#7
-6736  114d cd0000        	call	_Set_LCD_Address
-6738                     ; 951 		if(b_Blink_250_Flag){
-6740  1150 c60000        	ld	a,_uc_LCD_Blink_Reg
-6741  1153 a502          	bcp	a,#2
-6742  1155 272e          	jreq	L7753
-6743                     ; 952 			Num_Display_LCD(uc_Perc_Unit /(U8)(2));
-6745  1157 c60001        	ld	a,_uc_Perc_Unit
-6746  115a 44            	srl	a
-6747  115b 5f            	clrw	x
-6748  115c 97            	ld	xl,a
-6749  115d cd0000        	call	_Num_Display_LCD
-6751                     ; 953 			Display_LCD_String(".");
-6753  1160 ae0105        	ldw	x,#L7352
-6754  1163 cd0000        	call	_Display_LCD_String
-6756                     ; 954 			uc_buffer = uc_Perc_Unit %(U8)(2);
-6758  1166 c60001        	ld	a,_uc_Perc_Unit
-6759  1169 a401          	and	a,#1
-6760  116b 6b16          	ld	(OFST+0,sp),a
-6761                     ; 955 			if(uc_buffer){ Display_LCD_String("5"); }
-6763  116d 0d16          	tnz	(OFST+0,sp)
-6764  116f 2708          	jreq	L1063
-6767  1171 ae0103        	ldw	x,#L3452
-6768  1174 cd0000        	call	_Display_LCD_String
-6771  1177 2006          	jra	L3063
-6772  1179               L1063:
-6773                     ; 956 			else{ Display_LCD_String("0"); }
-6775  1179 ae0101        	ldw	x,#L7452
-6776  117c cd0000        	call	_Display_LCD_String
-6778  117f               L3063:
-6779                     ; 957 			Display_LCD_String("%");
-6781  117f ae00ff        	ldw	x,#L1552
-6782  1182 cd0000        	call	_Display_LCD_String
-6784  1185               L7753:
-6785                     ; 959 		return;
-6787  1185 acac1bac      	jpf	L431
-6788  1189               L1753:
-6789                     ; 962 	if(uc_Test_Page_Now != uc_Test_Page_Pre){ 
-6791  1189 c60004        	ld	a,_uc_Test_Page_Now
-6792  118c c10003        	cp	a,_uc_Test_Page_Pre
-6793  118f 270f          	jreq	L5063
-6794                     ; 963 		Test_Ctrl_Text_Display_Handling(); 
-6796  1191 cd0479        	call	_Test_Ctrl_Text_Display_Handling
-6798                     ; 964 		b_Data_Select_flag = OFF;
-6800  1194 7213000d      	bres	_uc_Test_Ctrl_Reg,#1
-6801                     ; 965 		b_Data_Setting_flag = OFF;
-6803  1198 7215000d      	bres	_uc_Test_Ctrl_Reg,#2
-6804                     ; 966 		uc_Test_Data_Select_Num = (U8)(0);
-6806  119c 725f0002      	clr	_uc_Test_Data_Select_Num
-6807  11a0               L5063:
-6808                     ; 968 	uc_Test_Page_Pre = uc_Test_Page_Now ;
-6810  11a0 5500040003    	mov	_uc_Test_Page_Pre,_uc_Test_Page_Now
-6811                     ; 971 	if(uc_Test_Page_Now == (U8)(0)){			//page 1
-6813  11a5 725d0004      	tnz	_uc_Test_Page_Now
-6814  11a9 2703          	jreq	L631
-6815  11ab cc1721        	jp	L7063
-6816  11ae               L631:
-6817                     ; 972 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-6819  11ae 0f15          	clr	(OFST-1,sp)
-6820  11b0               L1163:
-6821                     ; 974 			Set_LCD_Address(LCD_Line[uc_line_index]);
-6823  11b0 7b15          	ld	a,(OFST-1,sp)
-6824  11b2 5f            	clrw	x
-6825  11b3 97            	ld	xl,a
-6826  11b4 d60000        	ld	a,(_LCD_Line,x)
-6827  11b7 cd0000        	call	_Set_LCD_Address
-6829                     ; 976 			if((b_Data_Select_flag == ON) && (b_Data_Setting_flag == OFF)){
-6831  11ba c6000d        	ld	a,_uc_Test_Ctrl_Reg
-6832  11bd a502          	bcp	a,#2
-6833  11bf 2763          	jreq	L7163
-6835  11c1 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-6836  11c4 a504          	bcp	a,#4
-6837  11c6 265c          	jrne	L7163
-6838                     ; 977 				if(uc_line_index == uc_Test_Data_Select_Num){ 
-6840  11c8 7b15          	ld	a,(OFST-1,sp)
-6841  11ca c10002        	cp	a,_uc_Test_Data_Select_Num
-6842  11cd 2647          	jrne	L1263
-6843                     ; 978 					if(uc_Test_Data_Select_Num == (U8)(0)){
-6845  11cf 725d0002      	tnz	_uc_Test_Data_Select_Num
-6846  11d3 261d          	jrne	L3263
-6847                     ; 979 						if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
-6849  11d5 c60000        	ld	a,_uc_LCD_Blink_Reg
-6850  11d8 a502          	bcp	a,#2
-6851  11da 270e          	jreq	L5263
-6854  11dc 7b15          	ld	a,(OFST-1,sp)
-6855  11de 97            	ld	xl,a
-6856  11df a610          	ld	a,#16
-6857  11e1 42            	mul	x,a
-6858  11e2 1c0000        	addw	x,#_LCD_Dis_Data
-6859  11e5 cd0000        	call	_Display_LCD_String
-6862  11e8 2046          	jra	L3463
-6863  11ea               L5263:
-6864                     ; 980 						else{ Display_LCD_String("        /"); }
-6866  11ea ae00f5        	ldw	x,#L7752
-6867  11ed cd0000        	call	_Display_LCD_String
-6869  11f0 203e          	jra	L3463
-6870  11f2               L3263:
-6871                     ; 982 					else if(uc_Test_Data_Select_Num == (U8)(1)){
-6873  11f2 c60002        	ld	a,_uc_Test_Data_Select_Num
-6874  11f5 a101          	cp	a,#1
-6875  11f7 2637          	jrne	L3463
-6876                     ; 983 						if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
-6878  11f9 c60000        	ld	a,_uc_LCD_Blink_Reg
-6879  11fc a502          	bcp	a,#2
-6880  11fe 270e          	jreq	L5363
-6883  1200 7b15          	ld	a,(OFST-1,sp)
-6884  1202 97            	ld	xl,a
-6885  1203 a610          	ld	a,#16
-6886  1205 42            	mul	x,a
-6887  1206 1c0000        	addw	x,#_LCD_Dis_Data
-6888  1209 cd0000        	call	_Display_LCD_String
-6891  120c 2022          	jra	L3463
-6892  120e               L5363:
-6893                     ; 984 						else{ Display_LCD_String("        Fd:"); }
-6895  120e ae00e9        	ldw	x,#L1162
-6896  1211 cd0000        	call	_Display_LCD_String
-6898  1214 201a          	jra	L3463
-6899  1216               L1263:
-6900                     ; 987 				else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]); }
-6902  1216 7b15          	ld	a,(OFST-1,sp)
-6903  1218 97            	ld	xl,a
-6904  1219 a610          	ld	a,#16
-6905  121b 42            	mul	x,a
-6906  121c 1c0000        	addw	x,#_LCD_Dis_Data
-6907  121f cd0000        	call	_Display_LCD_String
-6909  1222 200c          	jra	L3463
-6910  1224               L7163:
-6911                     ; 988 			}else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]); }
-6913  1224 7b15          	ld	a,(OFST-1,sp)
-6914  1226 97            	ld	xl,a
-6915  1227 a610          	ld	a,#16
-6916  1229 42            	mul	x,a
-6917  122a 1c0000        	addw	x,#_LCD_Dis_Data
-6918  122d cd0000        	call	_Display_LCD_String
-6920  1230               L3463:
-6921                     ; 991 			if(uc_line_index == (U8)(0)){		// LINE 1
-6923  1230 0d15          	tnz	(OFST-1,sp)
-6924  1232 2703          	jreq	L041
-6925  1234 cc12f0        	jp	L5463
-6926  1237               L041:
-6927                     ; 994 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
-6929  1237 7b15          	ld	a,(OFST-1,sp)
-6930  1239 5f            	clrw	x
-6931  123a 97            	ld	xl,a
-6932  123b d60000        	ld	a,(_LCD_Line,x)
-6933  123e ab03          	add	a,#3
-6934  1240 cd0000        	call	_Set_LCD_Address
-6936                     ; 996 				if((b_Data_Setting_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
-6938  1243 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-6939  1246 a504          	bcp	a,#4
-6940  1248 2718          	jreq	L7463
-6942  124a 7b15          	ld	a,(OFST-1,sp)
-6943  124c c10002        	cp	a,_uc_Test_Data_Select_Num
-6944  124f 2611          	jrne	L7463
-6945                     ; 997 					if(b_Blink_250_Flag){ Num_Display_LCD(uc_Heater_Enable_Flag); 	}	
-6947  1251 c60000        	ld	a,_uc_LCD_Blink_Reg
-6948  1254 a502          	bcp	a,#2
-6949  1256 2712          	jreq	L3563
-6952  1258 c60009        	ld	a,_uc_Heater_Enable_Flag
-6953  125b 5f            	clrw	x
-6954  125c 97            	ld	xl,a
-6955  125d cd0000        	call	_Num_Display_LCD
-6957  1260 2008          	jra	L3563
-6958  1262               L7463:
-6959                     ; 998 				}else{ Num_Display_LCD(uc_Heater_Enable_Flag); }
-6961  1262 c60009        	ld	a,_uc_Heater_Enable_Flag
-6962  1265 5f            	clrw	x
-6963  1266 97            	ld	xl,a
-6964  1267 cd0000        	call	_Num_Display_LCD
-6966  126a               L3563:
-6967                     ; 1002 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 5));
-6969  126a 7b15          	ld	a,(OFST-1,sp)
-6970  126c 5f            	clrw	x
-6971  126d 97            	ld	xl,a
-6972  126e d60000        	ld	a,(_LCD_Line,x)
-6973  1271 ab05          	add	a,#5
-6974  1273 cd0000        	call	_Set_LCD_Address
-6976                     ; 1003 				if (HEATER_zone_status == HTR_ZONE_1)
-6978  1276 725d0000      	tnz	_HEATER_zone_status
-6979  127a 2608          	jrne	L5563
-6980                     ; 1004 				Display_LCD_String("Z1");
-6982  127c ae00e6        	ldw	x,#L1362
-6983  127f cd0000        	call	_Display_LCD_String
-6986  1282 2006          	jra	L7563
-6987  1284               L5563:
-6988                     ; 1005 				else Display_LCD_String("Z2");
-6990  1284 ae00e3        	ldw	x,#L5362
-6991  1287 cd0000        	call	_Display_LCD_String
-6993  128a               L7563:
-6994                     ; 1007 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 9));
-6996  128a 7b15          	ld	a,(OFST-1,sp)
-6997  128c 5f            	clrw	x
-6998  128d 97            	ld	xl,a
-6999  128e d60000        	ld	a,(_LCD_Line,x)
-7000  1291 ab09          	add	a,#9
-7001  1293 cd0000        	call	_Set_LCD_Address
-7003                     ; 1009 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-7005  1296 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-7006  1299 a501          	bcp	a,#1
-7007  129b 270a          	jreq	L1663
-7010  129d ae00e0        	ldw	x,#L1462
-7011  12a0 cd0000        	call	_Display_LCD_String
-7014  12a3 ac121712      	jpf	L3073
-7015  12a7               L1663:
-7016                     ; 1011 					uc_buffer = (U8)((can_data[0] & 0x0C) >> 2);
-7018  12a7 7b0d          	ld	a,(OFST-9,sp)
-7019  12a9 a40c          	and	a,#12
-7020  12ab 44            	srl	a
-7021  12ac 44            	srl	a
-7022  12ad 6b16          	ld	(OFST+0,sp),a
-7023                     ; 1012 					if(uc_buffer == (U8)(0)){ Display_LCD_String("Stop");   }
-7025  12af 0d16          	tnz	(OFST+0,sp)
-7026  12b1 260a          	jrne	L5663
-7029  12b3 ae00db        	ldw	x,#L7462
-7030  12b6 cd0000        	call	_Display_LCD_String
-7033  12b9 ac121712      	jpf	L3073
-7034  12bd               L5663:
-7035                     ; 1013 					else if(uc_buffer == (U8)(1)){ Display_LCD_String("Oper"); }
-7037  12bd 7b16          	ld	a,(OFST+0,sp)
-7038  12bf a101          	cp	a,#1
-7039  12c1 260a          	jrne	L1763
-7042  12c3 ae00d6        	ldw	x,#L5562
-7043  12c6 cd0000        	call	_Display_LCD_String
-7046  12c9 ac121712      	jpf	L3073
-7047  12cd               L1763:
-7048                     ; 1014 					else if(uc_buffer == (U8)(2)){ Display_LCD_String("Flt"); }
-7050  12cd 7b16          	ld	a,(OFST+0,sp)
-7051  12cf a102          	cp	a,#2
-7052  12d1 260a          	jrne	L5763
-7055  12d3 ae00d2        	ldw	x,#L3662
-7056  12d6 cd0000        	call	_Display_LCD_String
-7059  12d9 ac121712      	jpf	L3073
-7060  12dd               L5763:
-7061                     ; 1015 					else if(uc_buffer == (U8)(3)){ Display_LCD_String("Lmit"); }
-7063  12dd 7b16          	ld	a,(OFST+0,sp)
-7064  12df a103          	cp	a,#3
-7065  12e1 2703          	jreq	L241
-7066  12e3 cc1712        	jp	L3073
-7067  12e6               L241:
-7070  12e6 ae00cd        	ldw	x,#L1762
-7071  12e9 cd0000        	call	_Display_LCD_String
-7073  12ec ac121712      	jpf	L3073
-7074  12f0               L5463:
-7075                     ; 1021 			else if(uc_line_index == (U8)(1)){	// LINE 2
-7077  12f0 7b15          	ld	a,(OFST-1,sp)
-7078  12f2 a101          	cp	a,#1
-7079  12f4 2703          	jreq	L441
-7080  12f6 cc1605        	jp	L5073
-7081  12f9               L441:
-7082                     ; 1024 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
-7084  12f9 7b15          	ld	a,(OFST-1,sp)
-7085  12fb 5f            	clrw	x
-7086  12fc 97            	ld	xl,a
-7087  12fd d60000        	ld	a,(_LCD_Line,x)
-7088  1300 ab03          	add	a,#3
-7089  1302 cd0000        	call	_Set_LCD_Address
-7091                     ; 1025 				if((b_Data_Setting_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
-7093  1305 c6000d        	ld	a,_uc_Test_Ctrl_Reg
-7094  1308 a504          	bcp	a,#4
-7095  130a 2603          	jrne	L641
-7096  130c cc1473        	jp	L7073
-7097  130f               L641:
-7099  130f 7b15          	ld	a,(OFST-1,sp)
-7100  1311 c10002        	cp	a,_uc_Test_Data_Select_Num
-7101  1314 2703          	jreq	L051
-7102  1316 cc1473        	jp	L7073
-7103  1319               L051:
-7104                     ; 1026 					if(b_Blink_250_Flag){
-7106  1319 c60000        	ld	a,_uc_LCD_Blink_Reg
-7107  131c a502          	bcp	a,#2
-7108  131e 2603          	jrne	L251
-7109  1320 cc15b3        	jp	L3004
-7110  1323               L251:
-7111                     ; 1027 						if(!uc_Target_Display_Mode){	// Percentage_Display
-7113  1323 725d0000      	tnz	_uc_Target_Display_Mode
-7114  1327 2676          	jrne	L3173
-7115                     ; 1028 if (HEATER_zone_status == HTR_ZONE_1)
-7117  1329 725d0000      	tnz	_HEATER_zone_status
-7118  132d 2638          	jrne	L5173
-7119                     ; 1030 							Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_1] /(U8)(2));
-7121  132f c6000a        	ld	a,_uc_Target_Duty_Perc
-7122  1332 44            	srl	a
-7123  1333 5f            	clrw	x
-7124  1334 97            	ld	xl,a
-7125  1335 cd0000        	call	_Num_Display_LCD
-7127                     ; 1031 							if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(200)){
-7129  1338 c6000a        	ld	a,_uc_Target_Duty_Perc
-7130  133b a1c8          	cp	a,#200
-7131  133d 2503          	jrult	L451
-7132  133f cc15b3        	jp	L3004
-7133  1342               L451:
-7134                     ; 1032 								Display_LCD_String(".");
-7136  1342 ae0105        	ldw	x,#L7352
-7137  1345 cd0000        	call	_Display_LCD_String
-7139                     ; 1033 								uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_1] % (U8)(2);
-7141  1348 c6000a        	ld	a,_uc_Target_Duty_Perc
-7142  134b a401          	and	a,#1
-7143  134d 6b16          	ld	(OFST+0,sp),a
-7144                     ; 1034 								if(uc_buffer){ Display_LCD_String("5"); }
-7146  134f 0d16          	tnz	(OFST+0,sp)
-7147  1351 270a          	jreq	L1273
-7150  1353 ae0103        	ldw	x,#L3452
-7151  1356 cd0000        	call	_Display_LCD_String
-7154  1359 acb315b3      	jpf	L3004
-7155  135d               L1273:
-7156                     ; 1035 								else{ Display_LCD_String("0"); }
-7158  135d ae0101        	ldw	x,#L7452
-7159  1360 cd0000        	call	_Display_LCD_String
-7161  1363 acb315b3      	jpf	L3004
-7162  1367               L5173:
-7163                     ; 1040 							Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_2] /(U8)(2));
-7165  1367 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7166  136a 44            	srl	a
-7167  136b 5f            	clrw	x
-7168  136c 97            	ld	xl,a
-7169  136d cd0000        	call	_Num_Display_LCD
-7171                     ; 1041 							if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(200)){
-7173  1370 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7174  1373 a1c8          	cp	a,#200
-7175  1375 2503          	jrult	L651
-7176  1377 cc15b3        	jp	L3004
-7177  137a               L651:
-7178                     ; 1042 								Display_LCD_String(".");
-7180  137a ae0105        	ldw	x,#L7352
-7181  137d cd0000        	call	_Display_LCD_String
-7183                     ; 1043 								uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_2] % (U8)(2);
-7185  1380 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7186  1383 a401          	and	a,#1
-7187  1385 6b16          	ld	(OFST+0,sp),a
-7188                     ; 1044 								if(uc_buffer){ Display_LCD_String("5"); }
-7190  1387 0d16          	tnz	(OFST+0,sp)
-7191  1389 270a          	jreq	L1373
-7194  138b ae0103        	ldw	x,#L3452
-7195  138e cd0000        	call	_Display_LCD_String
-7198  1391 acb315b3      	jpf	L3004
-7199  1395               L1373:
-7200                     ; 1045 								else{ Display_LCD_String("0"); }
-7202  1395 ae0101        	ldw	x,#L7452
-7203  1398 cd0000        	call	_Display_LCD_String
-7205  139b acb315b3      	jpf	L3004
-7206  139f               L3173:
-7207                     ; 1050 if (HEATER_zone_status == HTR_ZONE_1)
-7209  139f 725d0000      	tnz	_HEATER_zone_status
-7210  13a3 2667          	jrne	L7373
-7211                     ; 1052 							if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ Num_Display_LCD(0u); }
-7213  13a5 c6000a        	ld	a,_uc_Target_Duty_Perc
-7214  13a8 a114          	cp	a,#20
-7215  13aa 2408          	jruge	L1473
-7218  13ac 5f            	clrw	x
-7219  13ad cd0000        	call	_Num_Display_LCD
-7222  13b0 acb315b3      	jpf	L3004
-7223  13b4               L1473:
-7224                     ; 1053 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(20)){ Num_Display_LCD(100u); }
-7226  13b4 c6000a        	ld	a,_uc_Target_Duty_Perc
-7227  13b7 a114          	cp	a,#20
-7228  13b9 260a          	jrne	L5473
-7231  13bb ae0064        	ldw	x,#100
-7232  13be cd0000        	call	_Num_Display_LCD
-7235  13c1 acb315b3      	jpf	L3004
-7236  13c5               L5473:
-7237                     ; 1054 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ Num_Display_LCD(6200u); }
-7239  13c5 c6000a        	ld	a,_uc_Target_Duty_Perc
-7240  13c8 a1b4          	cp	a,#180
-7241  13ca 260a          	jrne	L1573
-7244  13cc ae1838        	ldw	x,#6200
-7245  13cf cd0000        	call	_Num_Display_LCD
-7248  13d2 acb315b3      	jpf	L3004
-7249  13d6               L1573:
-7250                     ; 1055 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(190)){ Display_LCD_String("MAX"); }
-7252  13d6 c6000a        	ld	a,_uc_Target_Duty_Perc
-7253  13d9 a1be          	cp	a,#190
-7254  13db 260a          	jrne	L5573
-7257  13dd ae00c9        	ldw	x,#L7472
-7258  13e0 cd0000        	call	_Display_LCD_String
-7261  13e3 acb315b3      	jpf	L3004
-7262  13e7               L5573:
-7263                     ; 1056 							else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_1]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
-7265  13e7 c6000a        	ld	a,_uc_Target_Duty_Perc
-7266  13ea 5f            	clrw	x
-7267  13eb 97            	ld	xl,a
-7268  13ec 1d0014        	subw	x,#20
-7269  13ef 90ae94ed      	ldw	y,#38125
-7270  13f3 cd0000        	call	c_umul
-7272  13f6 ae0000        	ldw	x,#L25
-7273  13f9 cd0000        	call	c_ludv
-7275  13fc be02          	ldw	x,c_lreg+2
-7276  13fe 1c0064        	addw	x,#100
-7277  1401 1f0b          	ldw	(OFST-11,sp),x
-7280  1403 1e0b          	ldw	x,(OFST-11,sp)
-7281  1405 cd0000        	call	_Num_Display_LCD
-7283  1408 acb315b3      	jpf	L3004
-7284  140c               L7373:
-7285                     ; 1060 							if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ Num_Display_LCD(0u); }
-7287  140c c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7288  140f a114          	cp	a,#20
-7289  1411 2408          	jruge	L3673
-7292  1413 5f            	clrw	x
-7293  1414 cd0000        	call	_Num_Display_LCD
-7296  1417 acb315b3      	jpf	L3004
-7297  141b               L3673:
-7298                     ; 1061 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(20)){ Num_Display_LCD(100u); }
-7300  141b c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7301  141e a114          	cp	a,#20
-7302  1420 260a          	jrne	L7673
-7305  1422 ae0064        	ldw	x,#100
-7306  1425 cd0000        	call	_Num_Display_LCD
-7309  1428 acb315b3      	jpf	L3004
-7310  142c               L7673:
-7311                     ; 1062 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ Num_Display_LCD(6200u); }
-7313  142c c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7314  142f a1b4          	cp	a,#180
-7315  1431 260a          	jrne	L3773
-7318  1433 ae1838        	ldw	x,#6200
-7319  1436 cd0000        	call	_Num_Display_LCD
-7322  1439 acb315b3      	jpf	L3004
-7323  143d               L3773:
-7324                     ; 1063 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(190)){ Display_LCD_String("MAX"); }
-7326  143d c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7327  1440 a1be          	cp	a,#190
-7328  1442 260a          	jrne	L7773
-7331  1444 ae00c9        	ldw	x,#L7472
-7332  1447 cd0000        	call	_Display_LCD_String
-7335  144a acb315b3      	jpf	L3004
-7336  144e               L7773:
-7337                     ; 1064 							else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_2]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
-7339  144e c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7340  1451 5f            	clrw	x
-7341  1452 97            	ld	xl,a
-7342  1453 1d0014        	subw	x,#20
-7343  1456 90ae94ed      	ldw	y,#38125
-7344  145a cd0000        	call	c_umul
-7346  145d ae0000        	ldw	x,#L25
-7347  1460 cd0000        	call	c_ludv
-7349  1463 be02          	ldw	x,c_lreg+2
-7350  1465 1c0064        	addw	x,#100
-7351  1468 1f0b          	ldw	(OFST-11,sp),x
-7354  146a 1e0b          	ldw	x,(OFST-11,sp)
-7355  146c cd0000        	call	_Num_Display_LCD
-7357  146f acb315b3      	jpf	L3004
-7358  1473               L7073:
-7359                     ; 1069 					if(!uc_Target_Display_Mode){
-7361  1473 725d0000      	tnz	_uc_Target_Display_Mode
-7362  1477 2676          	jrne	L5004
-7363                     ; 1070 if (HEATER_zone_status == HTR_ZONE_1)
-7365  1479 725d0000      	tnz	_HEATER_zone_status
-7366  147d 2638          	jrne	L7004
-7367                     ; 1072 						Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_1] /(U8)(2));
-7369  147f c6000a        	ld	a,_uc_Target_Duty_Perc
-7370  1482 44            	srl	a
-7371  1483 5f            	clrw	x
-7372  1484 97            	ld	xl,a
-7373  1485 cd0000        	call	_Num_Display_LCD
-7375                     ; 1073 						if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(200)){
-7377  1488 c6000a        	ld	a,_uc_Target_Duty_Perc
-7378  148b a1c8          	cp	a,#200
-7379  148d 2503          	jrult	L061
-7380  148f cc15b3        	jp	L3004
-7381  1492               L061:
-7382                     ; 1074 							Display_LCD_String(".");
-7384  1492 ae0105        	ldw	x,#L7352
-7385  1495 cd0000        	call	_Display_LCD_String
-7387                     ; 1075 							uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_1] % (U8)(2);
-7389  1498 c6000a        	ld	a,_uc_Target_Duty_Perc
-7390  149b a401          	and	a,#1
-7391  149d 6b16          	ld	(OFST+0,sp),a
-7392                     ; 1076 							if(uc_buffer){ Display_LCD_String("5"); }
-7394  149f 0d16          	tnz	(OFST+0,sp)
-7395  14a1 270a          	jreq	L3104
-7398  14a3 ae0103        	ldw	x,#L3452
-7399  14a6 cd0000        	call	_Display_LCD_String
-7402  14a9 acb315b3      	jpf	L3004
-7403  14ad               L3104:
-7404                     ; 1077 							else{ Display_LCD_String("0"); }
-7406  14ad ae0101        	ldw	x,#L7452
-7407  14b0 cd0000        	call	_Display_LCD_String
-7409  14b3 acb315b3      	jpf	L3004
-7410  14b7               L7004:
-7411                     ; 1082 						Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_2] /(U8)(2));
-7413  14b7 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7414  14ba 44            	srl	a
-7415  14bb 5f            	clrw	x
-7416  14bc 97            	ld	xl,a
-7417  14bd cd0000        	call	_Num_Display_LCD
-7419                     ; 1083 						if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(200)){
-7421  14c0 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7422  14c3 a1c8          	cp	a,#200
-7423  14c5 2503          	jrult	L261
-7424  14c7 cc15b3        	jp	L3004
-7425  14ca               L261:
-7426                     ; 1084 							Display_LCD_String(".");
-7428  14ca ae0105        	ldw	x,#L7352
-7429  14cd cd0000        	call	_Display_LCD_String
-7431                     ; 1085 							uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_2] % (U8)(2);
-7433  14d0 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7434  14d3 a401          	and	a,#1
-7435  14d5 6b16          	ld	(OFST+0,sp),a
-7436                     ; 1086 							if(uc_buffer){ Display_LCD_String("5"); }
-7438  14d7 0d16          	tnz	(OFST+0,sp)
-7439  14d9 270a          	jreq	L3204
-7442  14db ae0103        	ldw	x,#L3452
-7443  14de cd0000        	call	_Display_LCD_String
-7446  14e1 acb315b3      	jpf	L3004
-7447  14e5               L3204:
-7448                     ; 1087 							else{ Display_LCD_String("0"); }
-7450  14e5 ae0101        	ldw	x,#L7452
-7451  14e8 cd0000        	call	_Display_LCD_String
-7453  14eb acb315b3      	jpf	L3004
-7454  14ef               L5004:
-7455                     ; 1092 if (HEATER_zone_status == HTR_ZONE_1)
-7457  14ef 725d0000      	tnz	_HEATER_zone_status
-7458  14f3 2663          	jrne	L1304
-7459                     ; 1094 						if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ Num_Display_LCD(0u); }
-7461  14f5 c6000a        	ld	a,_uc_Target_Duty_Perc
-7462  14f8 a114          	cp	a,#20
-7463  14fa 2408          	jruge	L3304
-7466  14fc 5f            	clrw	x
-7467  14fd cd0000        	call	_Num_Display_LCD
-7470  1500 acb315b3      	jpf	L3004
-7471  1504               L3304:
-7472                     ; 1095 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(20)){ Num_Display_LCD(100u); }
-7474  1504 c6000a        	ld	a,_uc_Target_Duty_Perc
-7475  1507 a114          	cp	a,#20
-7476  1509 260a          	jrne	L7304
-7479  150b ae0064        	ldw	x,#100
-7480  150e cd0000        	call	_Num_Display_LCD
-7483  1511 acb315b3      	jpf	L3004
-7484  1515               L7304:
-7485                     ; 1096 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ Num_Display_LCD(6200u); }
-7487  1515 c6000a        	ld	a,_uc_Target_Duty_Perc
-7488  1518 a1b4          	cp	a,#180
-7489  151a 260a          	jrne	L3404
-7492  151c ae1838        	ldw	x,#6200
-7493  151f cd0000        	call	_Num_Display_LCD
-7496  1522 acb315b3      	jpf	L3004
-7497  1526               L3404:
-7498                     ; 1097 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] > (U8)(180)){ Display_LCD_String("MAX"); }
-7500  1526 c6000a        	ld	a,_uc_Target_Duty_Perc
-7501  1529 a1b5          	cp	a,#181
-7502  152b 2508          	jrult	L7404
-7505  152d ae00c9        	ldw	x,#L7472
-7506  1530 cd0000        	call	_Display_LCD_String
-7509  1533 207e          	jra	L3004
-7510  1535               L7404:
-7511                     ; 1098 						else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_1]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
-7513  1535 c6000a        	ld	a,_uc_Target_Duty_Perc
-7514  1538 5f            	clrw	x
-7515  1539 97            	ld	xl,a
-7516  153a 1d0014        	subw	x,#20
-7517  153d 90ae94ed      	ldw	y,#38125
-7518  1541 cd0000        	call	c_umul
-7520  1544 ae0000        	ldw	x,#L25
-7521  1547 cd0000        	call	c_ludv
-7523  154a be02          	ldw	x,c_lreg+2
-7524  154c 1c0064        	addw	x,#100
-7525  154f 1f0b          	ldw	(OFST-11,sp),x
-7528  1551 1e0b          	ldw	x,(OFST-11,sp)
-7529  1553 cd0000        	call	_Num_Display_LCD
-7531  1556 205b          	jra	L3004
-7532  1558               L1304:
-7533                     ; 1102 						if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ Num_Display_LCD(0u); }
-7535  1558 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7536  155b a114          	cp	a,#20
-7537  155d 2406          	jruge	L5504
-7540  155f 5f            	clrw	x
-7541  1560 cd0000        	call	_Num_Display_LCD
-7544  1563 204e          	jra	L3004
-7545  1565               L5504:
-7546                     ; 1103 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(20)){ Num_Display_LCD(100u); }
-7548  1565 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7549  1568 a114          	cp	a,#20
-7550  156a 2608          	jrne	L1604
-7553  156c ae0064        	ldw	x,#100
-7554  156f cd0000        	call	_Num_Display_LCD
-7557  1572 203f          	jra	L3004
-7558  1574               L1604:
-7559                     ; 1104 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ Num_Display_LCD(6200u); }
-7561  1574 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7562  1577 a1b4          	cp	a,#180
-7563  1579 2608          	jrne	L5604
-7566  157b ae1838        	ldw	x,#6200
-7567  157e cd0000        	call	_Num_Display_LCD
-7570  1581 2030          	jra	L3004
-7571  1583               L5604:
-7572                     ; 1105 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] > (U8)(180)){ Display_LCD_String("MAX"); }
-7574  1583 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7575  1586 a1b5          	cp	a,#181
-7576  1588 2508          	jrult	L1704
-7579  158a ae00c9        	ldw	x,#L7472
-7580  158d cd0000        	call	_Display_LCD_String
-7583  1590 2021          	jra	L3004
-7584  1592               L1704:
-7585                     ; 1106 						else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_2]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
-7587  1592 c6000b        	ld	a,_uc_Target_Duty_Perc+1
-7588  1595 5f            	clrw	x
-7589  1596 97            	ld	xl,a
-7590  1597 1d0014        	subw	x,#20
-7591  159a 90ae94ed      	ldw	y,#38125
-7592  159e cd0000        	call	c_umul
-7594  15a1 ae0000        	ldw	x,#L25
-7595  15a4 cd0000        	call	c_ludv
-7597  15a7 be02          	ldw	x,c_lreg+2
-7598  15a9 1c0064        	addw	x,#100
-7599  15ac 1f0b          	ldw	(OFST-11,sp),x
-7602  15ae 1e0b          	ldw	x,(OFST-11,sp)
-7603  15b0 cd0000        	call	_Num_Display_LCD
-7605  15b3               L3004:
-7606                     ; 1112 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
-7608  15b3 7b15          	ld	a,(OFST-1,sp)
-7609  15b5 5f            	clrw	x
-7610  15b6 97            	ld	xl,a
-7611  15b7 d60000        	ld	a,(_LCD_Line,x)
-7612  15ba ab0b          	add	a,#11
-7613  15bc cd0000        	call	_Set_LCD_Address
-7615                     ; 1113 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-7617  15bf c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-7618  15c2 a501          	bcp	a,#1
-7619  15c4 270a          	jreq	L5704
-7622  15c6 ae00e0        	ldw	x,#L1462
-7623  15c9 cd0000        	call	_Display_LCD_String
-7626  15cc ac121712      	jpf	L3073
-7627  15d0               L5704:
-7628                     ; 1115 					Num_Display_LCD(can_data[4] /(U8)(2));
-7630  15d0 7b11          	ld	a,(OFST-5,sp)
-7631  15d2 44            	srl	a
-7632  15d3 5f            	clrw	x
-7633  15d4 97            	ld	xl,a
-7634  15d5 cd0000        	call	_Num_Display_LCD
-7636                     ; 1116 					if(can_data[6] < (U8)(200)){
-7638  15d8 7b13          	ld	a,(OFST-3,sp)
-7639  15da a1c8          	cp	a,#200
-7640  15dc 2503          	jrult	L461
-7641  15de cc1712        	jp	L3073
-7642  15e1               L461:
-7643                     ; 1117 						Display_LCD_String(".");
-7645  15e1 ae0105        	ldw	x,#L7352
-7646  15e4 cd0000        	call	_Display_LCD_String
-7648                     ; 1118 						uc_buffer = can_data[4] % (U8)(2);
-7650  15e7 7b11          	ld	a,(OFST-5,sp)
-7651  15e9 a401          	and	a,#1
-7652  15eb 6b16          	ld	(OFST+0,sp),a
-7653                     ; 1119 						if(uc_buffer){ Display_LCD_String("5"); }
-7655  15ed 0d16          	tnz	(OFST+0,sp)
-7656  15ef 270a          	jreq	L3014
-7659  15f1 ae0103        	ldw	x,#L3452
-7660  15f4 cd0000        	call	_Display_LCD_String
-7663  15f7 ac121712      	jpf	L3073
-7664  15fb               L3014:
-7665                     ; 1120 						else{ Display_LCD_String("0"); }
-7667  15fb ae0101        	ldw	x,#L7452
-7668  15fe cd0000        	call	_Display_LCD_String
-7670  1601 ac121712      	jpf	L3073
-7671  1605               L5073:
-7672                     ; 1126 			else if(uc_line_index == (U8)(2)){	// LINE 3
-7674  1605 7b15          	ld	a,(OFST-1,sp)
-7675  1607 a102          	cp	a,#2
-7676  1609 2703          	jreq	L661
-7677  160b cc1699        	jp	L1114
-7678  160e               L661:
-7679                     ; 1129 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 2));
-7681  160e 7b15          	ld	a,(OFST-1,sp)
-7682  1610 5f            	clrw	x
-7683  1611 97            	ld	xl,a
-7684  1612 d60000        	ld	a,(_LCD_Line,x)
-7685  1615 ab02          	add	a,#2
-7686  1617 cd0000        	call	_Set_LCD_Address
-7688                     ; 1130 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("N"); }		// No Communication
-7690  161a c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-7691  161d a501          	bcp	a,#1
-7692  161f 2708          	jreq	L3114
-7695  1621 ae00c7        	ldw	x,#L7013
-7696  1624 cd0000        	call	_Display_LCD_String
-7699  1627 2014          	jra	L5114
-7700  1629               L3114:
-7701                     ; 1132 					if(can_data[0] & 0x01){ Display_LCD_String("1"); }
-7703  1629 7b0d          	ld	a,(OFST-9,sp)
-7704  162b a501          	bcp	a,#1
-7705  162d 2708          	jreq	L7114
-7708  162f ae00c5        	ldw	x,#L5113
-7709  1632 cd0000        	call	_Display_LCD_String
-7712  1635 2006          	jra	L5114
-7713  1637               L7114:
-7714                     ; 1133 					else{ Display_LCD_String("0"); }
-7716  1637 ae0101        	ldw	x,#L7452
-7717  163a cd0000        	call	_Display_LCD_String
-7719  163d               L5114:
-7720                     ; 1136 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 6));
-7722  163d 7b15          	ld	a,(OFST-1,sp)
-7723  163f 5f            	clrw	x
-7724  1640 97            	ld	xl,a
-7725  1641 d60000        	ld	a,(_LCD_Line,x)
-7726  1644 ab06          	add	a,#6
-7727  1646 cd0000        	call	_Set_LCD_Address
-7729                     ; 1137 				if(b_Rx2_Msg_TimeOut_Flag){ Display_LCD_String("N"); }		// No Communication
-7731  1649 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-7732  164c a502          	bcp	a,#2
-7733  164e 2708          	jreq	L3214
-7736  1650 ae00c7        	ldw	x,#L7013
-7737  1653 cd0000        	call	_Display_LCD_String
-7740  1656 2014          	jra	L5214
-7741  1658               L3214:
-7742                     ; 1139 					if(can_diag[0] & 0x01){ Display_LCD_String("1"); }
-7744  1658 7b03          	ld	a,(OFST-19,sp)
-7745  165a a501          	bcp	a,#1
-7746  165c 2708          	jreq	L7214
-7749  165e ae00c5        	ldw	x,#L5113
-7750  1661 cd0000        	call	_Display_LCD_String
-7753  1664 2006          	jra	L5214
-7754  1666               L7214:
-7755                     ; 1140 					else{ Display_LCD_String("0"); }
-7757  1666 ae0101        	ldw	x,#L7452
-7758  1669 cd0000        	call	_Display_LCD_String
-7760  166c               L5214:
-7761                     ; 1143 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
-7763  166c 7b15          	ld	a,(OFST-1,sp)
-7764  166e 5f            	clrw	x
-7765  166f 97            	ld	xl,a
-7766  1670 d60000        	ld	a,(_LCD_Line,x)
-7767  1673 ab0b          	add	a,#11
-7768  1675 cd0000        	call	_Set_LCD_Address
-7770                     ; 1144 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-7772  1678 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-7773  167b a501          	bcp	a,#1
-7774  167d 270a          	jreq	L3314
-7777  167f ae00e0        	ldw	x,#L1462
-7778  1682 cd0000        	call	_Display_LCD_String
-7781  1685 ac121712      	jpf	L3073
-7782  1689               L3314:
-7783                     ; 1147 					ui_buffer = (U16)(uc_Rx_Data[0][3]) * (U16)(4);//YJS 2->4
-7785  1689 c60003        	ld	a,_uc_Rx_Data+3
-7786  168c 97            	ld	xl,a
-7787  168d a604          	ld	a,#4
-7788  168f 42            	mul	x,a
-7789  1690 1f0b          	ldw	(OFST-11,sp),x
-7790                     ; 1148 					Num_Display_LCD(ui_buffer);
-7792  1692 1e0b          	ldw	x,(OFST-11,sp)
-7793  1694 cd0000        	call	_Num_Display_LCD
-7795  1697 2079          	jra	L3073
-7796  1699               L1114:
-7797                     ; 1154 			else if(uc_line_index == (U8)(3)){	// LINE 4
-7799  1699 7b15          	ld	a,(OFST-1,sp)
-7800  169b a103          	cp	a,#3
-7801  169d 2673          	jrne	L3073
-7802                     ; 1157 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
-7804  169f 7b15          	ld	a,(OFST-1,sp)
-7805  16a1 5f            	clrw	x
-7806  16a2 97            	ld	xl,a
-7807  16a3 d60000        	ld	a,(_LCD_Line,x)
-7808  16a6 ab03          	add	a,#3
-7809  16a8 cd0000        	call	_Set_LCD_Address
-7811                     ; 1159 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-7813  16ab c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-7814  16ae a501          	bcp	a,#1
-7815  16b0 2708          	jreq	L3414
-7818  16b2 ae00e0        	ldw	x,#L1462
-7819  16b5 cd0000        	call	_Display_LCD_String
-7822  16b8 2027          	jra	L5414
-7823  16ba               L3414:
-7824                     ; 1161 					Num_Display_LCD(can_data[6] / (U8)(5));
-7826  16ba 7b13          	ld	a,(OFST-3,sp)
-7827  16bc 5f            	clrw	x
-7828  16bd 97            	ld	xl,a
-7829  16be a605          	ld	a,#5
-7830  16c0 cd0000        	call	c_sdivx
-7832  16c3 cd0000        	call	_Num_Display_LCD
-7834                     ; 1162 					Display_LCD_String(".");
-7836  16c6 ae0105        	ldw	x,#L7352
-7837  16c9 cd0000        	call	_Display_LCD_String
-7839                     ; 1163 					uc_buffer = can_data[6] % (U8)(5);
-7841  16cc 7b13          	ld	a,(OFST-3,sp)
-7842  16ce ae0005        	ldw	x,#5
-7843  16d1 51            	exgw	x,y
-7844  16d2 5f            	clrw	x
-7845  16d3 97            	ld	xl,a
-7846  16d4 65            	divw	x,y
-7847  16d5 909f          	ld	a,yl
-7848  16d7 6b16          	ld	(OFST+0,sp),a
-7849                     ; 1164 					Num_Display_LCD(uc_buffer * (U8)(2));
-7851  16d9 7b16          	ld	a,(OFST+0,sp)
-7852  16db 5f            	clrw	x
-7853  16dc 97            	ld	xl,a
-7854  16dd 58            	sllw	x
-7855  16de cd0000        	call	_Num_Display_LCD
-7857  16e1               L5414:
-7858                     ; 1170 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
-7860  16e1 7b15          	ld	a,(OFST-1,sp)
-7861  16e3 5f            	clrw	x
-7862  16e4 97            	ld	xl,a
-7863  16e5 d60000        	ld	a,(_LCD_Line,x)
-7864  16e8 ab0b          	add	a,#11
-7865  16ea cd0000        	call	_Set_LCD_Address
-7867                     ; 1172 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-7869  16ed c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-7870  16f0 a501          	bcp	a,#1
-7871  16f2 2708          	jreq	L7414
-7874  16f4 ae00e0        	ldw	x,#L1462
-7875  16f7 cd0000        	call	_Display_LCD_String
-7878  16fa 2016          	jra	L3073
-7879  16fc               L7414:
-7880                     ; 1174 					ui_buffer = (U16)(can_data[3] << 8) + (U16)(can_data[2]);
-7882  16fc 7b0f          	ld	a,(OFST-7,sp)
-7883  16fe 5f            	clrw	x
-7884  16ff 97            	ld	xl,a
-7885  1700 1f01          	ldw	(OFST-21,sp),x
-7886  1702 7b10          	ld	a,(OFST-6,sp)
-7887  1704 5f            	clrw	x
-7888  1705 97            	ld	xl,a
-7889  1706 4f            	clr	a
-7890  1707 02            	rlwa	x,a
-7891  1708 72fb01        	addw	x,(OFST-21,sp)
-7892  170b 1f0b          	ldw	(OFST-11,sp),x
-7893                     ; 1175 					Num_Display_LCD(ui_buffer);
-7895  170d 1e0b          	ldw	x,(OFST-11,sp)
-7896  170f cd0000        	call	_Num_Display_LCD
-7898  1712               L3073:
-7899                     ; 972 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-7901  1712 0c15          	inc	(OFST-1,sp)
-7904  1714 7b15          	ld	a,(OFST-1,sp)
-7905  1716 a104          	cp	a,#4
-7906  1718 2403          	jruge	L071
-7907  171a cc11b0        	jp	L1163
-7908  171d               L071:
-7910  171d ac8d1b8d      	jpf	L3514
-7911  1721               L7063:
-7912                     ; 1185 	else if(uc_Test_Page_Now == (U8)(1)){
-7914  1721 c60004        	ld	a,_uc_Test_Page_Now
-7915  1724 a101          	cp	a,#1
-7916  1726 2703          	jreq	L271
-7917  1728 cc17c8        	jp	L5514
-7918  172b               L271:
-7919                     ; 1186 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-7921  172b 0f15          	clr	(OFST-1,sp)
-7922  172d               L7514:
-7923                     ; 1188 			Set_LCD_Address(LCD_Line[uc_line_index]);
-7925  172d 7b15          	ld	a,(OFST-1,sp)
-7926  172f 5f            	clrw	x
-7927  1730 97            	ld	xl,a
-7928  1731 d60000        	ld	a,(_LCD_Line,x)
-7929  1734 cd0000        	call	_Set_LCD_Address
-7931                     ; 1189 			Display_LCD_String(LCD_Dis_Data[uc_line_index]);
-7933  1737 7b15          	ld	a,(OFST-1,sp)
-7934  1739 97            	ld	xl,a
-7935  173a a610          	ld	a,#16
-7936  173c 42            	mul	x,a
-7937  173d 1c0000        	addw	x,#_LCD_Dis_Data
-7938  1740 cd0000        	call	_Display_LCD_String
-7940                     ; 1192 			if(uc_line_index == (U8)(0)){		// LINE 1
-7942  1743 0d15          	tnz	(OFST-1,sp)
-7943  1745 2641          	jrne	L5614
-7944                     ; 1195 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
-7946  1747 7b15          	ld	a,(OFST-1,sp)
-7947  1749 5f            	clrw	x
-7948  174a 97            	ld	xl,a
-7949  174b d60000        	ld	a,(_LCD_Line,x)
-7950  174e ab03          	add	a,#3
-7951  1750 cd0000        	call	_Set_LCD_Address
-7953                     ; 1196 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-7955  1753 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-7956  1756 a501          	bcp	a,#1
-7957  1758 2708          	jreq	L7614
-7960  175a ae00e0        	ldw	x,#L1462
-7961  175d cd0000        	call	_Display_LCD_String
-7964  1760 2026          	jra	L5614
-7965  1762               L7614:
-7966                     ; 1198 					if(can_data[1] < (U8)(40)){
-7968  1762 7b0e          	ld	a,(OFST-8,sp)
-7969  1764 a128          	cp	a,#40
-7970  1766 2416          	jruge	L3714
-7971                     ; 1199 						Display_LCD_String("-");
-7973  1768 ae00c3        	ldw	x,#L3713
-7974  176b cd0000        	call	_Display_LCD_String
-7976                     ; 1200 						Num_Display_LCD((U8)(40) - can_data[1]);
-7978  176e a600          	ld	a,#0
-7979  1770 97            	ld	xl,a
-7980  1771 a628          	ld	a,#40
-7981  1773 100e          	sub	a,(OFST-8,sp)
-7982  1775 2401          	jrnc	L231
-7983  1777 5a            	decw	x
-7984  1778               L231:
-7985  1778 02            	rlwa	x,a
-7986  1779 cd0000        	call	_Num_Display_LCD
-7989  177c 200a          	jra	L5614
-7990  177e               L3714:
-7991                     ; 1203 						Num_Display_LCD(can_data[1] - (U8)(40));
-7993  177e 7b0e          	ld	a,(OFST-8,sp)
-7994  1780 5f            	clrw	x
-7995  1781 97            	ld	xl,a
-7996  1782 1d0028        	subw	x,#40
-7997  1785 cd0000        	call	_Num_Display_LCD
-7999  1788               L5614:
-8000                     ; 1209 			if(uc_line_index == (U8)(1)){		// LINE 2
-8002  1788 7b15          	ld	a,(OFST-1,sp)
-8003  178a a101          	cp	a,#1
-8004  178c 2623          	jrne	L7714
-8005                     ; 1212 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 4));
-8007  178e 7b15          	ld	a,(OFST-1,sp)
-8008  1790 5f            	clrw	x
-8009  1791 97            	ld	xl,a
-8010  1792 d60000        	ld	a,(_LCD_Line,x)
-8011  1795 ab04          	add	a,#4
-8012  1797 cd0000        	call	_Set_LCD_Address
-8014                     ; 1213 				if(b_Rx2_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
-8016  179a c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-8017  179d a502          	bcp	a,#2
-8018  179f 2708          	jreq	L1024
-8021  17a1 ae00e0        	ldw	x,#L1462
-8022  17a4 cd0000        	call	_Display_LCD_String
-8025  17a7 2008          	jra	L7714
-8026  17a9               L1024:
-8027                     ; 1216 					Num_Display_LCD(uc_Rx_Data[0][7]);  				//SoftWare Version Display
-8029  17a9 c60007        	ld	a,_uc_Rx_Data+7
-8030  17ac 5f            	clrw	x
-8031  17ad 97            	ld	xl,a
-8032  17ae cd0000        	call	_Num_Display_LCD
-8034  17b1               L7714:
-8035                     ; 1228 			if(uc_line_index == (U8)(2)){		// LINE 2
-8037  17b1 7b15          	ld	a,(OFST-1,sp)
-8038  17b3 a102          	cp	a,#2
-8039                     ; 1233 			if(uc_line_index == (U8)(3)){		// LINE 3
-8041  17b5 7b15          	ld	a,(OFST-1,sp)
-8042  17b7 a103          	cp	a,#3
-8043                     ; 1186 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
-8045  17b9 0c15          	inc	(OFST-1,sp)
-8048  17bb 7b15          	ld	a,(OFST-1,sp)
-8049  17bd a104          	cp	a,#4
-8050  17bf 2403          	jruge	L471
-8051  17c1 cc172d        	jp	L7514
-8052  17c4               L471:
-8054  17c4 ac8d1b8d      	jpf	L3514
-8055  17c8               L5514:
-8056                     ; 1240 		if(b_Rx2_Msg_TimeOut_Flag){
-8058  17c8 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
-8059  17cb a502          	bcp	a,#2
-8060  17cd 2710          	jreq	L3124
-8061                     ; 1241 			Set_LCD_Address(LCD_Line[0]);	
-8063  17cf c60000        	ld	a,_LCD_Line
-8064  17d2 cd0000        	call	_Set_LCD_Address
-8066                     ; 1242 			Display_LCD_String("NC");
-8068  17d5 ae00e0        	ldw	x,#L1462
-8069  17d8 cd0000        	call	_Display_LCD_String
-8072  17db ac8d1b8d      	jpf	L3514
-8073  17df               L3124:
-8074                     ; 1245 			uc_fault_cnt = (U8)(0);
-8076  17df 0f16          	clr	(OFST+0,sp)
-8077                     ; 1247 			if(can_diag[0] & (U8)(0x02)){
-8079  17e1 7b03          	ld	a,(OFST-19,sp)
-8080  17e3 a502          	bcp	a,#2
-8081  17e5 273c          	jreq	L7124
-8082                     ; 1248 				uc_fault_cnt++;
-8084  17e7 0c16          	inc	(OFST+0,sp)
-8085                     ; 1249 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8085                     ; 1250 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8085                     ; 1251 				){
-8087  17e9 0d16          	tnz	(OFST+0,sp)
-8088  17eb 270d          	jreq	L5224
-8090  17ed 7b16          	ld	a,(OFST+0,sp)
-8091  17ef a105          	cp	a,#5
-8092  17f1 2407          	jruge	L5224
-8094  17f3 c60004        	ld	a,_uc_Test_Page_Now
-8095  17f6 a102          	cp	a,#2
-8096  17f8 2713          	jreq	L3224
-8097  17fa               L5224:
-8099  17fa 7b16          	ld	a,(OFST+0,sp)
-8100  17fc a105          	cp	a,#5
-8101  17fe 2523          	jrult	L7124
-8103  1800 7b16          	ld	a,(OFST+0,sp)
-8104  1802 a109          	cp	a,#9
-8105  1804 241d          	jruge	L7124
-8107  1806 c60004        	ld	a,_uc_Test_Page_Now
-8108  1809 a103          	cp	a,#3
-8109  180b 2616          	jrne	L7124
-8110  180d               L3224:
-8111                     ; 1252 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8113  180d 7b16          	ld	a,(OFST+0,sp)
-8114  180f 5f            	clrw	x
-8115  1810 97            	ld	xl,a
-8116  1811 5a            	decw	x
-8117  1812 a604          	ld	a,#4
-8118  1814 cd0000        	call	c_smodx
-8120  1817 d60000        	ld	a,(_LCD_Line,x)
-8121  181a cd0000        	call	_Set_LCD_Address
-8123                     ; 1253 					Display_LCD_String("Flt_LVLow");
-8125  181d ae00b9        	ldw	x,#L1323
-8126  1820 cd0000        	call	_Display_LCD_String
-8128  1823               L7124:
-8129                     ; 1257 			if(can_diag[0] & (U8)(0x04)){
-8131  1823 7b03          	ld	a,(OFST-19,sp)
-8132  1825 a504          	bcp	a,#4
-8133  1827 273c          	jreq	L1324
-8134                     ; 1258 				uc_fault_cnt++;
-8136  1829 0c16          	inc	(OFST+0,sp)
-8137                     ; 1259 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8137                     ; 1260 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8137                     ; 1261 				){
-8139  182b 0d16          	tnz	(OFST+0,sp)
-8140  182d 270d          	jreq	L7324
-8142  182f 7b16          	ld	a,(OFST+0,sp)
-8143  1831 a105          	cp	a,#5
-8144  1833 2407          	jruge	L7324
-8146  1835 c60004        	ld	a,_uc_Test_Page_Now
-8147  1838 a102          	cp	a,#2
-8148  183a 2713          	jreq	L5324
-8149  183c               L7324:
-8151  183c 7b16          	ld	a,(OFST+0,sp)
-8152  183e a105          	cp	a,#5
-8153  1840 2523          	jrult	L1324
-8155  1842 7b16          	ld	a,(OFST+0,sp)
-8156  1844 a109          	cp	a,#9
-8157  1846 241d          	jruge	L1324
-8159  1848 c60004        	ld	a,_uc_Test_Page_Now
-8160  184b a103          	cp	a,#3
-8161  184d 2616          	jrne	L1324
-8162  184f               L5324:
-8163                     ; 1262 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8165  184f 7b16          	ld	a,(OFST+0,sp)
-8166  1851 5f            	clrw	x
-8167  1852 97            	ld	xl,a
-8168  1853 5a            	decw	x
-8169  1854 a604          	ld	a,#4
-8170  1856 cd0000        	call	c_smodx
-8172  1859 d60000        	ld	a,(_LCD_Line,x)
-8173  185c cd0000        	call	_Set_LCD_Address
-8175                     ; 1263 					Display_LCD_String("Flt_LVHigh");
-8177  185f ae00ae        	ldw	x,#L5423
-8178  1862 cd0000        	call	_Display_LCD_String
-8180  1865               L1324:
-8181                     ; 1267 			if(can_diag[0] & (U8)(0x08)){
-8183  1865 7b03          	ld	a,(OFST-19,sp)
-8184  1867 a508          	bcp	a,#8
-8185  1869 273c          	jreq	L3424
-8186                     ; 1268 				uc_fault_cnt++;
-8188  186b 0c16          	inc	(OFST+0,sp)
-8189                     ; 1269 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8189                     ; 1270 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8189                     ; 1271 				){
-8191  186d 0d16          	tnz	(OFST+0,sp)
-8192  186f 270d          	jreq	L1524
-8194  1871 7b16          	ld	a,(OFST+0,sp)
-8195  1873 a105          	cp	a,#5
-8196  1875 2407          	jruge	L1524
-8198  1877 c60004        	ld	a,_uc_Test_Page_Now
-8199  187a a102          	cp	a,#2
-8200  187c 2713          	jreq	L7424
-8201  187e               L1524:
-8203  187e 7b16          	ld	a,(OFST+0,sp)
-8204  1880 a105          	cp	a,#5
-8205  1882 2523          	jrult	L3424
-8207  1884 7b16          	ld	a,(OFST+0,sp)
-8208  1886 a109          	cp	a,#9
-8209  1888 241d          	jruge	L3424
-8211  188a c60004        	ld	a,_uc_Test_Page_Now
-8212  188d a103          	cp	a,#3
-8213  188f 2616          	jrne	L3424
-8214  1891               L7424:
-8215                     ; 1272 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8217  1891 7b16          	ld	a,(OFST+0,sp)
-8218  1893 5f            	clrw	x
-8219  1894 97            	ld	xl,a
-8220  1895 5a            	decw	x
-8221  1896 a604          	ld	a,#4
-8222  1898 cd0000        	call	c_smodx
-8224  189b d60000        	ld	a,(_LCD_Line,x)
-8225  189e cd0000        	call	_Set_LCD_Address
-8227                     ; 1273 					Display_LCD_String("Flt_HVLow");
-8229  18a1 ae00a4        	ldw	x,#L1623
-8230  18a4 cd0000        	call	_Display_LCD_String
-8232  18a7               L3424:
-8233                     ; 1277 			if(can_diag[0] & (U8)(0x10)){
-8235  18a7 7b03          	ld	a,(OFST-19,sp)
-8236  18a9 a510          	bcp	a,#16
-8237  18ab 273c          	jreq	L5524
-8238                     ; 1278 				uc_fault_cnt++;
-8240  18ad 0c16          	inc	(OFST+0,sp)
-8241                     ; 1279 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8241                     ; 1280 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8241                     ; 1281 				){
-8243  18af 0d16          	tnz	(OFST+0,sp)
-8244  18b1 270d          	jreq	L3624
-8246  18b3 7b16          	ld	a,(OFST+0,sp)
-8247  18b5 a105          	cp	a,#5
-8248  18b7 2407          	jruge	L3624
-8250  18b9 c60004        	ld	a,_uc_Test_Page_Now
-8251  18bc a102          	cp	a,#2
-8252  18be 2713          	jreq	L1624
-8253  18c0               L3624:
-8255  18c0 7b16          	ld	a,(OFST+0,sp)
-8256  18c2 a105          	cp	a,#5
-8257  18c4 2523          	jrult	L5524
-8259  18c6 7b16          	ld	a,(OFST+0,sp)
-8260  18c8 a109          	cp	a,#9
-8261  18ca 241d          	jruge	L5524
-8263  18cc c60004        	ld	a,_uc_Test_Page_Now
-8264  18cf a103          	cp	a,#3
-8265  18d1 2616          	jrne	L5524
-8266  18d3               L1624:
-8267                     ; 1282 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);	
-8269  18d3 7b16          	ld	a,(OFST+0,sp)
-8270  18d5 5f            	clrw	x
-8271  18d6 97            	ld	xl,a
-8272  18d7 5a            	decw	x
-8273  18d8 a604          	ld	a,#4
-8274  18da cd0000        	call	c_smodx
-8276  18dd d60000        	ld	a,(_LCD_Line,x)
-8277  18e0 cd0000        	call	_Set_LCD_Address
-8279                     ; 1283 					Display_LCD_String("Flt_HVHigh");
-8281  18e3 ae0099        	ldw	x,#L5723
-8282  18e6 cd0000        	call	_Display_LCD_String
-8284  18e9               L5524:
-8285                     ; 1287 			if(can_data[7] & (U8)(0x2)){
-8287  18e9 7b14          	ld	a,(OFST-2,sp)
-8288  18eb a502          	bcp	a,#2
-8289  18ed 273c          	jreq	L7624
-8290                     ; 1288 				uc_fault_cnt++;
-8292  18ef 0c16          	inc	(OFST+0,sp)
-8293                     ; 1289 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8293                     ; 1290 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8293                     ; 1291 				){
-8295  18f1 0d16          	tnz	(OFST+0,sp)
-8296  18f3 270d          	jreq	L5724
-8298  18f5 7b16          	ld	a,(OFST+0,sp)
-8299  18f7 a105          	cp	a,#5
-8300  18f9 2407          	jruge	L5724
-8302  18fb c60004        	ld	a,_uc_Test_Page_Now
-8303  18fe a102          	cp	a,#2
-8304  1900 2713          	jreq	L3724
-8305  1902               L5724:
-8307  1902 7b16          	ld	a,(OFST+0,sp)
-8308  1904 a105          	cp	a,#5
-8309  1906 2523          	jrult	L7624
-8311  1908 7b16          	ld	a,(OFST+0,sp)
-8312  190a a109          	cp	a,#9
-8313  190c 241d          	jruge	L7624
-8315  190e c60004        	ld	a,_uc_Test_Page_Now
-8316  1911 a103          	cp	a,#3
-8317  1913 2616          	jrne	L7624
-8318  1915               L3724:
-8319                     ; 1292 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8321  1915 7b16          	ld	a,(OFST+0,sp)
-8322  1917 5f            	clrw	x
-8323  1918 97            	ld	xl,a
-8324  1919 5a            	decw	x
-8325  191a a604          	ld	a,#4
-8326  191c cd0000        	call	c_smodx
-8328  191f d60000        	ld	a,(_LCD_Line,x)
-8329  1922 cd0000        	call	_Set_LCD_Address
-8331                     ; 1293 					Display_LCD_String("Flt_OverCur");
-8333  1925 ae008d        	ldw	x,#L1133
-8334  1928 cd0000        	call	_Display_LCD_String
-8336  192b               L7624:
-8337                     ; 1296 			if(can_data[7] & (U8)(0x1)){
-8339  192b 7b14          	ld	a,(OFST-2,sp)
-8340  192d a501          	bcp	a,#1
-8341  192f 273c          	jreq	L1034
-8342                     ; 1297 				uc_fault_cnt++;
-8344  1931 0c16          	inc	(OFST+0,sp)
-8345                     ; 1298 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8345                     ; 1299 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8345                     ; 1300 				){
-8347  1933 0d16          	tnz	(OFST+0,sp)
-8348  1935 270d          	jreq	L7034
-8350  1937 7b16          	ld	a,(OFST+0,sp)
-8351  1939 a105          	cp	a,#5
-8352  193b 2407          	jruge	L7034
-8354  193d c60004        	ld	a,_uc_Test_Page_Now
-8355  1940 a102          	cp	a,#2
-8356  1942 2713          	jreq	L5034
-8357  1944               L7034:
-8359  1944 7b16          	ld	a,(OFST+0,sp)
-8360  1946 a105          	cp	a,#5
-8361  1948 2523          	jrult	L1034
-8363  194a 7b16          	ld	a,(OFST+0,sp)
-8364  194c a109          	cp	a,#9
-8365  194e 241d          	jruge	L1034
-8367  1950 c60004        	ld	a,_uc_Test_Page_Now
-8368  1953 a103          	cp	a,#3
-8369  1955 2616          	jrne	L1034
-8370  1957               L5034:
-8371                     ; 1301 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8373  1957 7b16          	ld	a,(OFST+0,sp)
-8374  1959 5f            	clrw	x
-8375  195a 97            	ld	xl,a
-8376  195b 5a            	decw	x
-8377  195c a604          	ld	a,#4
-8378  195e cd0000        	call	c_smodx
-8380  1961 d60000        	ld	a,(_LCD_Line,x)
-8381  1964 cd0000        	call	_Set_LCD_Address
-8383                     ; 1302 					Display_LCD_String("Flt_ThmShut");
-8385  1967 ae0081        	ldw	x,#L5233
-8386  196a cd0000        	call	_Display_LCD_String
-8388  196d               L1034:
-8389                     ; 1306 			if(can_diag[1] & (U8)(0x1)){
-8391  196d 7b04          	ld	a,(OFST-18,sp)
-8392  196f a501          	bcp	a,#1
-8393  1971 273c          	jreq	L3134
-8394                     ; 1307 				uc_fault_cnt++;
-8396  1973 0c16          	inc	(OFST+0,sp)
-8397                     ; 1308 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8397                     ; 1309 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8397                     ; 1310 				){
-8399  1975 0d16          	tnz	(OFST+0,sp)
-8400  1977 270d          	jreq	L1234
-8402  1979 7b16          	ld	a,(OFST+0,sp)
-8403  197b a105          	cp	a,#5
-8404  197d 2407          	jruge	L1234
-8406  197f c60004        	ld	a,_uc_Test_Page_Now
-8407  1982 a102          	cp	a,#2
-8408  1984 2713          	jreq	L7134
-8409  1986               L1234:
-8411  1986 7b16          	ld	a,(OFST+0,sp)
-8412  1988 a105          	cp	a,#5
-8413  198a 2523          	jrult	L3134
-8415  198c 7b16          	ld	a,(OFST+0,sp)
-8416  198e a109          	cp	a,#9
-8417  1990 241d          	jruge	L3134
-8419  1992 c60004        	ld	a,_uc_Test_Page_Now
-8420  1995 a103          	cp	a,#3
-8421  1997 2616          	jrne	L3134
-8422  1999               L7134:
-8423                     ; 1311 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);			
-8425  1999 7b16          	ld	a,(OFST+0,sp)
-8426  199b 5f            	clrw	x
-8427  199c 97            	ld	xl,a
-8428  199d 5a            	decw	x
-8429  199e a604          	ld	a,#4
-8430  19a0 cd0000        	call	c_smodx
-8432  19a3 d60000        	ld	a,(_LCD_Line,x)
-8433  19a6 cd0000        	call	_Set_LCD_Address
-8435                     ; 1312 					Display_LCD_String("Flt_PCBThmShut");
-8437  19a9 ae0072        	ldw	x,#L1433
-8438  19ac cd0000        	call	_Display_LCD_String
-8440  19af               L3134:
-8441                     ; 1316 			if(can_diag[1] & (U8)(0x10)){
-8443  19af 7b04          	ld	a,(OFST-18,sp)
-8444  19b1 a510          	bcp	a,#16
-8445  19b3 273c          	jreq	L5234
-8446                     ; 1317 				uc_fault_cnt++;
-8448  19b5 0c16          	inc	(OFST+0,sp)
-8449                     ; 1318 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8449                     ; 1319 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8449                     ; 1320 				){
-8451  19b7 0d16          	tnz	(OFST+0,sp)
-8452  19b9 270d          	jreq	L3334
-8454  19bb 7b16          	ld	a,(OFST+0,sp)
-8455  19bd a105          	cp	a,#5
-8456  19bf 2407          	jruge	L3334
-8458  19c1 c60004        	ld	a,_uc_Test_Page_Now
-8459  19c4 a102          	cp	a,#2
-8460  19c6 2713          	jreq	L1334
-8461  19c8               L3334:
-8463  19c8 7b16          	ld	a,(OFST+0,sp)
-8464  19ca a105          	cp	a,#5
-8465  19cc 2523          	jrult	L5234
-8467  19ce 7b16          	ld	a,(OFST+0,sp)
-8468  19d0 a109          	cp	a,#9
-8469  19d2 241d          	jruge	L5234
-8471  19d4 c60004        	ld	a,_uc_Test_Page_Now
-8472  19d7 a103          	cp	a,#3
-8473  19d9 2616          	jrne	L5234
-8474  19db               L1334:
-8475                     ; 1321 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8477  19db 7b16          	ld	a,(OFST+0,sp)
-8478  19dd 5f            	clrw	x
-8479  19de 97            	ld	xl,a
-8480  19df 5a            	decw	x
-8481  19e0 a604          	ld	a,#4
-8482  19e2 cd0000        	call	c_smodx
-8484  19e5 d60000        	ld	a,(_LCD_Line,x)
-8485  19e8 cd0000        	call	_Set_LCD_Address
-8487                     ; 1322 					Display_LCD_String("Flt_MsgTimeOut");
-8489  19eb ae0063        	ldw	x,#L5533
-8490  19ee cd0000        	call	_Display_LCD_String
-8492  19f1               L5234:
-8493                     ; 1326 			if(can_diag[1] & (U8)(0x04)){
-8495  19f1 7b04          	ld	a,(OFST-18,sp)
-8496  19f3 a504          	bcp	a,#4
-8497  19f5 273c          	jreq	L7334
-8498                     ; 1327 				uc_fault_cnt++;
-8500  19f7 0c16          	inc	(OFST+0,sp)
-8501                     ; 1328 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8501                     ; 1329 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8501                     ; 1330 				){
-8503  19f9 0d16          	tnz	(OFST+0,sp)
-8504  19fb 270d          	jreq	L5434
-8506  19fd 7b16          	ld	a,(OFST+0,sp)
-8507  19ff a105          	cp	a,#5
-8508  1a01 2407          	jruge	L5434
-8510  1a03 c60004        	ld	a,_uc_Test_Page_Now
-8511  1a06 a102          	cp	a,#2
-8512  1a08 2713          	jreq	L3434
-8513  1a0a               L5434:
-8515  1a0a 7b16          	ld	a,(OFST+0,sp)
-8516  1a0c a105          	cp	a,#5
-8517  1a0e 2523          	jrult	L7334
-8519  1a10 7b16          	ld	a,(OFST+0,sp)
-8520  1a12 a109          	cp	a,#9
-8521  1a14 241d          	jruge	L7334
-8523  1a16 c60004        	ld	a,_uc_Test_Page_Now
-8524  1a19 a103          	cp	a,#3
-8525  1a1b 2616          	jrne	L7334
-8526  1a1d               L3434:
-8527                     ; 1331 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8529  1a1d 7b16          	ld	a,(OFST+0,sp)
-8530  1a1f 5f            	clrw	x
-8531  1a20 97            	ld	xl,a
-8532  1a21 5a            	decw	x
-8533  1a22 a604          	ld	a,#4
-8534  1a24 cd0000        	call	c_smodx
-8536  1a27 d60000        	ld	a,(_LCD_Line,x)
-8537  1a2a cd0000        	call	_Set_LCD_Address
-8539                     ; 1332 					Display_LCD_String("Fail_HVSen");
-8541  1a2d ae0058        	ldw	x,#L1733
-8542  1a30 cd0000        	call	_Display_LCD_String
-8544  1a33               L7334:
-8545                     ; 1336 			if(can_diag[1] & (U8)(0x02)){
-8547  1a33 7b04          	ld	a,(OFST-18,sp)
-8548  1a35 a502          	bcp	a,#2
-8549  1a37 273c          	jreq	L1534
-8550                     ; 1337 				uc_fault_cnt++;
-8552  1a39 0c16          	inc	(OFST+0,sp)
-8553                     ; 1338 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8553                     ; 1339 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8553                     ; 1340 				){
-8555  1a3b 0d16          	tnz	(OFST+0,sp)
-8556  1a3d 270d          	jreq	L7534
-8558  1a3f 7b16          	ld	a,(OFST+0,sp)
-8559  1a41 a105          	cp	a,#5
-8560  1a43 2407          	jruge	L7534
-8562  1a45 c60004        	ld	a,_uc_Test_Page_Now
-8563  1a48 a102          	cp	a,#2
-8564  1a4a 2713          	jreq	L5534
-8565  1a4c               L7534:
-8567  1a4c 7b16          	ld	a,(OFST+0,sp)
-8568  1a4e a105          	cp	a,#5
-8569  1a50 2523          	jrult	L1534
-8571  1a52 7b16          	ld	a,(OFST+0,sp)
-8572  1a54 a109          	cp	a,#9
-8573  1a56 241d          	jruge	L1534
-8575  1a58 c60004        	ld	a,_uc_Test_Page_Now
-8576  1a5b a103          	cp	a,#3
-8577  1a5d 2616          	jrne	L1534
-8578  1a5f               L5534:
-8579                     ; 1341 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8581  1a5f 7b16          	ld	a,(OFST+0,sp)
-8582  1a61 5f            	clrw	x
-8583  1a62 97            	ld	xl,a
-8584  1a63 5a            	decw	x
-8585  1a64 a604          	ld	a,#4
-8586  1a66 cd0000        	call	c_smodx
-8588  1a69 d60000        	ld	a,(_LCD_Line,x)
-8589  1a6c cd0000        	call	_Set_LCD_Address
-8591                     ; 1342 					Display_LCD_String("Fail_LVSen");
-8593  1a6f ae004d        	ldw	x,#L5043
-8594  1a72 cd0000        	call	_Display_LCD_String
-8596  1a75               L1534:
-8597                     ; 1346 			if(can_data[7] & (U8)(0x04)){
-8599  1a75 7b14          	ld	a,(OFST-2,sp)
-8600  1a77 a504          	bcp	a,#4
-8601  1a79 273c          	jreq	L3634
-8602                     ; 1347 				uc_fault_cnt++;
-8604  1a7b 0c16          	inc	(OFST+0,sp)
-8605                     ; 1348 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8605                     ; 1349 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8605                     ; 1350 				){
-8607  1a7d 0d16          	tnz	(OFST+0,sp)
-8608  1a7f 270d          	jreq	L1734
-8610  1a81 7b16          	ld	a,(OFST+0,sp)
-8611  1a83 a105          	cp	a,#5
-8612  1a85 2407          	jruge	L1734
-8614  1a87 c60004        	ld	a,_uc_Test_Page_Now
-8615  1a8a a102          	cp	a,#2
-8616  1a8c 2713          	jreq	L7634
-8617  1a8e               L1734:
-8619  1a8e 7b16          	ld	a,(OFST+0,sp)
-8620  1a90 a105          	cp	a,#5
-8621  1a92 2523          	jrult	L3634
-8623  1a94 7b16          	ld	a,(OFST+0,sp)
-8624  1a96 a109          	cp	a,#9
-8625  1a98 241d          	jruge	L3634
-8627  1a9a c60004        	ld	a,_uc_Test_Page_Now
-8628  1a9d a103          	cp	a,#3
-8629  1a9f 2616          	jrne	L3634
-8630  1aa1               L7634:
-8631                     ; 1351 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8633  1aa1 7b16          	ld	a,(OFST+0,sp)
-8634  1aa3 5f            	clrw	x
-8635  1aa4 97            	ld	xl,a
-8636  1aa5 5a            	decw	x
-8637  1aa6 a604          	ld	a,#4
-8638  1aa8 cd0000        	call	c_smodx
-8640  1aab d60000        	ld	a,(_LCD_Line,x)
-8641  1aae cd0000        	call	_Set_LCD_Address
-8643                     ; 1352 					Display_LCD_String("Fail_CurSen");
-8645  1ab1 ae0041        	ldw	x,#L1243
-8646  1ab4 cd0000        	call	_Display_LCD_String
-8648  1ab7               L3634:
-8649                     ; 1358 			if(can_data[7] & (U8)(0x08)){
-8651  1ab7 7b14          	ld	a,(OFST-2,sp)
-8652  1ab9 a508          	bcp	a,#8
-8653  1abb 273c          	jreq	L5734
-8654                     ; 1360 				uc_fault_cnt++;
-8656  1abd 0c16          	inc	(OFST+0,sp)
-8657                     ; 1361 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8657                     ; 1362 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8657                     ; 1363 				){
-8659  1abf 0d16          	tnz	(OFST+0,sp)
-8660  1ac1 270d          	jreq	L3044
-8662  1ac3 7b16          	ld	a,(OFST+0,sp)
-8663  1ac5 a105          	cp	a,#5
-8664  1ac7 2407          	jruge	L3044
-8666  1ac9 c60004        	ld	a,_uc_Test_Page_Now
-8667  1acc a102          	cp	a,#2
-8668  1ace 2713          	jreq	L1044
-8669  1ad0               L3044:
-8671  1ad0 7b16          	ld	a,(OFST+0,sp)
-8672  1ad2 a105          	cp	a,#5
-8673  1ad4 2523          	jrult	L5734
-8675  1ad6 7b16          	ld	a,(OFST+0,sp)
-8676  1ad8 a109          	cp	a,#9
-8677  1ada 241d          	jruge	L5734
-8679  1adc c60004        	ld	a,_uc_Test_Page_Now
-8680  1adf a103          	cp	a,#3
-8681  1ae1 2616          	jrne	L5734
-8682  1ae3               L1044:
-8683                     ; 1364 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);	
-8685  1ae3 7b16          	ld	a,(OFST+0,sp)
-8686  1ae5 5f            	clrw	x
-8687  1ae6 97            	ld	xl,a
-8688  1ae7 5a            	decw	x
-8689  1ae8 a604          	ld	a,#4
-8690  1aea cd0000        	call	c_smodx
-8692  1aed d60000        	ld	a,(_LCD_Line,x)
-8693  1af0 cd0000        	call	_Set_LCD_Address
-8695                     ; 1365 					Display_LCD_String("Fail_CoreTemp");
-8697  1af3 ae0033        	ldw	x,#L5343
-8698  1af6 cd0000        	call	_Display_LCD_String
-8700  1af9               L5734:
-8701                     ; 1371 			if(can_diag[1] & (U8)(0x8)){
-8703  1af9 7b04          	ld	a,(OFST-18,sp)
-8704  1afb a508          	bcp	a,#8
-8705  1afd 273c          	jreq	L7044
-8706                     ; 1373 				uc_fault_cnt++;
-8708  1aff 0c16          	inc	(OFST+0,sp)
-8709                     ; 1374 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8709                     ; 1375 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8709                     ; 1376 				){
-8711  1b01 0d16          	tnz	(OFST+0,sp)
-8712  1b03 270d          	jreq	L5144
-8714  1b05 7b16          	ld	a,(OFST+0,sp)
-8715  1b07 a105          	cp	a,#5
-8716  1b09 2407          	jruge	L5144
-8718  1b0b c60004        	ld	a,_uc_Test_Page_Now
-8719  1b0e a102          	cp	a,#2
-8720  1b10 2713          	jreq	L3144
-8721  1b12               L5144:
-8723  1b12 7b16          	ld	a,(OFST+0,sp)
-8724  1b14 a105          	cp	a,#5
-8725  1b16 2523          	jrult	L7044
-8727  1b18 7b16          	ld	a,(OFST+0,sp)
-8728  1b1a a109          	cp	a,#9
-8729  1b1c 241d          	jruge	L7044
-8731  1b1e c60004        	ld	a,_uc_Test_Page_Now
-8732  1b21 a103          	cp	a,#3
-8733  1b23 2616          	jrne	L7044
-8734  1b25               L3144:
-8735                     ; 1377 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8737  1b25 7b16          	ld	a,(OFST+0,sp)
-8738  1b27 5f            	clrw	x
-8739  1b28 97            	ld	xl,a
-8740  1b29 5a            	decw	x
-8741  1b2a a604          	ld	a,#4
-8742  1b2c cd0000        	call	c_smodx
-8744  1b2f d60000        	ld	a,(_LCD_Line,x)
-8745  1b32 cd0000        	call	_Set_LCD_Address
-8747                     ; 1378 					Display_LCD_String("Fail_PCB1Temp");
-8749  1b35 ae0025        	ldw	x,#L1543
-8750  1b38 cd0000        	call	_Display_LCD_String
-8752  1b3b               L7044:
-8753                     ; 1384 			if(can_data[5] == (U8)(0xff)){
-8755  1b3b 7b12          	ld	a,(OFST-4,sp)
-8756  1b3d a1ff          	cp	a,#255
-8757  1b3f 263c          	jrne	L1244
-8758                     ; 1386 				uc_fault_cnt++;
-8760  1b41 0c16          	inc	(OFST+0,sp)
-8761                     ; 1387 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
-8761                     ; 1388 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
-8761                     ; 1389 				){
-8763  1b43 0d16          	tnz	(OFST+0,sp)
-8764  1b45 270d          	jreq	L7244
-8766  1b47 7b16          	ld	a,(OFST+0,sp)
-8767  1b49 a105          	cp	a,#5
-8768  1b4b 2407          	jruge	L7244
-8770  1b4d c60004        	ld	a,_uc_Test_Page_Now
-8771  1b50 a102          	cp	a,#2
-8772  1b52 2713          	jreq	L5244
-8773  1b54               L7244:
-8775  1b54 7b16          	ld	a,(OFST+0,sp)
-8776  1b56 a105          	cp	a,#5
-8777  1b58 2523          	jrult	L1244
-8779  1b5a 7b16          	ld	a,(OFST+0,sp)
-8780  1b5c a109          	cp	a,#9
-8781  1b5e 241d          	jruge	L1244
-8783  1b60 c60004        	ld	a,_uc_Test_Page_Now
-8784  1b63 a103          	cp	a,#3
-8785  1b65 2616          	jrne	L1244
-8786  1b67               L5244:
-8787                     ; 1390 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
-8789  1b67 7b16          	ld	a,(OFST+0,sp)
-8790  1b69 5f            	clrw	x
-8791  1b6a 97            	ld	xl,a
-8792  1b6b 5a            	decw	x
-8793  1b6c a604          	ld	a,#4
-8794  1b6e cd0000        	call	c_smodx
-8796  1b71 d60000        	ld	a,(_LCD_Line,x)
-8797  1b74 cd0000        	call	_Set_LCD_Address
-8799                     ; 1391 					Display_LCD_String("Fail_IGBT");
-8801  1b77 ae001b        	ldw	x,#L5643
-8802  1b7a cd0000        	call	_Display_LCD_String
-8804  1b7d               L1244:
-8805                     ; 1405 			if(!uc_fault_cnt){
-8807  1b7d 0d16          	tnz	(OFST+0,sp)
-8808  1b7f 260c          	jrne	L3514
-8809                     ; 1406 				Set_LCD_Address(LCD_Line[0]);
-8811  1b81 c60000        	ld	a,_LCD_Line
-8812  1b84 cd0000        	call	_Set_LCD_Address
-8814                     ; 1407 				Display_LCD_String("Normal");
-8816  1b87 ae0006        	ldw	x,#L5053
-8817  1b8a cd0000        	call	_Display_LCD_String
-8819  1b8d               L3514:
-8820                     ; 1412 	if((b_Com_On_flag == ON)){
-8822  1b8d c6000d        	ld	a,_uc_Test_Ctrl_Reg
-8823  1b90 a508          	bcp	a,#8
-8824  1b92 270d          	jreq	L5344
-8825                     ; 1413 		Set_LCD_Address((unsigned char)(0x00+15));
-8827  1b94 a60f          	ld	a,#15
-8828  1b96 cd0000        	call	_Set_LCD_Address
-8830                     ; 1416 		Display_LCD_String("Y");	// YJS 20230314
-8832  1b99 ae0004        	ldw	x,#L1153
-8833  1b9c cd0000        	call	_Display_LCD_String
-8836  1b9f 200b          	jra	L7344
-8837  1ba1               L5344:
-8838                     ; 1418 		Set_LCD_Address((unsigned char)(0x00+15));
-8840  1ba1 a60f          	ld	a,#15
-8841  1ba3 cd0000        	call	_Set_LCD_Address
-8843                     ; 1419 		Display_LCD_String("N");
-8845  1ba6 ae00c7        	ldw	x,#L7013
-8846  1ba9 cd0000        	call	_Display_LCD_String
-8848  1bac               L7344:
-8849                     ; 1422 	return;
-8850  1bac               L431:
-8853  1bac 5b16          	addw	sp,#22
-8854  1bae 81            	ret
-8880                     ; 1425 void Test_Controller_Routine(void)
-8880                     ; 1426 {
-8881                     	switch	.text
-8882  1baf               _Test_Controller_Routine:
-8886                     ; 1430 	SU2I_Ctrl_LCD_Display_Control();
-8888  1baf cd108f        	call	L5153_SU2I_Ctrl_LCD_Display_Control
-8890                     ; 1432 	Test_Ctrl_Swtich_Control();
-8892  1bb2 cd030c        	call	_Test_Ctrl_Swtich_Control
-8894                     ; 1434 	return;
-8897  1bb5 81            	ret
-8933                     ; 1439 void Test_Ctrl_Reset_Values(void)
-8933                     ; 1440 {
-8934                     	switch	.text
-8935  1bb6               _Test_Ctrl_Reset_Values:
-8939                     ; 1441 	uc_Test_Ctrl_Reg = 0x00;			// Test_Controller_Control_Register
-8941  1bb6 725f000d      	clr	_uc_Test_Ctrl_Reg
-8942                     ; 1442 	uc_Model_Select_Reg = 0x00;		// PTC_Model_Select_Register
-8944  1bba 725f000e      	clr	_uc_Model_Select_Reg
-8945                     ; 1443 	uc_Rx_TimeOut_Reg = 0x00;		// Rx Data frame Timeout Register
-8947  1bbe 725f000c      	clr	_uc_Rx_TimeOut_Reg
-8948                     ; 1445 	uc_Test_Page_Now = 0;			// Test_Controller_Page_Now
-8950  1bc2 725f0004      	clr	_uc_Test_Page_Now
-8951                     ; 1446 	uc_Test_Page_Pre = 0;			// Test_Controller_Page_Previous
-8953  1bc6 725f0003      	clr	_uc_Test_Page_Pre
-8954                     ; 1447 	uc_Test_Data_Select_Num = 0;	// Test_Controller_Data_Selection_Number
-8956  1bca 725f0002      	clr	_uc_Test_Data_Select_Num
-8957                     ; 1449 	uc_Perc_Unit = 1;		// Duty_Moving_Unit
-8959  1bce 35010001      	mov	_uc_Perc_Unit,#1
-8960                     ; 1451 	ui_Rx1_TimeOut_Cnt = 0;	// Rx1_Frame_TimeOut_Counter
-8962  1bd2 5f            	clrw	x
-8963  1bd3 cf0007        	ldw	_ui_Rx1_TimeOut_Cnt,x
-8964                     ; 1452 	ui_Rx2_TimeOut_Cnt = 0;	// Rx2_Frame_TimeOut_Counter
-8966  1bd6 5f            	clrw	x
-8967  1bd7 cf0005        	ldw	_ui_Rx2_TimeOut_Cnt,x
-8968                     ; 1454 	uc_Heater_Enable_Flag = 0;	// Heater_Enable_Flag
-8970  1bda 725f0009      	clr	_uc_Heater_Enable_Flag
-8971                     ; 1455 	uc_Target_Duty_Perc[HTR_ZONE_1] = 0;		// Target_Duty_Percentage
-8973  1bde 725f000a      	clr	_uc_Target_Duty_Perc
-8974                     ; 1456 	uc_Target_Duty_Perc[HTR_ZONE_2] = 0;		// Target_Duty_Percentage
-8976  1be2 725f000b      	clr	_uc_Target_Duty_Perc+1
-8977                     ; 1457 	HEATER_zone_status=HTR_ZONE_1;
-8979  1be6 725f0000      	clr	_HEATER_zone_status
-8980                     ; 1458 	return;
-8983  1bea 81            	ret
-9123                     	xdef	_Test_Ctrl_Text_Display_Handling
-9124                     	xdef	_Test_Ctrl_Swtich_Control
-9125                     	xdef	_Test_Ctrl_Value_Change
-9126                     	xdef	_Model_Select_LCD_Display_Control
-9127                     	xdef	_Model_Select_Switch_Control
-9128                     	xdef	_Model_Select_Display_Handling
-9129                     	xdef	_First_Switch_Control
-9130                     	switch	.bss
-9131  0000               _uc_Target_Display_Mode:
-9132  0000 00            	ds.b	1
-9133                     	xdef	_uc_Target_Display_Mode
-9134  0001               _uc_Perc_Unit:
-9135  0001 00            	ds.b	1
-9136                     	xdef	_uc_Perc_Unit
-9137  0002               _uc_Test_Data_Select_Num:
-9138  0002 00            	ds.b	1
-9139                     	xdef	_uc_Test_Data_Select_Num
-9140  0003               _uc_Test_Page_Pre:
-9141  0003 00            	ds.b	1
-9142                     	xdef	_uc_Test_Page_Pre
-9143  0004               _uc_Test_Page_Now:
-9144  0004 00            	ds.b	1
-9145                     	xdef	_uc_Test_Page_Now
-9146                     	xref	_strcpy
-9147                     	xref	_Start_Zig_Display
-9148                     	xref	_HEATER_zone_status
-9149                     	xdef	_Test_Ctrl_Reset_Values
-9150                     	xdef	_Test_Controller_Routine
-9151                     	xdef	_Model_Select_Routine
-9152                     	xdef	_Test_Controller_First_Routine
-9153  0005               _ui_Rx2_TimeOut_Cnt:
-9154  0005 0000          	ds.b	2
-9155                     	xdef	_ui_Rx2_TimeOut_Cnt
-9156  0007               _ui_Rx1_TimeOut_Cnt:
-9157  0007 0000          	ds.b	2
-9158                     	xdef	_ui_Rx1_TimeOut_Cnt
-9159                     	xdef	_uc_Rx_Data
-9160  0009               _uc_Heater_Enable_Flag:
-9161  0009 00            	ds.b	1
-9162                     	xdef	_uc_Heater_Enable_Flag
-9163  000a               _uc_Target_Duty_Perc:
-9164  000a 0000          	ds.b	2
-9165                     	xdef	_uc_Target_Duty_Perc
-9166  000c               _uc_Rx_TimeOut_Reg:
-9167  000c 00            	ds.b	1
-9168                     	xdef	_uc_Rx_TimeOut_Reg
-9169  000d               _uc_Test_Ctrl_Reg:
-9170  000d 00            	ds.b	1
-9171                     	xdef	_uc_Test_Ctrl_Reg
-9172  000e               _uc_Model_Select_Reg:
-9173  000e 00            	ds.b	1
-9174                     	xdef	_uc_Model_Select_Reg
-9175                     	xref	_uc_Button_Status_Reg
-9176                     	xref	_Num_Display_LCD
-9177                     	xref	_Display_LCD_String
-9178                     	xref	_Set_LCD_Address
-9179                     	xref	_LCD_Dis_Data
-9180                     	xref	_LCD_Line
-9181                     	xref	_uc_LCD_Blink_Reg
-9182                     	xref	_uc_System_Ctrl_Reg
-9183                     	switch	.const
-9184  0004               L1153:
-9185  0004 5900          	dc.b	"Y",0
-9186  0006               L5053:
-9187  0006 4e6f726d616c  	dc.b	"Normal",0
-9188  000d               L1053:
-9189  000d 4661696c5f6f  	dc.b	"Fail_openLoad",0
-9190  001b               L5643:
-9191  001b 4661696c5f49  	dc.b	"Fail_IGBT",0
-9192  0025               L1543:
-9193  0025 4661696c5f50  	dc.b	"Fail_PCB1Temp",0
-9194  0033               L5343:
-9195  0033 4661696c5f43  	dc.b	"Fail_CoreTemp",0
-9196  0041               L1243:
-9197  0041 4661696c5f43  	dc.b	"Fail_CurSen",0
-9198  004d               L5043:
-9199  004d 4661696c5f4c  	dc.b	"Fail_LVSen",0
-9200  0058               L1733:
-9201  0058 4661696c5f48  	dc.b	"Fail_HVSen",0
-9202  0063               L5533:
-9203  0063 466c745f4d73  	dc.b	"Flt_MsgTimeOut",0
-9204  0072               L1433:
-9205  0072 466c745f5043  	dc.b	"Flt_PCBThmShut",0
-9206  0081               L5233:
-9207  0081 466c745f5468  	dc.b	"Flt_ThmShut",0
-9208  008d               L1133:
-9209  008d 466c745f4f76  	dc.b	"Flt_OverCur",0
-9210  0099               L5723:
-9211  0099 466c745f4856  	dc.b	"Flt_HVHigh",0
-9212  00a4               L1623:
-9213  00a4 466c745f4856  	dc.b	"Flt_HVLow",0
-9214  00ae               L5423:
-9215  00ae 466c745f4c56  	dc.b	"Flt_LVHigh",0
-9216  00b9               L1323:
-9217  00b9 466c745f4c56  	dc.b	"Flt_LVLow",0
-9218  00c3               L3713:
-9219  00c3 2d00          	dc.b	"-",0
-9220  00c5               L5113:
-9221  00c5 3100          	dc.b	"1",0
-9222  00c7               L7013:
-9223  00c7 4e00          	dc.b	"N",0
-9224  00c9               L7472:
-9225  00c9 4d415800      	dc.b	"MAX",0
-9226  00cd               L1762:
-9227  00cd 4c6d697400    	dc.b	"Lmit",0
-9228  00d2               L3662:
-9229  00d2 466c7400      	dc.b	"Flt",0
-9230  00d6               L5562:
-9231  00d6 4f70657200    	dc.b	"Oper",0
-9232  00db               L7462:
-9233  00db 53746f7000    	dc.b	"Stop",0
-9234  00e0               L1462:
-9235  00e0 4e4300        	dc.b	"NC",0
-9236  00e3               L5362:
-9237  00e3 5a3200        	dc.b	"Z2",0
-9238  00e6               L1362:
-9239  00e6 5a3100        	dc.b	"Z1",0
-9240  00e9               L1162:
-9241  00e9 202020202020  	dc.b	"        Fd:",0
-9242  00f5               L7752:
-9243  00f5 202020202020  	dc.b	"        /",0
-9244  00ff               L1552:
-9245  00ff 2500          	dc.b	"%",0
-9246  0101               L7452:
-9247  0101 3000          	dc.b	"0",0
-9248  0103               L3452:
-9249  0103 3500          	dc.b	"5",0
-9250  0105               L7352:
-9251  0105 2e00          	dc.b	".",0
-9252  0107               L3352:
-9253  0107 445f556e6974  	dc.b	"D_Unit:",0
-9254  010f               L1352:
-9255  010f 2a5461726765  	dc.b	"*Target Watt(OS)",0
-9256  0120               L5252:
-9257  0120 2a5461726765  	dc.b	"*Target Perc",0
-9258  012d               L1252:
-9259  012d 2a4f5054494f  	dc.b	"*OPTION*",0
-9260  0136               L1442:
-9261  0136 5665723a00    	dc.b	"Ver:",0
-9262  013b               L7342:
-9263  013b 43743a00      	dc.b	"Ct:",0
-9264  013f               L5342:
-9265  013f 43723a202020  	dc.b	"Cr:     Pw:",0
-9266  014b               L3342:
-9267  014b 523a2020463a  	dc.b	"R:  F:  HV:",0
-9268  0157               L1342:
-9269  0157 54703a202020  	dc.b	"Tp:     Fd:",0
-9270  0163               L5242:
-9271  0163 54643a202020  	dc.b	"Td:     Fd:",0
-9272  016f               L1242:
-9273  016f 416c3a202020  	dc.b	"Al:     /",0
-9274  0179               L5571:
-9275  0179 00            	dc.b	0
-9276  017a               L3571:
-9277  017a 2a4856434320  	dc.b	"*HVCC Model*",0
-9278                     	xref.b	c_lreg
-9279                     	xref.b	c_x
-9280                     	xref.b	c_y
-9300                     	xref	c_smodx
-9301                     	xref	c_sdivx
-9302                     	xref	c_ludv
-9303                     	xref	c_umul
-9304                     	end
+6589  1075 0f16          	clr	(OFST+0,sp)
+6591  1077               L3553:
+6592                     ; 922 		can_data[uc_buffer]=uc_Rx_Data[HTR_STATUS2][uc_buffer];
+6594  1077 96            	ldw	x,sp
+6595  1078 1c000d        	addw	x,#OFST-9
+6596  107b 9f            	ld	a,xl
+6597  107c 5e            	swapw	x
+6598  107d 1b16          	add	a,(OFST+0,sp)
+6599  107f 2401          	jrnc	L221
+6600  1081 5c            	incw	x
+6601  1082               L221:
+6602  1082 02            	rlwa	x,a
+6603  1083 7b16          	ld	a,(OFST+0,sp)
+6604  1085 905f          	clrw	y
+6605  1087 9097          	ld	yl,a
+6606  1089 90d60008      	ld	a,(_uc_Rx_Data+8,y)
+6607  108d f7            	ld	(x),a
+6608                     ; 923 		can_diag[uc_buffer]=uc_Rx_Data[HTR_STATUS4][uc_buffer];
+6610  108e 96            	ldw	x,sp
+6611  108f 1c0003        	addw	x,#OFST-19
+6612  1092 9f            	ld	a,xl
+6613  1093 5e            	swapw	x
+6614  1094 1b16          	add	a,(OFST+0,sp)
+6615  1096 2401          	jrnc	L421
+6616  1098 5c            	incw	x
+6617  1099               L421:
+6618  1099 02            	rlwa	x,a
+6619  109a 7b16          	ld	a,(OFST+0,sp)
+6620  109c 905f          	clrw	y
+6621  109e 9097          	ld	yl,a
+6622  10a0 90d60018      	ld	a,(_uc_Rx_Data+24,y)
+6623  10a4 f7            	ld	(x),a
+6624                     ; 920 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
+6626  10a5 0c16          	inc	(OFST+0,sp)
+6630  10a7 7b16          	ld	a,(OFST+0,sp)
+6631  10a9 a108          	cp	a,#8
+6632  10ab 25ca          	jrult	L3553
+6634  10ad 2038          	jra	L1653
+6635  10af               L1553:
+6636                     ; 928 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
+6638  10af 0f16          	clr	(OFST+0,sp)
+6640  10b1               L3653:
+6641                     ; 930 		can_data[uc_buffer]=uc_Rx_Data[HTR_STATUS3][uc_buffer];
+6643  10b1 96            	ldw	x,sp
+6644  10b2 1c000d        	addw	x,#OFST-9
+6645  10b5 9f            	ld	a,xl
+6646  10b6 5e            	swapw	x
+6647  10b7 1b16          	add	a,(OFST+0,sp)
+6648  10b9 2401          	jrnc	L621
+6649  10bb 5c            	incw	x
+6650  10bc               L621:
+6651  10bc 02            	rlwa	x,a
+6652  10bd 7b16          	ld	a,(OFST+0,sp)
+6653  10bf 905f          	clrw	y
+6654  10c1 9097          	ld	yl,a
+6655  10c3 90d60010      	ld	a,(_uc_Rx_Data+16,y)
+6656  10c7 f7            	ld	(x),a
+6657                     ; 931 		can_diag[uc_buffer]=uc_Rx_Data[HTR_STATUS4][uc_buffer];
+6659  10c8 96            	ldw	x,sp
+6660  10c9 1c0003        	addw	x,#OFST-19
+6661  10cc 9f            	ld	a,xl
+6662  10cd 5e            	swapw	x
+6663  10ce 1b16          	add	a,(OFST+0,sp)
+6664  10d0 2401          	jrnc	L031
+6665  10d2 5c            	incw	x
+6666  10d3               L031:
+6667  10d3 02            	rlwa	x,a
+6668  10d4 7b16          	ld	a,(OFST+0,sp)
+6669  10d6 905f          	clrw	y
+6670  10d8 9097          	ld	yl,a
+6671  10da 90d60018      	ld	a,(_uc_Rx_Data+24,y)
+6672  10de f7            	ld	(x),a
+6673                     ; 928 	for (uc_buffer=0;uc_buffer<8;uc_buffer++)
+6675  10df 0c16          	inc	(OFST+0,sp)
+6679  10e1 7b16          	ld	a,(OFST+0,sp)
+6680  10e3 a108          	cp	a,#8
+6681  10e5 25ca          	jrult	L3653
+6682  10e7               L1653:
+6683                     ; 934 	if(b_Test_Option_flag == ON){
+6685  10e7 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+6686  10ea a510          	bcp	a,#16
+6687  10ec 2779          	jreq	L1753
+6688                     ; 935 		Set_LCD_Address(LCD_Line[0]);
+6690  10ee c60000        	ld	a,_LCD_Line
+6691  10f1 cd0000        	call	_Set_LCD_Address
+6693                     ; 936 		Display_LCD_String("*OPTION*");
+6695  10f4 ae012d        	ldw	x,#L1252
+6696  10f7 cd0000        	call	_Display_LCD_String
+6698                     ; 938 		if(uc_Target_Display_Mode == (U8)(0)){
+6700  10fa 725d0000      	tnz	_uc_Target_Display_Mode
+6701  10fe 260e          	jrne	L3753
+6702                     ; 939 			Set_LCD_Address(LCD_Line[1]);
+6704  1100 c60001        	ld	a,_LCD_Line+1
+6705  1103 cd0000        	call	_Set_LCD_Address
+6707                     ; 940 			Display_LCD_String("*Target Perc");
+6709  1106 ae0120        	ldw	x,#L5252
+6710  1109 cd0000        	call	_Display_LCD_String
+6713  110c 200c          	jra	L5753
+6714  110e               L3753:
+6715                     ; 943 			Set_LCD_Address(LCD_Line[1]);
+6717  110e c60001        	ld	a,_LCD_Line+1
+6718  1111 cd0000        	call	_Set_LCD_Address
+6720                     ; 944 			Display_LCD_String("*Target Watt(OS)");
+6722  1114 ae010f        	ldw	x,#L1352
+6723  1117 cd0000        	call	_Display_LCD_String
+6725  111a               L5753:
+6726                     ; 947 		Set_LCD_Address(LCD_Line[2]);
+6728  111a c60002        	ld	a,_LCD_Line+2
+6729  111d cd0000        	call	_Set_LCD_Address
+6731                     ; 948 		Display_LCD_String("D_Unit:");
+6733  1120 ae0107        	ldw	x,#L3352
+6734  1123 cd0000        	call	_Display_LCD_String
+6736                     ; 950 		Set_LCD_Address((unsigned char)(LCD_Line[2]+7));
+6738  1126 c60002        	ld	a,_LCD_Line+2
+6739  1129 ab07          	add	a,#7
+6740  112b cd0000        	call	_Set_LCD_Address
+6742                     ; 951 		if(b_Blink_250_Flag){
+6744  112e c60000        	ld	a,_uc_LCD_Blink_Reg
+6745  1131 a502          	bcp	a,#2
+6746  1133 272e          	jreq	L7753
+6747                     ; 952 			Num_Display_LCD(uc_Perc_Unit /(U8)(2));
+6749  1135 c60001        	ld	a,_uc_Perc_Unit
+6750  1138 5f            	clrw	x
+6751  1139 97            	ld	xl,a
+6752  113a 57            	sraw	x
+6753  113b cd0000        	call	_Num_Display_LCD
+6755                     ; 953 			Display_LCD_String(".");
+6757  113e ae0105        	ldw	x,#L7352
+6758  1141 cd0000        	call	_Display_LCD_String
+6760                     ; 954 			uc_buffer = uc_Perc_Unit %(U8)(2);
+6762  1144 c60001        	ld	a,_uc_Perc_Unit
+6763  1147 a401          	and	a,#1
+6764  1149 6b16          	ld	(OFST+0,sp),a
+6766                     ; 955 			if(uc_buffer){ Display_LCD_String("5"); }
+6768  114b 0d16          	tnz	(OFST+0,sp)
+6769  114d 2708          	jreq	L1063
+6772  114f ae0103        	ldw	x,#L3452
+6773  1152 cd0000        	call	_Display_LCD_String
+6776  1155 2006          	jra	L3063
+6777  1157               L1063:
+6778                     ; 956 			else{ Display_LCD_String("0"); }
+6780  1157 ae0101        	ldw	x,#L7452
+6781  115a cd0000        	call	_Display_LCD_String
+6783  115d               L3063:
+6784                     ; 957 			Display_LCD_String("%");
+6786  115d ae00ff        	ldw	x,#L1552
+6787  1160 cd0000        	call	_Display_LCD_String
+6789  1163               L7753:
+6790                     ; 959 		return;
+6792  1163 ac891b89      	jpf	L431
+6793  1167               L1753:
+6794                     ; 962 	if(uc_Test_Page_Now != uc_Test_Page_Pre){ 
+6796  1167 c60004        	ld	a,_uc_Test_Page_Now
+6797  116a c10003        	cp	a,_uc_Test_Page_Pre
+6798  116d 270f          	jreq	L5063
+6799                     ; 963 		Test_Ctrl_Text_Display_Handling(); 
+6801  116f cd0465        	call	_Test_Ctrl_Text_Display_Handling
+6803                     ; 964 		b_Data_Select_flag = OFF;
+6805  1172 7213000d      	bres	_uc_Test_Ctrl_Reg,#1
+6806                     ; 965 		b_Data_Setting_flag = OFF;
+6808  1176 7215000d      	bres	_uc_Test_Ctrl_Reg,#2
+6809                     ; 966 		uc_Test_Data_Select_Num = (U8)(0);
+6811  117a 725f0002      	clr	_uc_Test_Data_Select_Num
+6812  117e               L5063:
+6813                     ; 968 	uc_Test_Page_Pre = uc_Test_Page_Now ;
+6815  117e 5500040003    	mov	_uc_Test_Page_Pre,_uc_Test_Page_Now
+6816                     ; 971 	if(uc_Test_Page_Now == (U8)(0)){			//page 1
+6818  1183 725d0004      	tnz	_uc_Test_Page_Now
+6819  1187 2703          	jreq	L631
+6820  1189 cc16fe        	jp	L7063
+6821  118c               L631:
+6822                     ; 972 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+6824  118c 0f15          	clr	(OFST-1,sp)
+6826  118e               L1163:
+6827                     ; 974 			Set_LCD_Address(LCD_Line[uc_line_index]);
+6829  118e 7b15          	ld	a,(OFST-1,sp)
+6830  1190 5f            	clrw	x
+6831  1191 97            	ld	xl,a
+6832  1192 d60000        	ld	a,(_LCD_Line,x)
+6833  1195 cd0000        	call	_Set_LCD_Address
+6835                     ; 976 			if((b_Data_Select_flag == ON) && (b_Data_Setting_flag == OFF)){
+6837  1198 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+6838  119b a502          	bcp	a,#2
+6839  119d 2763          	jreq	L7163
+6841  119f c6000d        	ld	a,_uc_Test_Ctrl_Reg
+6842  11a2 a504          	bcp	a,#4
+6843  11a4 265c          	jrne	L7163
+6844                     ; 977 				if(uc_line_index == uc_Test_Data_Select_Num){ 
+6846  11a6 7b15          	ld	a,(OFST-1,sp)
+6847  11a8 c10002        	cp	a,_uc_Test_Data_Select_Num
+6848  11ab 2647          	jrne	L1263
+6849                     ; 978 					if(uc_Test_Data_Select_Num == (U8)(0)){
+6851  11ad 725d0002      	tnz	_uc_Test_Data_Select_Num
+6852  11b1 261d          	jrne	L3263
+6853                     ; 979 						if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
+6855  11b3 c60000        	ld	a,_uc_LCD_Blink_Reg
+6856  11b6 a502          	bcp	a,#2
+6857  11b8 270e          	jreq	L5263
+6860  11ba 7b15          	ld	a,(OFST-1,sp)
+6861  11bc 97            	ld	xl,a
+6862  11bd a610          	ld	a,#16
+6863  11bf 42            	mul	x,a
+6864  11c0 1c0000        	addw	x,#_LCD_Dis_Data
+6865  11c3 cd0000        	call	_Display_LCD_String
+6868  11c6 2046          	jra	L3463
+6869  11c8               L5263:
+6870                     ; 980 						else{ Display_LCD_String("        /"); }
+6872  11c8 ae00f5        	ldw	x,#L7752
+6873  11cb cd0000        	call	_Display_LCD_String
+6875  11ce 203e          	jra	L3463
+6876  11d0               L3263:
+6877                     ; 982 					else if(uc_Test_Data_Select_Num == (U8)(1)){
+6879  11d0 c60002        	ld	a,_uc_Test_Data_Select_Num
+6880  11d3 a101          	cp	a,#1
+6881  11d5 2637          	jrne	L3463
+6882                     ; 983 						if(b_Blink_250_Flag){Display_LCD_String(LCD_Dis_Data[uc_line_index]);}
+6884  11d7 c60000        	ld	a,_uc_LCD_Blink_Reg
+6885  11da a502          	bcp	a,#2
+6886  11dc 270e          	jreq	L5363
+6889  11de 7b15          	ld	a,(OFST-1,sp)
+6890  11e0 97            	ld	xl,a
+6891  11e1 a610          	ld	a,#16
+6892  11e3 42            	mul	x,a
+6893  11e4 1c0000        	addw	x,#_LCD_Dis_Data
+6894  11e7 cd0000        	call	_Display_LCD_String
+6897  11ea 2022          	jra	L3463
+6898  11ec               L5363:
+6899                     ; 984 						else{ Display_LCD_String("        Fd:"); }
+6901  11ec ae00e9        	ldw	x,#L1162
+6902  11ef cd0000        	call	_Display_LCD_String
+6904  11f2 201a          	jra	L3463
+6905  11f4               L1263:
+6906                     ; 987 				else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]); }
+6908  11f4 7b15          	ld	a,(OFST-1,sp)
+6909  11f6 97            	ld	xl,a
+6910  11f7 a610          	ld	a,#16
+6911  11f9 42            	mul	x,a
+6912  11fa 1c0000        	addw	x,#_LCD_Dis_Data
+6913  11fd cd0000        	call	_Display_LCD_String
+6915  1200 200c          	jra	L3463
+6916  1202               L7163:
+6917                     ; 988 			}else{ Display_LCD_String(LCD_Dis_Data[uc_line_index]); }
+6919  1202 7b15          	ld	a,(OFST-1,sp)
+6920  1204 97            	ld	xl,a
+6921  1205 a610          	ld	a,#16
+6922  1207 42            	mul	x,a
+6923  1208 1c0000        	addw	x,#_LCD_Dis_Data
+6924  120b cd0000        	call	_Display_LCD_String
+6926  120e               L3463:
+6927                     ; 991 			if(uc_line_index == (U8)(0)){		// LINE 1
+6929  120e 0d15          	tnz	(OFST-1,sp)
+6930  1210 2703          	jreq	L041
+6931  1212 cc12ce        	jp	L5463
+6932  1215               L041:
+6933                     ; 994 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
+6935  1215 7b15          	ld	a,(OFST-1,sp)
+6936  1217 5f            	clrw	x
+6937  1218 97            	ld	xl,a
+6938  1219 d60000        	ld	a,(_LCD_Line,x)
+6939  121c ab03          	add	a,#3
+6940  121e cd0000        	call	_Set_LCD_Address
+6942                     ; 996 				if((b_Data_Setting_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
+6944  1221 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+6945  1224 a504          	bcp	a,#4
+6946  1226 2718          	jreq	L7463
+6948  1228 7b15          	ld	a,(OFST-1,sp)
+6949  122a c10002        	cp	a,_uc_Test_Data_Select_Num
+6950  122d 2611          	jrne	L7463
+6951                     ; 997 					if(b_Blink_250_Flag){ Num_Display_LCD(uc_Heater_Enable_Flag); 	}	
+6953  122f c60000        	ld	a,_uc_LCD_Blink_Reg
+6954  1232 a502          	bcp	a,#2
+6955  1234 2712          	jreq	L3563
+6958  1236 c60009        	ld	a,_uc_Heater_Enable_Flag
+6959  1239 5f            	clrw	x
+6960  123a 97            	ld	xl,a
+6961  123b cd0000        	call	_Num_Display_LCD
+6963  123e 2008          	jra	L3563
+6964  1240               L7463:
+6965                     ; 998 				}else{ Num_Display_LCD(uc_Heater_Enable_Flag); }
+6967  1240 c60009        	ld	a,_uc_Heater_Enable_Flag
+6968  1243 5f            	clrw	x
+6969  1244 97            	ld	xl,a
+6970  1245 cd0000        	call	_Num_Display_LCD
+6972  1248               L3563:
+6973                     ; 1002 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 5));
+6975  1248 7b15          	ld	a,(OFST-1,sp)
+6976  124a 5f            	clrw	x
+6977  124b 97            	ld	xl,a
+6978  124c d60000        	ld	a,(_LCD_Line,x)
+6979  124f ab05          	add	a,#5
+6980  1251 cd0000        	call	_Set_LCD_Address
+6982                     ; 1003 				if (HEATER_zone_status == HTR_ZONE_1)
+6984  1254 725d0000      	tnz	_HEATER_zone_status
+6985  1258 2608          	jrne	L5563
+6986                     ; 1004 				Display_LCD_String("Z1");
+6988  125a ae00e6        	ldw	x,#L1362
+6989  125d cd0000        	call	_Display_LCD_String
+6992  1260 2006          	jra	L7563
+6993  1262               L5563:
+6994                     ; 1005 				else Display_LCD_String("Z2");
+6996  1262 ae00e3        	ldw	x,#L5362
+6997  1265 cd0000        	call	_Display_LCD_String
+6999  1268               L7563:
+7000                     ; 1007 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 9));
+7002  1268 7b15          	ld	a,(OFST-1,sp)
+7003  126a 5f            	clrw	x
+7004  126b 97            	ld	xl,a
+7005  126c d60000        	ld	a,(_LCD_Line,x)
+7006  126f ab09          	add	a,#9
+7007  1271 cd0000        	call	_Set_LCD_Address
+7009                     ; 1009 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+7011  1274 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+7012  1277 a501          	bcp	a,#1
+7013  1279 270a          	jreq	L1663
+7016  127b ae00e0        	ldw	x,#L1462
+7017  127e cd0000        	call	_Display_LCD_String
+7020  1281 acef16ef      	jpf	L3073
+7021  1285               L1663:
+7022                     ; 1011 					uc_buffer = (U8)((can_data[0] & 0x0C) >> 2);
+7024  1285 7b0d          	ld	a,(OFST-9,sp)
+7025  1287 44            	srl	a
+7026  1288 44            	srl	a
+7027  1289 a403          	and	a,#3
+7028  128b 6b16          	ld	(OFST+0,sp),a
+7030                     ; 1012 					if(uc_buffer == (U8)(0)){ Display_LCD_String("Stop");   }
+7032  128d 0d16          	tnz	(OFST+0,sp)
+7033  128f 260a          	jrne	L5663
+7036  1291 ae00db        	ldw	x,#L7462
+7037  1294 cd0000        	call	_Display_LCD_String
+7040  1297 acef16ef      	jpf	L3073
+7041  129b               L5663:
+7042                     ; 1013 					else if(uc_buffer == (U8)(1)){ Display_LCD_String("Oper"); }
+7044  129b 7b16          	ld	a,(OFST+0,sp)
+7045  129d a101          	cp	a,#1
+7046  129f 260a          	jrne	L1763
+7049  12a1 ae00d6        	ldw	x,#L5562
+7050  12a4 cd0000        	call	_Display_LCD_String
+7053  12a7 acef16ef      	jpf	L3073
+7054  12ab               L1763:
+7055                     ; 1014 					else if(uc_buffer == (U8)(2)){ Display_LCD_String("Flt"); }
+7057  12ab 7b16          	ld	a,(OFST+0,sp)
+7058  12ad a102          	cp	a,#2
+7059  12af 260a          	jrne	L5763
+7062  12b1 ae00d2        	ldw	x,#L3662
+7063  12b4 cd0000        	call	_Display_LCD_String
+7066  12b7 acef16ef      	jpf	L3073
+7067  12bb               L5763:
+7068                     ; 1015 					else if(uc_buffer == (U8)(3)){ Display_LCD_String("Lmit"); }
+7070  12bb 7b16          	ld	a,(OFST+0,sp)
+7071  12bd a103          	cp	a,#3
+7072  12bf 2703          	jreq	L241
+7073  12c1 cc16ef        	jp	L3073
+7074  12c4               L241:
+7077  12c4 ae00cd        	ldw	x,#L1762
+7078  12c7 cd0000        	call	_Display_LCD_String
+7080  12ca acef16ef      	jpf	L3073
+7081  12ce               L5463:
+7082                     ; 1021 			else if(uc_line_index == (U8)(1)){	// LINE 2
+7084  12ce 7b15          	ld	a,(OFST-1,sp)
+7085  12d0 a101          	cp	a,#1
+7086  12d2 2703          	jreq	L441
+7087  12d4 cc15e3        	jp	L5073
+7088  12d7               L441:
+7089                     ; 1024 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
+7091  12d7 7b15          	ld	a,(OFST-1,sp)
+7092  12d9 5f            	clrw	x
+7093  12da 97            	ld	xl,a
+7094  12db d60000        	ld	a,(_LCD_Line,x)
+7095  12de ab03          	add	a,#3
+7096  12e0 cd0000        	call	_Set_LCD_Address
+7098                     ; 1025 				if((b_Data_Setting_flag == ON) && (uc_line_index == uc_Test_Data_Select_Num)){
+7100  12e3 c6000d        	ld	a,_uc_Test_Ctrl_Reg
+7101  12e6 a504          	bcp	a,#4
+7102  12e8 2603          	jrne	L641
+7103  12ea cc1451        	jp	L7073
+7104  12ed               L641:
+7106  12ed 7b15          	ld	a,(OFST-1,sp)
+7107  12ef c10002        	cp	a,_uc_Test_Data_Select_Num
+7108  12f2 2703          	jreq	L051
+7109  12f4 cc1451        	jp	L7073
+7110  12f7               L051:
+7111                     ; 1026 					if(b_Blink_250_Flag){
+7113  12f7 c60000        	ld	a,_uc_LCD_Blink_Reg
+7114  12fa a502          	bcp	a,#2
+7115  12fc 2603          	jrne	L251
+7116  12fe cc1591        	jp	L3004
+7117  1301               L251:
+7118                     ; 1027 						if(!uc_Target_Display_Mode){	// Percentage_Display
+7120  1301 725d0000      	tnz	_uc_Target_Display_Mode
+7121  1305 2676          	jrne	L3173
+7122                     ; 1028 if (HEATER_zone_status == HTR_ZONE_1)
+7124  1307 725d0000      	tnz	_HEATER_zone_status
+7125  130b 2638          	jrne	L5173
+7126                     ; 1030 							Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_1] /(U8)(2));
+7128  130d c6000a        	ld	a,_uc_Target_Duty_Perc
+7129  1310 5f            	clrw	x
+7130  1311 97            	ld	xl,a
+7131  1312 57            	sraw	x
+7132  1313 cd0000        	call	_Num_Display_LCD
+7134                     ; 1031 							if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(200)){
+7136  1316 c6000a        	ld	a,_uc_Target_Duty_Perc
+7137  1319 a1c8          	cp	a,#200
+7138  131b 2503          	jrult	L451
+7139  131d cc1591        	jp	L3004
+7140  1320               L451:
+7141                     ; 1032 								Display_LCD_String(".");
+7143  1320 ae0105        	ldw	x,#L7352
+7144  1323 cd0000        	call	_Display_LCD_String
+7146                     ; 1033 								uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_1] % (U8)(2);
+7148  1326 c6000a        	ld	a,_uc_Target_Duty_Perc
+7149  1329 a401          	and	a,#1
+7150  132b 6b16          	ld	(OFST+0,sp),a
+7152                     ; 1034 								if(uc_buffer){ Display_LCD_String("5"); }
+7154  132d 0d16          	tnz	(OFST+0,sp)
+7155  132f 270a          	jreq	L1273
+7158  1331 ae0103        	ldw	x,#L3452
+7159  1334 cd0000        	call	_Display_LCD_String
+7162  1337 ac911591      	jpf	L3004
+7163  133b               L1273:
+7164                     ; 1035 								else{ Display_LCD_String("0"); }
+7166  133b ae0101        	ldw	x,#L7452
+7167  133e cd0000        	call	_Display_LCD_String
+7169  1341 ac911591      	jpf	L3004
+7170  1345               L5173:
+7171                     ; 1040 							Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_2] /(U8)(2));
+7173  1345 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7174  1348 5f            	clrw	x
+7175  1349 97            	ld	xl,a
+7176  134a 57            	sraw	x
+7177  134b cd0000        	call	_Num_Display_LCD
+7179                     ; 1041 							if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(200)){
+7181  134e c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7182  1351 a1c8          	cp	a,#200
+7183  1353 2503          	jrult	L651
+7184  1355 cc1591        	jp	L3004
+7185  1358               L651:
+7186                     ; 1042 								Display_LCD_String(".");
+7188  1358 ae0105        	ldw	x,#L7352
+7189  135b cd0000        	call	_Display_LCD_String
+7191                     ; 1043 								uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_2] % (U8)(2);
+7193  135e c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7194  1361 a401          	and	a,#1
+7195  1363 6b16          	ld	(OFST+0,sp),a
+7197                     ; 1044 								if(uc_buffer){ Display_LCD_String("5"); }
+7199  1365 0d16          	tnz	(OFST+0,sp)
+7200  1367 270a          	jreq	L1373
+7203  1369 ae0103        	ldw	x,#L3452
+7204  136c cd0000        	call	_Display_LCD_String
+7207  136f ac911591      	jpf	L3004
+7208  1373               L1373:
+7209                     ; 1045 								else{ Display_LCD_String("0"); }
+7211  1373 ae0101        	ldw	x,#L7452
+7212  1376 cd0000        	call	_Display_LCD_String
+7214  1379 ac911591      	jpf	L3004
+7215  137d               L3173:
+7216                     ; 1050 if (HEATER_zone_status == HTR_ZONE_1)
+7218  137d 725d0000      	tnz	_HEATER_zone_status
+7219  1381 2667          	jrne	L7373
+7220                     ; 1052 							if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ Num_Display_LCD(0u); }
+7222  1383 c6000a        	ld	a,_uc_Target_Duty_Perc
+7223  1386 a114          	cp	a,#20
+7224  1388 2408          	jruge	L1473
+7227  138a 5f            	clrw	x
+7228  138b cd0000        	call	_Num_Display_LCD
+7231  138e ac911591      	jpf	L3004
+7232  1392               L1473:
+7233                     ; 1053 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(20)){ Num_Display_LCD(100u); }
+7235  1392 c6000a        	ld	a,_uc_Target_Duty_Perc
+7236  1395 a114          	cp	a,#20
+7237  1397 260a          	jrne	L5473
+7240  1399 ae0064        	ldw	x,#100
+7241  139c cd0000        	call	_Num_Display_LCD
+7244  139f ac911591      	jpf	L3004
+7245  13a3               L5473:
+7246                     ; 1054 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ Num_Display_LCD(6200u); }
+7248  13a3 c6000a        	ld	a,_uc_Target_Duty_Perc
+7249  13a6 a1b4          	cp	a,#180
+7250  13a8 260a          	jrne	L1573
+7253  13aa ae1838        	ldw	x,#6200
+7254  13ad cd0000        	call	_Num_Display_LCD
+7257  13b0 ac911591      	jpf	L3004
+7258  13b4               L1573:
+7259                     ; 1055 							else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(190)){ Display_LCD_String("MAX"); }
+7261  13b4 c6000a        	ld	a,_uc_Target_Duty_Perc
+7262  13b7 a1be          	cp	a,#190
+7263  13b9 260a          	jrne	L5573
+7266  13bb ae00c9        	ldw	x,#L7472
+7267  13be cd0000        	call	_Display_LCD_String
+7270  13c1 ac911591      	jpf	L3004
+7271  13c5               L5573:
+7272                     ; 1056 							else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_1]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
+7274  13c5 c6000a        	ld	a,_uc_Target_Duty_Perc
+7275  13c8 5f            	clrw	x
+7276  13c9 97            	ld	xl,a
+7277  13ca 1d0014        	subw	x,#20
+7278  13cd 90ae94ed      	ldw	y,#38125
+7279  13d1 cd0000        	call	c_umul
+7281  13d4 ae0000        	ldw	x,#L25
+7282  13d7 cd0000        	call	c_ludv
+7284  13da be02          	ldw	x,c_lreg+2
+7285  13dc 1c0064        	addw	x,#100
+7286  13df 1f0b          	ldw	(OFST-11,sp),x
+7290  13e1 1e0b          	ldw	x,(OFST-11,sp)
+7291  13e3 cd0000        	call	_Num_Display_LCD
+7293  13e6 ac911591      	jpf	L3004
+7294  13ea               L7373:
+7295                     ; 1060 							if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ Num_Display_LCD(0u); }
+7297  13ea c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7298  13ed a114          	cp	a,#20
+7299  13ef 2408          	jruge	L3673
+7302  13f1 5f            	clrw	x
+7303  13f2 cd0000        	call	_Num_Display_LCD
+7306  13f5 ac911591      	jpf	L3004
+7307  13f9               L3673:
+7308                     ; 1061 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(20)){ Num_Display_LCD(100u); }
+7310  13f9 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7311  13fc a114          	cp	a,#20
+7312  13fe 260a          	jrne	L7673
+7315  1400 ae0064        	ldw	x,#100
+7316  1403 cd0000        	call	_Num_Display_LCD
+7319  1406 ac911591      	jpf	L3004
+7320  140a               L7673:
+7321                     ; 1062 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ Num_Display_LCD(6200u); }
+7323  140a c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7324  140d a1b4          	cp	a,#180
+7325  140f 260a          	jrne	L3773
+7328  1411 ae1838        	ldw	x,#6200
+7329  1414 cd0000        	call	_Num_Display_LCD
+7332  1417 ac911591      	jpf	L3004
+7333  141b               L3773:
+7334                     ; 1063 							else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(190)){ Display_LCD_String("MAX"); }
+7336  141b c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7337  141e a1be          	cp	a,#190
+7338  1420 260a          	jrne	L7773
+7341  1422 ae00c9        	ldw	x,#L7472
+7342  1425 cd0000        	call	_Display_LCD_String
+7345  1428 ac911591      	jpf	L3004
+7346  142c               L7773:
+7347                     ; 1064 							else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_2]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
+7349  142c c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7350  142f 5f            	clrw	x
+7351  1430 97            	ld	xl,a
+7352  1431 1d0014        	subw	x,#20
+7353  1434 90ae94ed      	ldw	y,#38125
+7354  1438 cd0000        	call	c_umul
+7356  143b ae0000        	ldw	x,#L25
+7357  143e cd0000        	call	c_ludv
+7359  1441 be02          	ldw	x,c_lreg+2
+7360  1443 1c0064        	addw	x,#100
+7361  1446 1f0b          	ldw	(OFST-11,sp),x
+7365  1448 1e0b          	ldw	x,(OFST-11,sp)
+7366  144a cd0000        	call	_Num_Display_LCD
+7368  144d ac911591      	jpf	L3004
+7369  1451               L7073:
+7370                     ; 1069 					if(!uc_Target_Display_Mode){
+7372  1451 725d0000      	tnz	_uc_Target_Display_Mode
+7373  1455 2676          	jrne	L5004
+7374                     ; 1070 if (HEATER_zone_status == HTR_ZONE_1)
+7376  1457 725d0000      	tnz	_HEATER_zone_status
+7377  145b 2638          	jrne	L7004
+7378                     ; 1072 						Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_1] /(U8)(2));
+7380  145d c6000a        	ld	a,_uc_Target_Duty_Perc
+7381  1460 5f            	clrw	x
+7382  1461 97            	ld	xl,a
+7383  1462 57            	sraw	x
+7384  1463 cd0000        	call	_Num_Display_LCD
+7386                     ; 1073 						if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(200)){
+7388  1466 c6000a        	ld	a,_uc_Target_Duty_Perc
+7389  1469 a1c8          	cp	a,#200
+7390  146b 2503          	jrult	L061
+7391  146d cc1591        	jp	L3004
+7392  1470               L061:
+7393                     ; 1074 							Display_LCD_String(".");
+7395  1470 ae0105        	ldw	x,#L7352
+7396  1473 cd0000        	call	_Display_LCD_String
+7398                     ; 1075 							uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_1] % (U8)(2);
+7400  1476 c6000a        	ld	a,_uc_Target_Duty_Perc
+7401  1479 a401          	and	a,#1
+7402  147b 6b16          	ld	(OFST+0,sp),a
+7404                     ; 1076 							if(uc_buffer){ Display_LCD_String("5"); }
+7406  147d 0d16          	tnz	(OFST+0,sp)
+7407  147f 270a          	jreq	L3104
+7410  1481 ae0103        	ldw	x,#L3452
+7411  1484 cd0000        	call	_Display_LCD_String
+7414  1487 ac911591      	jpf	L3004
+7415  148b               L3104:
+7416                     ; 1077 							else{ Display_LCD_String("0"); }
+7418  148b ae0101        	ldw	x,#L7452
+7419  148e cd0000        	call	_Display_LCD_String
+7421  1491 ac911591      	jpf	L3004
+7422  1495               L7004:
+7423                     ; 1082 						Num_Display_LCD(uc_Target_Duty_Perc[HTR_ZONE_2] /(U8)(2));
+7425  1495 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7426  1498 5f            	clrw	x
+7427  1499 97            	ld	xl,a
+7428  149a 57            	sraw	x
+7429  149b cd0000        	call	_Num_Display_LCD
+7431                     ; 1083 						if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(200)){
+7433  149e c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7434  14a1 a1c8          	cp	a,#200
+7435  14a3 2503          	jrult	L261
+7436  14a5 cc1591        	jp	L3004
+7437  14a8               L261:
+7438                     ; 1084 							Display_LCD_String(".");
+7440  14a8 ae0105        	ldw	x,#L7352
+7441  14ab cd0000        	call	_Display_LCD_String
+7443                     ; 1085 							uc_buffer = uc_Target_Duty_Perc[HTR_ZONE_2] % (U8)(2);
+7445  14ae c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7446  14b1 a401          	and	a,#1
+7447  14b3 6b16          	ld	(OFST+0,sp),a
+7449                     ; 1086 							if(uc_buffer){ Display_LCD_String("5"); }
+7451  14b5 0d16          	tnz	(OFST+0,sp)
+7452  14b7 270a          	jreq	L3204
+7455  14b9 ae0103        	ldw	x,#L3452
+7456  14bc cd0000        	call	_Display_LCD_String
+7459  14bf ac911591      	jpf	L3004
+7460  14c3               L3204:
+7461                     ; 1087 							else{ Display_LCD_String("0"); }
+7463  14c3 ae0101        	ldw	x,#L7452
+7464  14c6 cd0000        	call	_Display_LCD_String
+7466  14c9 ac911591      	jpf	L3004
+7467  14cd               L5004:
+7468                     ; 1092 if (HEATER_zone_status == HTR_ZONE_1)
+7470  14cd 725d0000      	tnz	_HEATER_zone_status
+7471  14d1 2663          	jrne	L1304
+7472                     ; 1094 						if(uc_Target_Duty_Perc[HTR_ZONE_1] < (U8)(20)){ Num_Display_LCD(0u); }
+7474  14d3 c6000a        	ld	a,_uc_Target_Duty_Perc
+7475  14d6 a114          	cp	a,#20
+7476  14d8 2408          	jruge	L3304
+7479  14da 5f            	clrw	x
+7480  14db cd0000        	call	_Num_Display_LCD
+7483  14de ac911591      	jpf	L3004
+7484  14e2               L3304:
+7485                     ; 1095 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(20)){ Num_Display_LCD(100u); }
+7487  14e2 c6000a        	ld	a,_uc_Target_Duty_Perc
+7488  14e5 a114          	cp	a,#20
+7489  14e7 260a          	jrne	L7304
+7492  14e9 ae0064        	ldw	x,#100
+7493  14ec cd0000        	call	_Num_Display_LCD
+7496  14ef ac911591      	jpf	L3004
+7497  14f3               L7304:
+7498                     ; 1096 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] == (U8)(180)){ Num_Display_LCD(6200u); }
+7500  14f3 c6000a        	ld	a,_uc_Target_Duty_Perc
+7501  14f6 a1b4          	cp	a,#180
+7502  14f8 260a          	jrne	L3404
+7505  14fa ae1838        	ldw	x,#6200
+7506  14fd cd0000        	call	_Num_Display_LCD
+7509  1500 ac911591      	jpf	L3004
+7510  1504               L3404:
+7511                     ; 1097 						else if(uc_Target_Duty_Perc[HTR_ZONE_1] > (U8)(180)){ Display_LCD_String("MAX"); }
+7513  1504 c6000a        	ld	a,_uc_Target_Duty_Perc
+7514  1507 a1b5          	cp	a,#181
+7515  1509 2508          	jrult	L7404
+7518  150b ae00c9        	ldw	x,#L7472
+7519  150e cd0000        	call	_Display_LCD_String
+7522  1511 207e          	jra	L3004
+7523  1513               L7404:
+7524                     ; 1098 						else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_1]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
+7526  1513 c6000a        	ld	a,_uc_Target_Duty_Perc
+7527  1516 5f            	clrw	x
+7528  1517 97            	ld	xl,a
+7529  1518 1d0014        	subw	x,#20
+7530  151b 90ae94ed      	ldw	y,#38125
+7531  151f cd0000        	call	c_umul
+7533  1522 ae0000        	ldw	x,#L25
+7534  1525 cd0000        	call	c_ludv
+7536  1528 be02          	ldw	x,c_lreg+2
+7537  152a 1c0064        	addw	x,#100
+7538  152d 1f0b          	ldw	(OFST-11,sp),x
+7542  152f 1e0b          	ldw	x,(OFST-11,sp)
+7543  1531 cd0000        	call	_Num_Display_LCD
+7545  1534 205b          	jra	L3004
+7546  1536               L1304:
+7547                     ; 1102 						if(uc_Target_Duty_Perc[HTR_ZONE_2] < (U8)(20)){ Num_Display_LCD(0u); }
+7549  1536 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7550  1539 a114          	cp	a,#20
+7551  153b 2406          	jruge	L5504
+7554  153d 5f            	clrw	x
+7555  153e cd0000        	call	_Num_Display_LCD
+7558  1541 204e          	jra	L3004
+7559  1543               L5504:
+7560                     ; 1103 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(20)){ Num_Display_LCD(100u); }
+7562  1543 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7563  1546 a114          	cp	a,#20
+7564  1548 2608          	jrne	L1604
+7567  154a ae0064        	ldw	x,#100
+7568  154d cd0000        	call	_Num_Display_LCD
+7571  1550 203f          	jra	L3004
+7572  1552               L1604:
+7573                     ; 1104 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] == (U8)(180)){ Num_Display_LCD(6200u); }
+7575  1552 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7576  1555 a1b4          	cp	a,#180
+7577  1557 2608          	jrne	L5604
+7580  1559 ae1838        	ldw	x,#6200
+7581  155c cd0000        	call	_Num_Display_LCD
+7584  155f 2030          	jra	L3004
+7585  1561               L5604:
+7586                     ; 1105 						else if(uc_Target_Duty_Perc[HTR_ZONE_2] > (U8)(180)){ Display_LCD_String("MAX"); }
+7588  1561 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7589  1564 a1b5          	cp	a,#181
+7590  1566 2508          	jrult	L1704
+7593  1568 ae00c9        	ldw	x,#L7472
+7594  156b cd0000        	call	_Display_LCD_String
+7597  156e 2021          	jra	L3004
+7598  1570               L1704:
+7599                     ; 1106 						else{ ui_buffer = (U16)((U32)(uc_Target_Duty_Perc[HTR_ZONE_2]-20u) * (U32)(38125) / (U32)(1000)) + (U16)(100); Num_Display_LCD(ui_buffer);}
+7601  1570 c6000b        	ld	a,_uc_Target_Duty_Perc+1
+7602  1573 5f            	clrw	x
+7603  1574 97            	ld	xl,a
+7604  1575 1d0014        	subw	x,#20
+7605  1578 90ae94ed      	ldw	y,#38125
+7606  157c cd0000        	call	c_umul
+7608  157f ae0000        	ldw	x,#L25
+7609  1582 cd0000        	call	c_ludv
+7611  1585 be02          	ldw	x,c_lreg+2
+7612  1587 1c0064        	addw	x,#100
+7613  158a 1f0b          	ldw	(OFST-11,sp),x
+7617  158c 1e0b          	ldw	x,(OFST-11,sp)
+7618  158e cd0000        	call	_Num_Display_LCD
+7620  1591               L3004:
+7621                     ; 1112 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
+7623  1591 7b15          	ld	a,(OFST-1,sp)
+7624  1593 5f            	clrw	x
+7625  1594 97            	ld	xl,a
+7626  1595 d60000        	ld	a,(_LCD_Line,x)
+7627  1598 ab0b          	add	a,#11
+7628  159a cd0000        	call	_Set_LCD_Address
+7630                     ; 1113 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+7632  159d c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+7633  15a0 a501          	bcp	a,#1
+7634  15a2 270a          	jreq	L5704
+7637  15a4 ae00e0        	ldw	x,#L1462
+7638  15a7 cd0000        	call	_Display_LCD_String
+7641  15aa acef16ef      	jpf	L3073
+7642  15ae               L5704:
+7643                     ; 1115 					Num_Display_LCD(can_data[4] /(U8)(2));
+7645  15ae 7b11          	ld	a,(OFST-5,sp)
+7646  15b0 5f            	clrw	x
+7647  15b1 97            	ld	xl,a
+7648  15b2 57            	sraw	x
+7649  15b3 cd0000        	call	_Num_Display_LCD
+7651                     ; 1116 					if(can_data[6] < (U8)(200)){
+7653  15b6 7b13          	ld	a,(OFST-3,sp)
+7654  15b8 a1c8          	cp	a,#200
+7655  15ba 2503          	jrult	L461
+7656  15bc cc16ef        	jp	L3073
+7657  15bf               L461:
+7658                     ; 1117 						Display_LCD_String(".");
+7660  15bf ae0105        	ldw	x,#L7352
+7661  15c2 cd0000        	call	_Display_LCD_String
+7663                     ; 1118 						uc_buffer = can_data[4] % (U8)(2);
+7665  15c5 7b11          	ld	a,(OFST-5,sp)
+7666  15c7 a401          	and	a,#1
+7667  15c9 6b16          	ld	(OFST+0,sp),a
+7669                     ; 1119 						if(uc_buffer){ Display_LCD_String("5"); }
+7671  15cb 0d16          	tnz	(OFST+0,sp)
+7672  15cd 270a          	jreq	L3014
+7675  15cf ae0103        	ldw	x,#L3452
+7676  15d2 cd0000        	call	_Display_LCD_String
+7679  15d5 acef16ef      	jpf	L3073
+7680  15d9               L3014:
+7681                     ; 1120 						else{ Display_LCD_String("0"); }
+7683  15d9 ae0101        	ldw	x,#L7452
+7684  15dc cd0000        	call	_Display_LCD_String
+7686  15df acef16ef      	jpf	L3073
+7687  15e3               L5073:
+7688                     ; 1126 			else if(uc_line_index == (U8)(2)){	// LINE 3
+7690  15e3 7b15          	ld	a,(OFST-1,sp)
+7691  15e5 a102          	cp	a,#2
+7692  15e7 2703          	jreq	L661
+7693  15e9 cc1677        	jp	L1114
+7694  15ec               L661:
+7695                     ; 1129 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 2));
+7697  15ec 7b15          	ld	a,(OFST-1,sp)
+7698  15ee 5f            	clrw	x
+7699  15ef 97            	ld	xl,a
+7700  15f0 d60000        	ld	a,(_LCD_Line,x)
+7701  15f3 ab02          	add	a,#2
+7702  15f5 cd0000        	call	_Set_LCD_Address
+7704                     ; 1130 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("N"); }		// No Communication
+7706  15f8 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+7707  15fb a501          	bcp	a,#1
+7708  15fd 2708          	jreq	L3114
+7711  15ff ae00c7        	ldw	x,#L7013
+7712  1602 cd0000        	call	_Display_LCD_String
+7715  1605 2014          	jra	L5114
+7716  1607               L3114:
+7717                     ; 1132 					if(can_data[0] & 0x01){ Display_LCD_String("1"); }
+7719  1607 7b0d          	ld	a,(OFST-9,sp)
+7720  1609 a501          	bcp	a,#1
+7721  160b 2708          	jreq	L7114
+7724  160d ae00c5        	ldw	x,#L5113
+7725  1610 cd0000        	call	_Display_LCD_String
+7728  1613 2006          	jra	L5114
+7729  1615               L7114:
+7730                     ; 1133 					else{ Display_LCD_String("0"); }
+7732  1615 ae0101        	ldw	x,#L7452
+7733  1618 cd0000        	call	_Display_LCD_String
+7735  161b               L5114:
+7736                     ; 1136 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 6));
+7738  161b 7b15          	ld	a,(OFST-1,sp)
+7739  161d 5f            	clrw	x
+7740  161e 97            	ld	xl,a
+7741  161f d60000        	ld	a,(_LCD_Line,x)
+7742  1622 ab06          	add	a,#6
+7743  1624 cd0000        	call	_Set_LCD_Address
+7745                     ; 1137 				if(b_Rx2_Msg_TimeOut_Flag){ Display_LCD_String("N"); }		// No Communication
+7747  1627 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+7748  162a a502          	bcp	a,#2
+7749  162c 2708          	jreq	L3214
+7752  162e ae00c7        	ldw	x,#L7013
+7753  1631 cd0000        	call	_Display_LCD_String
+7756  1634 2014          	jra	L5214
+7757  1636               L3214:
+7758                     ; 1139 					if(can_diag[0] & 0x01){ Display_LCD_String("1"); }
+7760  1636 7b03          	ld	a,(OFST-19,sp)
+7761  1638 a501          	bcp	a,#1
+7762  163a 2708          	jreq	L7214
+7765  163c ae00c5        	ldw	x,#L5113
+7766  163f cd0000        	call	_Display_LCD_String
+7769  1642 2006          	jra	L5214
+7770  1644               L7214:
+7771                     ; 1140 					else{ Display_LCD_String("0"); }
+7773  1644 ae0101        	ldw	x,#L7452
+7774  1647 cd0000        	call	_Display_LCD_String
+7776  164a               L5214:
+7777                     ; 1143 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
+7779  164a 7b15          	ld	a,(OFST-1,sp)
+7780  164c 5f            	clrw	x
+7781  164d 97            	ld	xl,a
+7782  164e d60000        	ld	a,(_LCD_Line,x)
+7783  1651 ab0b          	add	a,#11
+7784  1653 cd0000        	call	_Set_LCD_Address
+7786                     ; 1144 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+7788  1656 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+7789  1659 a501          	bcp	a,#1
+7790  165b 270a          	jreq	L3314
+7793  165d ae00e0        	ldw	x,#L1462
+7794  1660 cd0000        	call	_Display_LCD_String
+7797  1663 acef16ef      	jpf	L3073
+7798  1667               L3314:
+7799                     ; 1147 					ui_buffer = (U16)(uc_Rx_Data[0][3]) * (U16)(4);//YJS 2->4
+7801  1667 c60003        	ld	a,_uc_Rx_Data+3
+7802  166a 97            	ld	xl,a
+7803  166b a604          	ld	a,#4
+7804  166d 42            	mul	x,a
+7805  166e 1f0b          	ldw	(OFST-11,sp),x
+7807                     ; 1148 					Num_Display_LCD(ui_buffer);
+7809  1670 1e0b          	ldw	x,(OFST-11,sp)
+7810  1672 cd0000        	call	_Num_Display_LCD
+7812  1675 2078          	jra	L3073
+7813  1677               L1114:
+7814                     ; 1154 			else if(uc_line_index == (U8)(3)){	// LINE 4
+7816  1677 7b15          	ld	a,(OFST-1,sp)
+7817  1679 a103          	cp	a,#3
+7818  167b 2672          	jrne	L3073
+7819                     ; 1157 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
+7821  167d 7b15          	ld	a,(OFST-1,sp)
+7822  167f 5f            	clrw	x
+7823  1680 97            	ld	xl,a
+7824  1681 d60000        	ld	a,(_LCD_Line,x)
+7825  1684 ab03          	add	a,#3
+7826  1686 cd0000        	call	_Set_LCD_Address
+7828                     ; 1159 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+7830  1689 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+7831  168c a501          	bcp	a,#1
+7832  168e 2708          	jreq	L3414
+7835  1690 ae00e0        	ldw	x,#L1462
+7836  1693 cd0000        	call	_Display_LCD_String
+7839  1696 2026          	jra	L5414
+7840  1698               L3414:
+7841                     ; 1161 					Num_Display_LCD(can_data[6] / (U8)(5));
+7843  1698 7b13          	ld	a,(OFST-3,sp)
+7844  169a 5f            	clrw	x
+7845  169b 97            	ld	xl,a
+7846  169c a605          	ld	a,#5
+7847  169e cd0000        	call	c_sdivx
+7849  16a1 cd0000        	call	_Num_Display_LCD
+7851                     ; 1162 					Display_LCD_String(".");
+7853  16a4 ae0105        	ldw	x,#L7352
+7854  16a7 cd0000        	call	_Display_LCD_String
+7856                     ; 1163 					uc_buffer = can_data[6] % (U8)(5);
+7858  16aa 7b13          	ld	a,(OFST-3,sp)
+7859  16ac 5f            	clrw	x
+7860  16ad 97            	ld	xl,a
+7861  16ae a605          	ld	a,#5
+7862  16b0 62            	div	x,a
+7863  16b1 5f            	clrw	x
+7864  16b2 97            	ld	xl,a
+7865  16b3 9f            	ld	a,xl
+7866  16b4 6b16          	ld	(OFST+0,sp),a
+7868                     ; 1164 					Num_Display_LCD(uc_buffer * (U8)(2));
+7870  16b6 7b16          	ld	a,(OFST+0,sp)
+7871  16b8 5f            	clrw	x
+7872  16b9 97            	ld	xl,a
+7873  16ba 58            	sllw	x
+7874  16bb cd0000        	call	_Num_Display_LCD
+7876  16be               L5414:
+7877                     ; 1170 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 11));
+7879  16be 7b15          	ld	a,(OFST-1,sp)
+7880  16c0 5f            	clrw	x
+7881  16c1 97            	ld	xl,a
+7882  16c2 d60000        	ld	a,(_LCD_Line,x)
+7883  16c5 ab0b          	add	a,#11
+7884  16c7 cd0000        	call	_Set_LCD_Address
+7886                     ; 1172 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+7888  16ca c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+7889  16cd a501          	bcp	a,#1
+7890  16cf 2708          	jreq	L7414
+7893  16d1 ae00e0        	ldw	x,#L1462
+7894  16d4 cd0000        	call	_Display_LCD_String
+7897  16d7 2016          	jra	L3073
+7898  16d9               L7414:
+7899                     ; 1174 					ui_buffer = (U16)(can_data[3] << 8) + (U16)(can_data[2]);
+7901  16d9 7b0f          	ld	a,(OFST-7,sp)
+7902  16db 5f            	clrw	x
+7903  16dc 97            	ld	xl,a
+7904  16dd 1f01          	ldw	(OFST-21,sp),x
+7906  16df 7b10          	ld	a,(OFST-6,sp)
+7907  16e1 5f            	clrw	x
+7908  16e2 97            	ld	xl,a
+7909  16e3 4f            	clr	a
+7910  16e4 02            	rlwa	x,a
+7911  16e5 72fb01        	addw	x,(OFST-21,sp)
+7912  16e8 1f0b          	ldw	(OFST-11,sp),x
+7914                     ; 1175 					Num_Display_LCD(ui_buffer);
+7916  16ea 1e0b          	ldw	x,(OFST-11,sp)
+7917  16ec cd0000        	call	_Num_Display_LCD
+7919  16ef               L3073:
+7920                     ; 972 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+7922  16ef 0c15          	inc	(OFST-1,sp)
+7926  16f1 7b15          	ld	a,(OFST-1,sp)
+7927  16f3 a104          	cp	a,#4
+7928  16f5 2403          	jruge	L071
+7929  16f7 cc118e        	jp	L1163
+7930  16fa               L071:
+7932  16fa ac6a1b6a      	jpf	L3514
+7933  16fe               L7063:
+7934                     ; 1185 	else if(uc_Test_Page_Now == (U8)(1)){
+7936  16fe c60004        	ld	a,_uc_Test_Page_Now
+7937  1701 a101          	cp	a,#1
+7938  1703 2703          	jreq	L271
+7939  1705 cc17a5        	jp	L5514
+7940  1708               L271:
+7941                     ; 1186 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+7943  1708 0f15          	clr	(OFST-1,sp)
+7945  170a               L7514:
+7946                     ; 1188 			Set_LCD_Address(LCD_Line[uc_line_index]);
+7948  170a 7b15          	ld	a,(OFST-1,sp)
+7949  170c 5f            	clrw	x
+7950  170d 97            	ld	xl,a
+7951  170e d60000        	ld	a,(_LCD_Line,x)
+7952  1711 cd0000        	call	_Set_LCD_Address
+7954                     ; 1189 			Display_LCD_String(LCD_Dis_Data[uc_line_index]);
+7956  1714 7b15          	ld	a,(OFST-1,sp)
+7957  1716 97            	ld	xl,a
+7958  1717 a610          	ld	a,#16
+7959  1719 42            	mul	x,a
+7960  171a 1c0000        	addw	x,#_LCD_Dis_Data
+7961  171d cd0000        	call	_Display_LCD_String
+7963                     ; 1192 			if(uc_line_index == (U8)(0)){		// LINE 1
+7965  1720 0d15          	tnz	(OFST-1,sp)
+7966  1722 2641          	jrne	L5614
+7967                     ; 1195 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 3));
+7969  1724 7b15          	ld	a,(OFST-1,sp)
+7970  1726 5f            	clrw	x
+7971  1727 97            	ld	xl,a
+7972  1728 d60000        	ld	a,(_LCD_Line,x)
+7973  172b ab03          	add	a,#3
+7974  172d cd0000        	call	_Set_LCD_Address
+7976                     ; 1196 				if(b_Rx1_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+7978  1730 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+7979  1733 a501          	bcp	a,#1
+7980  1735 2708          	jreq	L7614
+7983  1737 ae00e0        	ldw	x,#L1462
+7984  173a cd0000        	call	_Display_LCD_String
+7987  173d 2026          	jra	L5614
+7988  173f               L7614:
+7989                     ; 1198 					if(can_data[1] < (U8)(40)){
+7991  173f 7b0e          	ld	a,(OFST-8,sp)
+7992  1741 a128          	cp	a,#40
+7993  1743 2416          	jruge	L3714
+7994                     ; 1199 						Display_LCD_String("-");
+7996  1745 ae00c3        	ldw	x,#L3713
+7997  1748 cd0000        	call	_Display_LCD_String
+7999                     ; 1200 						Num_Display_LCD((U8)(40) - can_data[1]);
+8001  174b a600          	ld	a,#0
+8002  174d 97            	ld	xl,a
+8003  174e a628          	ld	a,#40
+8004  1750 100e          	sub	a,(OFST-8,sp)
+8005  1752 2401          	jrnc	L231
+8006  1754 5a            	decw	x
+8007  1755               L231:
+8008  1755 02            	rlwa	x,a
+8009  1756 cd0000        	call	_Num_Display_LCD
+8012  1759 200a          	jra	L5614
+8013  175b               L3714:
+8014                     ; 1203 						Num_Display_LCD(can_data[1] - (U8)(40));
+8016  175b 7b0e          	ld	a,(OFST-8,sp)
+8017  175d 5f            	clrw	x
+8018  175e 97            	ld	xl,a
+8019  175f 1d0028        	subw	x,#40
+8020  1762 cd0000        	call	_Num_Display_LCD
+8022  1765               L5614:
+8023                     ; 1209 			if(uc_line_index == (U8)(1)){		// LINE 2
+8025  1765 7b15          	ld	a,(OFST-1,sp)
+8026  1767 a101          	cp	a,#1
+8027  1769 2623          	jrne	L7714
+8028                     ; 1212 				Set_LCD_Address((U8)(LCD_Line[uc_line_index] + 4));
+8030  176b 7b15          	ld	a,(OFST-1,sp)
+8031  176d 5f            	clrw	x
+8032  176e 97            	ld	xl,a
+8033  176f d60000        	ld	a,(_LCD_Line,x)
+8034  1772 ab04          	add	a,#4
+8035  1774 cd0000        	call	_Set_LCD_Address
+8037                     ; 1213 				if(b_Rx2_Msg_TimeOut_Flag){ Display_LCD_String("NC"); }		// No Communication
+8039  1777 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+8040  177a a502          	bcp	a,#2
+8041  177c 2708          	jreq	L1024
+8044  177e ae00e0        	ldw	x,#L1462
+8045  1781 cd0000        	call	_Display_LCD_String
+8048  1784 2008          	jra	L7714
+8049  1786               L1024:
+8050                     ; 1216 					Num_Display_LCD(uc_Rx_Data[0][7]);  				//SoftWare Version Display
+8052  1786 c60007        	ld	a,_uc_Rx_Data+7
+8053  1789 5f            	clrw	x
+8054  178a 97            	ld	xl,a
+8055  178b cd0000        	call	_Num_Display_LCD
+8057  178e               L7714:
+8058                     ; 1228 			if(uc_line_index == (U8)(2)){		// LINE 2
+8060  178e 7b15          	ld	a,(OFST-1,sp)
+8061  1790 a102          	cp	a,#2
+8062                     ; 1233 			if(uc_line_index == (U8)(3)){		// LINE 3
+8064  1792 7b15          	ld	a,(OFST-1,sp)
+8065  1794 a103          	cp	a,#3
+8066                     ; 1186 		for(uc_line_index = (U8)(0); uc_line_index < (U8)(4); uc_line_index++){
+8068  1796 0c15          	inc	(OFST-1,sp)
+8072  1798 7b15          	ld	a,(OFST-1,sp)
+8073  179a a104          	cp	a,#4
+8074  179c 2403          	jruge	L471
+8075  179e cc170a        	jp	L7514
+8076  17a1               L471:
+8078  17a1 ac6a1b6a      	jpf	L3514
+8079  17a5               L5514:
+8080                     ; 1240 		if(b_Rx2_Msg_TimeOut_Flag){
+8082  17a5 c6000c        	ld	a,_uc_Rx_TimeOut_Reg
+8083  17a8 a502          	bcp	a,#2
+8084  17aa 2710          	jreq	L3124
+8085                     ; 1241 			Set_LCD_Address(LCD_Line[0]);	
+8087  17ac c60000        	ld	a,_LCD_Line
+8088  17af cd0000        	call	_Set_LCD_Address
+8090                     ; 1242 			Display_LCD_String("NC");
+8092  17b2 ae00e0        	ldw	x,#L1462
+8093  17b5 cd0000        	call	_Display_LCD_String
+8096  17b8 ac6a1b6a      	jpf	L3514
+8097  17bc               L3124:
+8098                     ; 1245 			uc_fault_cnt = (U8)(0);
+8100  17bc 0f16          	clr	(OFST+0,sp)
+8102                     ; 1247 			if(can_diag[0] & (U8)(0x02)){
+8104  17be 7b03          	ld	a,(OFST-19,sp)
+8105  17c0 a502          	bcp	a,#2
+8106  17c2 273c          	jreq	L7124
+8107                     ; 1248 				uc_fault_cnt++;
+8109  17c4 0c16          	inc	(OFST+0,sp)
+8111                     ; 1249 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8111                     ; 1250 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8111                     ; 1251 				){
+8113  17c6 0d16          	tnz	(OFST+0,sp)
+8114  17c8 270d          	jreq	L5224
+8116  17ca 7b16          	ld	a,(OFST+0,sp)
+8117  17cc a105          	cp	a,#5
+8118  17ce 2407          	jruge	L5224
+8120  17d0 c60004        	ld	a,_uc_Test_Page_Now
+8121  17d3 a102          	cp	a,#2
+8122  17d5 2713          	jreq	L3224
+8123  17d7               L5224:
+8125  17d7 7b16          	ld	a,(OFST+0,sp)
+8126  17d9 a105          	cp	a,#5
+8127  17db 2523          	jrult	L7124
+8129  17dd 7b16          	ld	a,(OFST+0,sp)
+8130  17df a109          	cp	a,#9
+8131  17e1 241d          	jruge	L7124
+8133  17e3 c60004        	ld	a,_uc_Test_Page_Now
+8134  17e6 a103          	cp	a,#3
+8135  17e8 2616          	jrne	L7124
+8136  17ea               L3224:
+8137                     ; 1252 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8139  17ea 7b16          	ld	a,(OFST+0,sp)
+8140  17ec 5f            	clrw	x
+8141  17ed 97            	ld	xl,a
+8142  17ee 5a            	decw	x
+8143  17ef a604          	ld	a,#4
+8144  17f1 cd0000        	call	c_smodx
+8146  17f4 d60000        	ld	a,(_LCD_Line,x)
+8147  17f7 cd0000        	call	_Set_LCD_Address
+8149                     ; 1253 					Display_LCD_String("Flt_LVLow");
+8151  17fa ae00b9        	ldw	x,#L1323
+8152  17fd cd0000        	call	_Display_LCD_String
+8154  1800               L7124:
+8155                     ; 1257 			if(can_diag[0] & (U8)(0x04)){
+8157  1800 7b03          	ld	a,(OFST-19,sp)
+8158  1802 a504          	bcp	a,#4
+8159  1804 273c          	jreq	L1324
+8160                     ; 1258 				uc_fault_cnt++;
+8162  1806 0c16          	inc	(OFST+0,sp)
+8164                     ; 1259 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8164                     ; 1260 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8164                     ; 1261 				){
+8166  1808 0d16          	tnz	(OFST+0,sp)
+8167  180a 270d          	jreq	L7324
+8169  180c 7b16          	ld	a,(OFST+0,sp)
+8170  180e a105          	cp	a,#5
+8171  1810 2407          	jruge	L7324
+8173  1812 c60004        	ld	a,_uc_Test_Page_Now
+8174  1815 a102          	cp	a,#2
+8175  1817 2713          	jreq	L5324
+8176  1819               L7324:
+8178  1819 7b16          	ld	a,(OFST+0,sp)
+8179  181b a105          	cp	a,#5
+8180  181d 2523          	jrult	L1324
+8182  181f 7b16          	ld	a,(OFST+0,sp)
+8183  1821 a109          	cp	a,#9
+8184  1823 241d          	jruge	L1324
+8186  1825 c60004        	ld	a,_uc_Test_Page_Now
+8187  1828 a103          	cp	a,#3
+8188  182a 2616          	jrne	L1324
+8189  182c               L5324:
+8190                     ; 1262 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8192  182c 7b16          	ld	a,(OFST+0,sp)
+8193  182e 5f            	clrw	x
+8194  182f 97            	ld	xl,a
+8195  1830 5a            	decw	x
+8196  1831 a604          	ld	a,#4
+8197  1833 cd0000        	call	c_smodx
+8199  1836 d60000        	ld	a,(_LCD_Line,x)
+8200  1839 cd0000        	call	_Set_LCD_Address
+8202                     ; 1263 					Display_LCD_String("Flt_LVHigh");
+8204  183c ae00ae        	ldw	x,#L5423
+8205  183f cd0000        	call	_Display_LCD_String
+8207  1842               L1324:
+8208                     ; 1267 			if(can_diag[0] & (U8)(0x08)){
+8210  1842 7b03          	ld	a,(OFST-19,sp)
+8211  1844 a508          	bcp	a,#8
+8212  1846 273c          	jreq	L3424
+8213                     ; 1268 				uc_fault_cnt++;
+8215  1848 0c16          	inc	(OFST+0,sp)
+8217                     ; 1269 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8217                     ; 1270 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8217                     ; 1271 				){
+8219  184a 0d16          	tnz	(OFST+0,sp)
+8220  184c 270d          	jreq	L1524
+8222  184e 7b16          	ld	a,(OFST+0,sp)
+8223  1850 a105          	cp	a,#5
+8224  1852 2407          	jruge	L1524
+8226  1854 c60004        	ld	a,_uc_Test_Page_Now
+8227  1857 a102          	cp	a,#2
+8228  1859 2713          	jreq	L7424
+8229  185b               L1524:
+8231  185b 7b16          	ld	a,(OFST+0,sp)
+8232  185d a105          	cp	a,#5
+8233  185f 2523          	jrult	L3424
+8235  1861 7b16          	ld	a,(OFST+0,sp)
+8236  1863 a109          	cp	a,#9
+8237  1865 241d          	jruge	L3424
+8239  1867 c60004        	ld	a,_uc_Test_Page_Now
+8240  186a a103          	cp	a,#3
+8241  186c 2616          	jrne	L3424
+8242  186e               L7424:
+8243                     ; 1272 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8245  186e 7b16          	ld	a,(OFST+0,sp)
+8246  1870 5f            	clrw	x
+8247  1871 97            	ld	xl,a
+8248  1872 5a            	decw	x
+8249  1873 a604          	ld	a,#4
+8250  1875 cd0000        	call	c_smodx
+8252  1878 d60000        	ld	a,(_LCD_Line,x)
+8253  187b cd0000        	call	_Set_LCD_Address
+8255                     ; 1273 					Display_LCD_String("Flt_HVLow");
+8257  187e ae00a4        	ldw	x,#L1623
+8258  1881 cd0000        	call	_Display_LCD_String
+8260  1884               L3424:
+8261                     ; 1277 			if(can_diag[0] & (U8)(0x10)){
+8263  1884 7b03          	ld	a,(OFST-19,sp)
+8264  1886 a510          	bcp	a,#16
+8265  1888 273c          	jreq	L5524
+8266                     ; 1278 				uc_fault_cnt++;
+8268  188a 0c16          	inc	(OFST+0,sp)
+8270                     ; 1279 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8270                     ; 1280 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8270                     ; 1281 				){
+8272  188c 0d16          	tnz	(OFST+0,sp)
+8273  188e 270d          	jreq	L3624
+8275  1890 7b16          	ld	a,(OFST+0,sp)
+8276  1892 a105          	cp	a,#5
+8277  1894 2407          	jruge	L3624
+8279  1896 c60004        	ld	a,_uc_Test_Page_Now
+8280  1899 a102          	cp	a,#2
+8281  189b 2713          	jreq	L1624
+8282  189d               L3624:
+8284  189d 7b16          	ld	a,(OFST+0,sp)
+8285  189f a105          	cp	a,#5
+8286  18a1 2523          	jrult	L5524
+8288  18a3 7b16          	ld	a,(OFST+0,sp)
+8289  18a5 a109          	cp	a,#9
+8290  18a7 241d          	jruge	L5524
+8292  18a9 c60004        	ld	a,_uc_Test_Page_Now
+8293  18ac a103          	cp	a,#3
+8294  18ae 2616          	jrne	L5524
+8295  18b0               L1624:
+8296                     ; 1282 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);	
+8298  18b0 7b16          	ld	a,(OFST+0,sp)
+8299  18b2 5f            	clrw	x
+8300  18b3 97            	ld	xl,a
+8301  18b4 5a            	decw	x
+8302  18b5 a604          	ld	a,#4
+8303  18b7 cd0000        	call	c_smodx
+8305  18ba d60000        	ld	a,(_LCD_Line,x)
+8306  18bd cd0000        	call	_Set_LCD_Address
+8308                     ; 1283 					Display_LCD_String("Flt_HVHigh");
+8310  18c0 ae0099        	ldw	x,#L5723
+8311  18c3 cd0000        	call	_Display_LCD_String
+8313  18c6               L5524:
+8314                     ; 1287 			if(can_data[7] & (U8)(0x2)){
+8316  18c6 7b14          	ld	a,(OFST-2,sp)
+8317  18c8 a502          	bcp	a,#2
+8318  18ca 273c          	jreq	L7624
+8319                     ; 1288 				uc_fault_cnt++;
+8321  18cc 0c16          	inc	(OFST+0,sp)
+8323                     ; 1289 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8323                     ; 1290 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8323                     ; 1291 				){
+8325  18ce 0d16          	tnz	(OFST+0,sp)
+8326  18d0 270d          	jreq	L5724
+8328  18d2 7b16          	ld	a,(OFST+0,sp)
+8329  18d4 a105          	cp	a,#5
+8330  18d6 2407          	jruge	L5724
+8332  18d8 c60004        	ld	a,_uc_Test_Page_Now
+8333  18db a102          	cp	a,#2
+8334  18dd 2713          	jreq	L3724
+8335  18df               L5724:
+8337  18df 7b16          	ld	a,(OFST+0,sp)
+8338  18e1 a105          	cp	a,#5
+8339  18e3 2523          	jrult	L7624
+8341  18e5 7b16          	ld	a,(OFST+0,sp)
+8342  18e7 a109          	cp	a,#9
+8343  18e9 241d          	jruge	L7624
+8345  18eb c60004        	ld	a,_uc_Test_Page_Now
+8346  18ee a103          	cp	a,#3
+8347  18f0 2616          	jrne	L7624
+8348  18f2               L3724:
+8349                     ; 1292 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8351  18f2 7b16          	ld	a,(OFST+0,sp)
+8352  18f4 5f            	clrw	x
+8353  18f5 97            	ld	xl,a
+8354  18f6 5a            	decw	x
+8355  18f7 a604          	ld	a,#4
+8356  18f9 cd0000        	call	c_smodx
+8358  18fc d60000        	ld	a,(_LCD_Line,x)
+8359  18ff cd0000        	call	_Set_LCD_Address
+8361                     ; 1293 					Display_LCD_String("Flt_OverCur");
+8363  1902 ae008d        	ldw	x,#L1133
+8364  1905 cd0000        	call	_Display_LCD_String
+8366  1908               L7624:
+8367                     ; 1296 			if(can_data[7] & (U8)(0x1)){
+8369  1908 7b14          	ld	a,(OFST-2,sp)
+8370  190a a501          	bcp	a,#1
+8371  190c 273c          	jreq	L1034
+8372                     ; 1297 				uc_fault_cnt++;
+8374  190e 0c16          	inc	(OFST+0,sp)
+8376                     ; 1298 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8376                     ; 1299 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8376                     ; 1300 				){
+8378  1910 0d16          	tnz	(OFST+0,sp)
+8379  1912 270d          	jreq	L7034
+8381  1914 7b16          	ld	a,(OFST+0,sp)
+8382  1916 a105          	cp	a,#5
+8383  1918 2407          	jruge	L7034
+8385  191a c60004        	ld	a,_uc_Test_Page_Now
+8386  191d a102          	cp	a,#2
+8387  191f 2713          	jreq	L5034
+8388  1921               L7034:
+8390  1921 7b16          	ld	a,(OFST+0,sp)
+8391  1923 a105          	cp	a,#5
+8392  1925 2523          	jrult	L1034
+8394  1927 7b16          	ld	a,(OFST+0,sp)
+8395  1929 a109          	cp	a,#9
+8396  192b 241d          	jruge	L1034
+8398  192d c60004        	ld	a,_uc_Test_Page_Now
+8399  1930 a103          	cp	a,#3
+8400  1932 2616          	jrne	L1034
+8401  1934               L5034:
+8402                     ; 1301 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8404  1934 7b16          	ld	a,(OFST+0,sp)
+8405  1936 5f            	clrw	x
+8406  1937 97            	ld	xl,a
+8407  1938 5a            	decw	x
+8408  1939 a604          	ld	a,#4
+8409  193b cd0000        	call	c_smodx
+8411  193e d60000        	ld	a,(_LCD_Line,x)
+8412  1941 cd0000        	call	_Set_LCD_Address
+8414                     ; 1302 					Display_LCD_String("Flt_ThmShut");
+8416  1944 ae0081        	ldw	x,#L5233
+8417  1947 cd0000        	call	_Display_LCD_String
+8419  194a               L1034:
+8420                     ; 1306 			if(can_diag[1] & (U8)(0x1)){
+8422  194a 7b04          	ld	a,(OFST-18,sp)
+8423  194c a501          	bcp	a,#1
+8424  194e 273c          	jreq	L3134
+8425                     ; 1307 				uc_fault_cnt++;
+8427  1950 0c16          	inc	(OFST+0,sp)
+8429                     ; 1308 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8429                     ; 1309 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8429                     ; 1310 				){
+8431  1952 0d16          	tnz	(OFST+0,sp)
+8432  1954 270d          	jreq	L1234
+8434  1956 7b16          	ld	a,(OFST+0,sp)
+8435  1958 a105          	cp	a,#5
+8436  195a 2407          	jruge	L1234
+8438  195c c60004        	ld	a,_uc_Test_Page_Now
+8439  195f a102          	cp	a,#2
+8440  1961 2713          	jreq	L7134
+8441  1963               L1234:
+8443  1963 7b16          	ld	a,(OFST+0,sp)
+8444  1965 a105          	cp	a,#5
+8445  1967 2523          	jrult	L3134
+8447  1969 7b16          	ld	a,(OFST+0,sp)
+8448  196b a109          	cp	a,#9
+8449  196d 241d          	jruge	L3134
+8451  196f c60004        	ld	a,_uc_Test_Page_Now
+8452  1972 a103          	cp	a,#3
+8453  1974 2616          	jrne	L3134
+8454  1976               L7134:
+8455                     ; 1311 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);			
+8457  1976 7b16          	ld	a,(OFST+0,sp)
+8458  1978 5f            	clrw	x
+8459  1979 97            	ld	xl,a
+8460  197a 5a            	decw	x
+8461  197b a604          	ld	a,#4
+8462  197d cd0000        	call	c_smodx
+8464  1980 d60000        	ld	a,(_LCD_Line,x)
+8465  1983 cd0000        	call	_Set_LCD_Address
+8467                     ; 1312 					Display_LCD_String("Flt_PCBThmShut");
+8469  1986 ae0072        	ldw	x,#L1433
+8470  1989 cd0000        	call	_Display_LCD_String
+8472  198c               L3134:
+8473                     ; 1316 			if(can_diag[1] & (U8)(0x10)){
+8475  198c 7b04          	ld	a,(OFST-18,sp)
+8476  198e a510          	bcp	a,#16
+8477  1990 273c          	jreq	L5234
+8478                     ; 1317 				uc_fault_cnt++;
+8480  1992 0c16          	inc	(OFST+0,sp)
+8482                     ; 1318 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8482                     ; 1319 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8482                     ; 1320 				){
+8484  1994 0d16          	tnz	(OFST+0,sp)
+8485  1996 270d          	jreq	L3334
+8487  1998 7b16          	ld	a,(OFST+0,sp)
+8488  199a a105          	cp	a,#5
+8489  199c 2407          	jruge	L3334
+8491  199e c60004        	ld	a,_uc_Test_Page_Now
+8492  19a1 a102          	cp	a,#2
+8493  19a3 2713          	jreq	L1334
+8494  19a5               L3334:
+8496  19a5 7b16          	ld	a,(OFST+0,sp)
+8497  19a7 a105          	cp	a,#5
+8498  19a9 2523          	jrult	L5234
+8500  19ab 7b16          	ld	a,(OFST+0,sp)
+8501  19ad a109          	cp	a,#9
+8502  19af 241d          	jruge	L5234
+8504  19b1 c60004        	ld	a,_uc_Test_Page_Now
+8505  19b4 a103          	cp	a,#3
+8506  19b6 2616          	jrne	L5234
+8507  19b8               L1334:
+8508                     ; 1321 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8510  19b8 7b16          	ld	a,(OFST+0,sp)
+8511  19ba 5f            	clrw	x
+8512  19bb 97            	ld	xl,a
+8513  19bc 5a            	decw	x
+8514  19bd a604          	ld	a,#4
+8515  19bf cd0000        	call	c_smodx
+8517  19c2 d60000        	ld	a,(_LCD_Line,x)
+8518  19c5 cd0000        	call	_Set_LCD_Address
+8520                     ; 1322 					Display_LCD_String("Flt_MsgTimeOut");
+8522  19c8 ae0063        	ldw	x,#L5533
+8523  19cb cd0000        	call	_Display_LCD_String
+8525  19ce               L5234:
+8526                     ; 1326 			if(can_diag[1] & (U8)(0x04)){
+8528  19ce 7b04          	ld	a,(OFST-18,sp)
+8529  19d0 a504          	bcp	a,#4
+8530  19d2 273c          	jreq	L7334
+8531                     ; 1327 				uc_fault_cnt++;
+8533  19d4 0c16          	inc	(OFST+0,sp)
+8535                     ; 1328 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8535                     ; 1329 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8535                     ; 1330 				){
+8537  19d6 0d16          	tnz	(OFST+0,sp)
+8538  19d8 270d          	jreq	L5434
+8540  19da 7b16          	ld	a,(OFST+0,sp)
+8541  19dc a105          	cp	a,#5
+8542  19de 2407          	jruge	L5434
+8544  19e0 c60004        	ld	a,_uc_Test_Page_Now
+8545  19e3 a102          	cp	a,#2
+8546  19e5 2713          	jreq	L3434
+8547  19e7               L5434:
+8549  19e7 7b16          	ld	a,(OFST+0,sp)
+8550  19e9 a105          	cp	a,#5
+8551  19eb 2523          	jrult	L7334
+8553  19ed 7b16          	ld	a,(OFST+0,sp)
+8554  19ef a109          	cp	a,#9
+8555  19f1 241d          	jruge	L7334
+8557  19f3 c60004        	ld	a,_uc_Test_Page_Now
+8558  19f6 a103          	cp	a,#3
+8559  19f8 2616          	jrne	L7334
+8560  19fa               L3434:
+8561                     ; 1331 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8563  19fa 7b16          	ld	a,(OFST+0,sp)
+8564  19fc 5f            	clrw	x
+8565  19fd 97            	ld	xl,a
+8566  19fe 5a            	decw	x
+8567  19ff a604          	ld	a,#4
+8568  1a01 cd0000        	call	c_smodx
+8570  1a04 d60000        	ld	a,(_LCD_Line,x)
+8571  1a07 cd0000        	call	_Set_LCD_Address
+8573                     ; 1332 					Display_LCD_String("Fail_HVSen");
+8575  1a0a ae0058        	ldw	x,#L1733
+8576  1a0d cd0000        	call	_Display_LCD_String
+8578  1a10               L7334:
+8579                     ; 1336 			if(can_diag[1] & (U8)(0x02)){
+8581  1a10 7b04          	ld	a,(OFST-18,sp)
+8582  1a12 a502          	bcp	a,#2
+8583  1a14 273c          	jreq	L1534
+8584                     ; 1337 				uc_fault_cnt++;
+8586  1a16 0c16          	inc	(OFST+0,sp)
+8588                     ; 1338 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8588                     ; 1339 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8588                     ; 1340 				){
+8590  1a18 0d16          	tnz	(OFST+0,sp)
+8591  1a1a 270d          	jreq	L7534
+8593  1a1c 7b16          	ld	a,(OFST+0,sp)
+8594  1a1e a105          	cp	a,#5
+8595  1a20 2407          	jruge	L7534
+8597  1a22 c60004        	ld	a,_uc_Test_Page_Now
+8598  1a25 a102          	cp	a,#2
+8599  1a27 2713          	jreq	L5534
+8600  1a29               L7534:
+8602  1a29 7b16          	ld	a,(OFST+0,sp)
+8603  1a2b a105          	cp	a,#5
+8604  1a2d 2523          	jrult	L1534
+8606  1a2f 7b16          	ld	a,(OFST+0,sp)
+8607  1a31 a109          	cp	a,#9
+8608  1a33 241d          	jruge	L1534
+8610  1a35 c60004        	ld	a,_uc_Test_Page_Now
+8611  1a38 a103          	cp	a,#3
+8612  1a3a 2616          	jrne	L1534
+8613  1a3c               L5534:
+8614                     ; 1341 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8616  1a3c 7b16          	ld	a,(OFST+0,sp)
+8617  1a3e 5f            	clrw	x
+8618  1a3f 97            	ld	xl,a
+8619  1a40 5a            	decw	x
+8620  1a41 a604          	ld	a,#4
+8621  1a43 cd0000        	call	c_smodx
+8623  1a46 d60000        	ld	a,(_LCD_Line,x)
+8624  1a49 cd0000        	call	_Set_LCD_Address
+8626                     ; 1342 					Display_LCD_String("Fail_LVSen");
+8628  1a4c ae004d        	ldw	x,#L5043
+8629  1a4f cd0000        	call	_Display_LCD_String
+8631  1a52               L1534:
+8632                     ; 1346 			if(can_data[7] & (U8)(0x04)){
+8634  1a52 7b14          	ld	a,(OFST-2,sp)
+8635  1a54 a504          	bcp	a,#4
+8636  1a56 273c          	jreq	L3634
+8637                     ; 1347 				uc_fault_cnt++;
+8639  1a58 0c16          	inc	(OFST+0,sp)
+8641                     ; 1348 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8641                     ; 1349 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8641                     ; 1350 				){
+8643  1a5a 0d16          	tnz	(OFST+0,sp)
+8644  1a5c 270d          	jreq	L1734
+8646  1a5e 7b16          	ld	a,(OFST+0,sp)
+8647  1a60 a105          	cp	a,#5
+8648  1a62 2407          	jruge	L1734
+8650  1a64 c60004        	ld	a,_uc_Test_Page_Now
+8651  1a67 a102          	cp	a,#2
+8652  1a69 2713          	jreq	L7634
+8653  1a6b               L1734:
+8655  1a6b 7b16          	ld	a,(OFST+0,sp)
+8656  1a6d a105          	cp	a,#5
+8657  1a6f 2523          	jrult	L3634
+8659  1a71 7b16          	ld	a,(OFST+0,sp)
+8660  1a73 a109          	cp	a,#9
+8661  1a75 241d          	jruge	L3634
+8663  1a77 c60004        	ld	a,_uc_Test_Page_Now
+8664  1a7a a103          	cp	a,#3
+8665  1a7c 2616          	jrne	L3634
+8666  1a7e               L7634:
+8667                     ; 1351 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8669  1a7e 7b16          	ld	a,(OFST+0,sp)
+8670  1a80 5f            	clrw	x
+8671  1a81 97            	ld	xl,a
+8672  1a82 5a            	decw	x
+8673  1a83 a604          	ld	a,#4
+8674  1a85 cd0000        	call	c_smodx
+8676  1a88 d60000        	ld	a,(_LCD_Line,x)
+8677  1a8b cd0000        	call	_Set_LCD_Address
+8679                     ; 1352 					Display_LCD_String("Fail_CurSen");
+8681  1a8e ae0041        	ldw	x,#L1243
+8682  1a91 cd0000        	call	_Display_LCD_String
+8684  1a94               L3634:
+8685                     ; 1358 			if(can_data[7] & (U8)(0x08)){
+8687  1a94 7b14          	ld	a,(OFST-2,sp)
+8688  1a96 a508          	bcp	a,#8
+8689  1a98 273c          	jreq	L5734
+8690                     ; 1360 				uc_fault_cnt++;
+8692  1a9a 0c16          	inc	(OFST+0,sp)
+8694                     ; 1361 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8694                     ; 1362 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8694                     ; 1363 				){
+8696  1a9c 0d16          	tnz	(OFST+0,sp)
+8697  1a9e 270d          	jreq	L3044
+8699  1aa0 7b16          	ld	a,(OFST+0,sp)
+8700  1aa2 a105          	cp	a,#5
+8701  1aa4 2407          	jruge	L3044
+8703  1aa6 c60004        	ld	a,_uc_Test_Page_Now
+8704  1aa9 a102          	cp	a,#2
+8705  1aab 2713          	jreq	L1044
+8706  1aad               L3044:
+8708  1aad 7b16          	ld	a,(OFST+0,sp)
+8709  1aaf a105          	cp	a,#5
+8710  1ab1 2523          	jrult	L5734
+8712  1ab3 7b16          	ld	a,(OFST+0,sp)
+8713  1ab5 a109          	cp	a,#9
+8714  1ab7 241d          	jruge	L5734
+8716  1ab9 c60004        	ld	a,_uc_Test_Page_Now
+8717  1abc a103          	cp	a,#3
+8718  1abe 2616          	jrne	L5734
+8719  1ac0               L1044:
+8720                     ; 1364 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);	
+8722  1ac0 7b16          	ld	a,(OFST+0,sp)
+8723  1ac2 5f            	clrw	x
+8724  1ac3 97            	ld	xl,a
+8725  1ac4 5a            	decw	x
+8726  1ac5 a604          	ld	a,#4
+8727  1ac7 cd0000        	call	c_smodx
+8729  1aca d60000        	ld	a,(_LCD_Line,x)
+8730  1acd cd0000        	call	_Set_LCD_Address
+8732                     ; 1365 					Display_LCD_String("Fail_CoreTemp");
+8734  1ad0 ae0033        	ldw	x,#L5343
+8735  1ad3 cd0000        	call	_Display_LCD_String
+8737  1ad6               L5734:
+8738                     ; 1371 			if(can_diag[1] & (U8)(0x8)){
+8740  1ad6 7b04          	ld	a,(OFST-18,sp)
+8741  1ad8 a508          	bcp	a,#8
+8742  1ada 273c          	jreq	L7044
+8743                     ; 1373 				uc_fault_cnt++;
+8745  1adc 0c16          	inc	(OFST+0,sp)
+8747                     ; 1374 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8747                     ; 1375 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8747                     ; 1376 				){
+8749  1ade 0d16          	tnz	(OFST+0,sp)
+8750  1ae0 270d          	jreq	L5144
+8752  1ae2 7b16          	ld	a,(OFST+0,sp)
+8753  1ae4 a105          	cp	a,#5
+8754  1ae6 2407          	jruge	L5144
+8756  1ae8 c60004        	ld	a,_uc_Test_Page_Now
+8757  1aeb a102          	cp	a,#2
+8758  1aed 2713          	jreq	L3144
+8759  1aef               L5144:
+8761  1aef 7b16          	ld	a,(OFST+0,sp)
+8762  1af1 a105          	cp	a,#5
+8763  1af3 2523          	jrult	L7044
+8765  1af5 7b16          	ld	a,(OFST+0,sp)
+8766  1af7 a109          	cp	a,#9
+8767  1af9 241d          	jruge	L7044
+8769  1afb c60004        	ld	a,_uc_Test_Page_Now
+8770  1afe a103          	cp	a,#3
+8771  1b00 2616          	jrne	L7044
+8772  1b02               L3144:
+8773                     ; 1377 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8775  1b02 7b16          	ld	a,(OFST+0,sp)
+8776  1b04 5f            	clrw	x
+8777  1b05 97            	ld	xl,a
+8778  1b06 5a            	decw	x
+8779  1b07 a604          	ld	a,#4
+8780  1b09 cd0000        	call	c_smodx
+8782  1b0c d60000        	ld	a,(_LCD_Line,x)
+8783  1b0f cd0000        	call	_Set_LCD_Address
+8785                     ; 1378 					Display_LCD_String("Fail_PCB1Temp");
+8787  1b12 ae0025        	ldw	x,#L1543
+8788  1b15 cd0000        	call	_Display_LCD_String
+8790  1b18               L7044:
+8791                     ; 1384 			if(can_data[5] == (U8)(0xff)){
+8793  1b18 7b12          	ld	a,(OFST-4,sp)
+8794  1b1a a1ff          	cp	a,#255
+8795  1b1c 263c          	jrne	L1244
+8796                     ; 1386 				uc_fault_cnt++;
+8798  1b1e 0c16          	inc	(OFST+0,sp)
+8800                     ; 1387 				if(((uc_fault_cnt > (U8)(0)) && (uc_fault_cnt <= (U8)(4)) && (uc_Test_Page_Now == (U8)(2)))
+8800                     ; 1388 					|| ((uc_fault_cnt > (U8)(4)) && (uc_fault_cnt <= (U8)(8)) && (uc_Test_Page_Now == (U8)(3)))		     
+8800                     ; 1389 				){
+8802  1b20 0d16          	tnz	(OFST+0,sp)
+8803  1b22 270d          	jreq	L7244
+8805  1b24 7b16          	ld	a,(OFST+0,sp)
+8806  1b26 a105          	cp	a,#5
+8807  1b28 2407          	jruge	L7244
+8809  1b2a c60004        	ld	a,_uc_Test_Page_Now
+8810  1b2d a102          	cp	a,#2
+8811  1b2f 2713          	jreq	L5244
+8812  1b31               L7244:
+8814  1b31 7b16          	ld	a,(OFST+0,sp)
+8815  1b33 a105          	cp	a,#5
+8816  1b35 2523          	jrult	L1244
+8818  1b37 7b16          	ld	a,(OFST+0,sp)
+8819  1b39 a109          	cp	a,#9
+8820  1b3b 241d          	jruge	L1244
+8822  1b3d c60004        	ld	a,_uc_Test_Page_Now
+8823  1b40 a103          	cp	a,#3
+8824  1b42 2616          	jrne	L1244
+8825  1b44               L5244:
+8826                     ; 1390 					Set_LCD_Address(LCD_Line[(uc_fault_cnt-1) % (U8)(4)]);		
+8828  1b44 7b16          	ld	a,(OFST+0,sp)
+8829  1b46 5f            	clrw	x
+8830  1b47 97            	ld	xl,a
+8831  1b48 5a            	decw	x
+8832  1b49 a604          	ld	a,#4
+8833  1b4b cd0000        	call	c_smodx
+8835  1b4e d60000        	ld	a,(_LCD_Line,x)
+8836  1b51 cd0000        	call	_Set_LCD_Address
+8838                     ; 1391 					Display_LCD_String("Fail_IGBT");
+8840  1b54 ae001b        	ldw	x,#L5643
+8841  1b57 cd0000        	call	_Display_LCD_String
+8843  1b5a               L1244:
+8844                     ; 1405 			if(!uc_fault_cnt){
+8846  1b5a 0d16          	tnz	(OFST+0,sp)
+8847  1b5c 260c          	jrne	L3514
+8848                     ; 1406 				Set_LCD_Address(LCD_Line[0]);
+8850  1b5e c60000        	ld	a,_LCD_Line
+8851  1b61 cd0000        	call	_Set_LCD_Address
+8853                     ; 1407 				Display_LCD_String("Normal");
+8855  1b64 ae0006        	ldw	x,#L5053
+8856  1b67 cd0000        	call	_Display_LCD_String
+8858  1b6a               L3514:
+8859                     ; 1412 	if((b_Com_On_flag == ON)){
+8861  1b6a c6000d        	ld	a,_uc_Test_Ctrl_Reg
+8862  1b6d a508          	bcp	a,#8
+8863  1b6f 270d          	jreq	L5344
+8864                     ; 1413 		Set_LCD_Address((unsigned char)(0x00+15));
+8866  1b71 a60f          	ld	a,#15
+8867  1b73 cd0000        	call	_Set_LCD_Address
+8869                     ; 1416 		Display_LCD_String("Y");	// YJS 20230314
+8871  1b76 ae0004        	ldw	x,#L1153
+8872  1b79 cd0000        	call	_Display_LCD_String
+8875  1b7c 200b          	jra	L7344
+8876  1b7e               L5344:
+8877                     ; 1418 		Set_LCD_Address((unsigned char)(0x00+15));
+8879  1b7e a60f          	ld	a,#15
+8880  1b80 cd0000        	call	_Set_LCD_Address
+8882                     ; 1419 		Display_LCD_String("N");
+8884  1b83 ae00c7        	ldw	x,#L7013
+8885  1b86 cd0000        	call	_Display_LCD_String
+8887  1b89               L7344:
+8888                     ; 1422 	return;
+8889  1b89               L431:
+8892  1b89 5b16          	addw	sp,#22
+8893  1b8b 81            	ret
+8919                     ; 1425 void Test_Controller_Routine(void)
+8919                     ; 1426 {
+8920                     	switch	.text
+8921  1b8c               _Test_Controller_Routine:
+8925                     ; 1430 	SU2I_Ctrl_LCD_Display_Control();
+8927  1b8c cd106d        	call	L5153_SU2I_Ctrl_LCD_Display_Control
+8929                     ; 1432 	Test_Ctrl_Swtich_Control();
+8931  1b8f cd02fc        	call	_Test_Ctrl_Swtich_Control
+8933                     ; 1434 	return;
+8936  1b92 81            	ret
+8972                     ; 1439 void Test_Ctrl_Reset_Values(void)
+8972                     ; 1440 {
+8973                     	switch	.text
+8974  1b93               _Test_Ctrl_Reset_Values:
+8978                     ; 1441 	uc_Test_Ctrl_Reg = 0x00;			// Test_Controller_Control_Register
+8980  1b93 725f000d      	clr	_uc_Test_Ctrl_Reg
+8981                     ; 1442 	uc_Model_Select_Reg = 0x00;		// PTC_Model_Select_Register
+8983  1b97 725f000e      	clr	_uc_Model_Select_Reg
+8984                     ; 1443 	uc_Rx_TimeOut_Reg = 0x00;		// Rx Data frame Timeout Register
+8986  1b9b 725f000c      	clr	_uc_Rx_TimeOut_Reg
+8987                     ; 1445 	uc_Test_Page_Now = 0;			// Test_Controller_Page_Now
+8989  1b9f 725f0004      	clr	_uc_Test_Page_Now
+8990                     ; 1446 	uc_Test_Page_Pre = 0;			// Test_Controller_Page_Previous
+8992  1ba3 725f0003      	clr	_uc_Test_Page_Pre
+8993                     ; 1447 	uc_Test_Data_Select_Num = 0;	// Test_Controller_Data_Selection_Number
+8995  1ba7 725f0002      	clr	_uc_Test_Data_Select_Num
+8996                     ; 1449 	uc_Perc_Unit = 1;		// Duty_Moving_Unit
+8998  1bab 35010001      	mov	_uc_Perc_Unit,#1
+8999                     ; 1451 	ui_Rx1_TimeOut_Cnt = 0;	// Rx1_Frame_TimeOut_Counter
+9001  1baf 5f            	clrw	x
+9002  1bb0 cf0007        	ldw	_ui_Rx1_TimeOut_Cnt,x
+9003                     ; 1452 	ui_Rx2_TimeOut_Cnt = 0;	// Rx2_Frame_TimeOut_Counter
+9005  1bb3 5f            	clrw	x
+9006  1bb4 cf0005        	ldw	_ui_Rx2_TimeOut_Cnt,x
+9007                     ; 1454 	uc_Heater_Enable_Flag = 0;	// Heater_Enable_Flag
+9009  1bb7 725f0009      	clr	_uc_Heater_Enable_Flag
+9010                     ; 1455 	uc_Target_Duty_Perc[HTR_ZONE_1] = 0;		// Target_Duty_Percentage
+9012  1bbb 725f000a      	clr	_uc_Target_Duty_Perc
+9013                     ; 1456 	uc_Target_Duty_Perc[HTR_ZONE_2] = 0;		// Target_Duty_Percentage
+9015  1bbf 725f000b      	clr	_uc_Target_Duty_Perc+1
+9016                     ; 1457 	HEATER_zone_status=HTR_ZONE_1;
+9018  1bc3 725f0000      	clr	_HEATER_zone_status
+9019                     ; 1458 	return;
+9022  1bc7 81            	ret
+9162                     	xdef	_Test_Ctrl_Text_Display_Handling
+9163                     	xdef	_Test_Ctrl_Swtich_Control
+9164                     	xdef	_Test_Ctrl_Value_Change
+9165                     	xdef	_Model_Select_LCD_Display_Control
+9166                     	xdef	_Model_Select_Switch_Control
+9167                     	xdef	_Model_Select_Display_Handling
+9168                     	xdef	_First_Switch_Control
+9169                     	switch	.bss
+9170  0000               _uc_Target_Display_Mode:
+9171  0000 00            	ds.b	1
+9172                     	xdef	_uc_Target_Display_Mode
+9173  0001               _uc_Perc_Unit:
+9174  0001 00            	ds.b	1
+9175                     	xdef	_uc_Perc_Unit
+9176  0002               _uc_Test_Data_Select_Num:
+9177  0002 00            	ds.b	1
+9178                     	xdef	_uc_Test_Data_Select_Num
+9179  0003               _uc_Test_Page_Pre:
+9180  0003 00            	ds.b	1
+9181                     	xdef	_uc_Test_Page_Pre
+9182  0004               _uc_Test_Page_Now:
+9183  0004 00            	ds.b	1
+9184                     	xdef	_uc_Test_Page_Now
+9185                     	xref	_Start_Zig_Display
+9186                     	xref	_HEATER_zone_status
+9187                     	xdef	_Test_Ctrl_Reset_Values
+9188                     	xdef	_Test_Controller_Routine
+9189                     	xdef	_Model_Select_Routine
+9190                     	xdef	_Test_Controller_First_Routine
+9191  0005               _ui_Rx2_TimeOut_Cnt:
+9192  0005 0000          	ds.b	2
+9193                     	xdef	_ui_Rx2_TimeOut_Cnt
+9194  0007               _ui_Rx1_TimeOut_Cnt:
+9195  0007 0000          	ds.b	2
+9196                     	xdef	_ui_Rx1_TimeOut_Cnt
+9197                     	xdef	_uc_Rx_Data
+9198  0009               _uc_Heater_Enable_Flag:
+9199  0009 00            	ds.b	1
+9200                     	xdef	_uc_Heater_Enable_Flag
+9201  000a               _uc_Target_Duty_Perc:
+9202  000a 0000          	ds.b	2
+9203                     	xdef	_uc_Target_Duty_Perc
+9204  000c               _uc_Rx_TimeOut_Reg:
+9205  000c 00            	ds.b	1
+9206                     	xdef	_uc_Rx_TimeOut_Reg
+9207  000d               _uc_Test_Ctrl_Reg:
+9208  000d 00            	ds.b	1
+9209                     	xdef	_uc_Test_Ctrl_Reg
+9210  000e               _uc_Model_Select_Reg:
+9211  000e 00            	ds.b	1
+9212                     	xdef	_uc_Model_Select_Reg
+9213                     	xref	_uc_Button_Status_Reg
+9214                     	xref	_Num_Display_LCD
+9215                     	xref	_Display_LCD_String
+9216                     	xref	_Set_LCD_Address
+9217                     	xref	_LCD_Dis_Data
+9218                     	xref	_LCD_Line
+9219                     	xref	_uc_LCD_Blink_Reg
+9220                     	xref	_uc_System_Ctrl_Reg
+9221                     	switch	.const
+9222  0004               L1153:
+9223  0004 5900          	dc.b	"Y",0
+9224  0006               L5053:
+9225  0006 4e6f726d616c  	dc.b	"Normal",0
+9226  000d               L1053:
+9227  000d 4661696c5f6f  	dc.b	"Fail_openLoad",0
+9228  001b               L5643:
+9229  001b 4661696c5f49  	dc.b	"Fail_IGBT",0
+9230  0025               L1543:
+9231  0025 4661696c5f50  	dc.b	"Fail_PCB1Temp",0
+9232  0033               L5343:
+9233  0033 4661696c5f43  	dc.b	"Fail_CoreTemp",0
+9234  0041               L1243:
+9235  0041 4661696c5f43  	dc.b	"Fail_CurSen",0
+9236  004d               L5043:
+9237  004d 4661696c5f4c  	dc.b	"Fail_LVSen",0
+9238  0058               L1733:
+9239  0058 4661696c5f48  	dc.b	"Fail_HVSen",0
+9240  0063               L5533:
+9241  0063 466c745f4d73  	dc.b	"Flt_MsgTimeOut",0
+9242  0072               L1433:
+9243  0072 466c745f5043  	dc.b	"Flt_PCBThmShut",0
+9244  0081               L5233:
+9245  0081 466c745f5468  	dc.b	"Flt_ThmShut",0
+9246  008d               L1133:
+9247  008d 466c745f4f76  	dc.b	"Flt_OverCur",0
+9248  0099               L5723:
+9249  0099 466c745f4856  	dc.b	"Flt_HVHigh",0
+9250  00a4               L1623:
+9251  00a4 466c745f4856  	dc.b	"Flt_HVLow",0
+9252  00ae               L5423:
+9253  00ae 466c745f4c56  	dc.b	"Flt_LVHigh",0
+9254  00b9               L1323:
+9255  00b9 466c745f4c56  	dc.b	"Flt_LVLow",0
+9256  00c3               L3713:
+9257  00c3 2d00          	dc.b	"-",0
+9258  00c5               L5113:
+9259  00c5 3100          	dc.b	"1",0
+9260  00c7               L7013:
+9261  00c7 4e00          	dc.b	"N",0
+9262  00c9               L7472:
+9263  00c9 4d415800      	dc.b	"MAX",0
+9264  00cd               L1762:
+9265  00cd 4c6d697400    	dc.b	"Lmit",0
+9266  00d2               L3662:
+9267  00d2 466c7400      	dc.b	"Flt",0
+9268  00d6               L5562:
+9269  00d6 4f70657200    	dc.b	"Oper",0
+9270  00db               L7462:
+9271  00db 53746f7000    	dc.b	"Stop",0
+9272  00e0               L1462:
+9273  00e0 4e4300        	dc.b	"NC",0
+9274  00e3               L5362:
+9275  00e3 5a3200        	dc.b	"Z2",0
+9276  00e6               L1362:
+9277  00e6 5a3100        	dc.b	"Z1",0
+9278  00e9               L1162:
+9279  00e9 202020202020  	dc.b	"        Fd:",0
+9280  00f5               L7752:
+9281  00f5 202020202020  	dc.b	"        /",0
+9282  00ff               L1552:
+9283  00ff 2500          	dc.b	"%",0
+9284  0101               L7452:
+9285  0101 3000          	dc.b	"0",0
+9286  0103               L3452:
+9287  0103 3500          	dc.b	"5",0
+9288  0105               L7352:
+9289  0105 2e00          	dc.b	".",0
+9290  0107               L3352:
+9291  0107 445f556e6974  	dc.b	"D_Unit:",0
+9292  010f               L1352:
+9293  010f 2a5461726765  	dc.b	"*Target Watt(OS)",0
+9294  0120               L5252:
+9295  0120 2a5461726765  	dc.b	"*Target Perc",0
+9296  012d               L1252:
+9297  012d 2a4f5054494f  	dc.b	"*OPTION*",0
+9298  0136               L1442:
+9299  0136 5665723a00    	dc.b	"Ver:",0
+9300  013b               L7342:
+9301  013b 43743a00      	dc.b	"Ct:",0
+9302  013f               L5342:
+9303  013f 43723a202020  	dc.b	"Cr:     Pw:",0
+9304  014b               L3342:
+9305  014b 523a2020463a  	dc.b	"R:  F:  HV:",0
+9306  0157               L1342:
+9307  0157 54703a202020  	dc.b	"Tp:     Fd:",0
+9308  0163               L5242:
+9309  0163 54643a202020  	dc.b	"Td:     Fd:",0
+9310  016f               L1242:
+9311  016f 416c3a202020  	dc.b	"Al:     /",0
+9312  0179               L5571:
+9313  0179 00            	dc.b	0
+9314  017a               L3571:
+9315  017a 2a4856434320  	dc.b	"*HVCC Model*",0
+9316                     	xref.b	c_lreg
+9317                     	xref.b	c_x
+9318                     	xref.b	c_y
+9338                     	xref	c_smodx
+9339                     	xref	c_sdivx
+9340                     	xref	c_ludv
+9341                     	xref	c_umul
+9342                     	xref	c_strcpx
+9343                     	end
