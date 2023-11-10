@@ -1,0 +1,56 @@
+---- PTC_MODEL Matches (10 in 5 files) ----
+CAN_Function.c:#if (PTC_MODEL == MV_FRONT_PTC)||(PTC_MODEL == MV_REAR_PTC)
+CAN_Function.h:#if (PTC_MODEL == MV_FRONT_PTC)
+CAN_Function.h:#elif (PTC_MODEL == MV_REAR_PTC)
+Main.c:#if (PTC_MODEL == MV_FRONT_PTC)
+Main.c:#elif (PTC_MODEL == MV_REAR_PTC)
+Main.c:#elif (PTC_MODEL == CVa_FRONT_PTC)
+Main.h:#define PTC_MODEL	SU2I_PTC
+Test_Controller_Function.c:#if (PTC_MODEL == MV_FRONT_PTC)||(PTC_MODEL == MV_REAR_PTC)
+---- LCD_Initialize Matches (6 in 4 files) ----
+LCD_Ctrl_Function.c:void LCD_Initialize(void)
+LCD_Ctrl_Function.c:}//End of LCD_Initialize
+LCD_Ctrl_Function.h:extern void LCD_Initialize(void);
+Main.c:	LCD_Initialize();
+TAGS.txt:LCD_Initialize	lcd_ctrl_function.c	115;"	function	signature:(void)
+TAGS.txt:LCD_Initialize	lcd_ctrl_function.h	33;"	prototype	signature:(void)
+---- Start_Zig_Display Matches (5 in 4 files) ----
+Main.c:void Start_Zig_Display(void)
+Main.c:}// End of Start_Zig_Display
+Main.h:extern void Start_Zig_Display(void);
+TAGS.txt:Start_Zig_Display	main.c	45;"	function	signature:(void)
+Test_Controller_Function.c:	Start_Zig_Display();
+---- b_System_10ms_Task Matches (5 in 3 files) ----
+Main.c:		if(b_System_10ms_Task)
+Main.c:			b_System_10ms_Task = OFF;	// 10ms_Task_Flag_Reset
+Main.c:	b_System_10ms_Task = ON;
+Main.h:#define b_System_10ms_Task	((struct bits*)&uc_System_Ctrl_Reg)->BIT1		// System_10ms_Task_Flag
+TAGS.txt:b_System_10ms_Task	main.h	48;"	macro
+---- LCD_Buffer Matches (5 in 2 files) ----
+LCD_Ctrl_Function.c:@tiny volatile unsigned char LCD_Buffer[32];
+LCD_Ctrl_Function.c:/*==============	¢Ñ LCD_Buffer Address Set Routine ¢Ð  ==================================================*/
+LCD_Ctrl_Function.c:	LCD_Buffer[Buffer_Add++] = Data;
+LCD_Ctrl_Function.c:	for(i = 0; i < 32; i++){ LCD_Buffer[i] = ' ';	}
+TAGS.txt:LCD_Buffer	lcd_ctrl_function.c	16;"	variable
+---- Display_LCD_Data Matches (21 in 3 files) ----
+LCD_Ctrl_Function.c:void Display_LCD_Data(U8 Data)
+LCD_Ctrl_Function.c:}//End of Display_LCD_Data
+LCD_Ctrl_Function.c:	for(; *str;){ Display_LCD_Data(*str++);	}
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+num));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+num));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+num));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+buff));
+LCD_Ctrl_Function.c:		Display_LCD_Data((U8)(48+num));
+LCD_Ctrl_Function.c:	}else{ Display_LCD_Data((U8)(48+num));}
+LCD_Ctrl_Function.h:extern void Display_LCD_Data(U8 Data);
+TAGS.txt:Display_LCD_Data	lcd_ctrl_function.c	76;"	function	signature:(U8 Data)
+TAGS.txt:Display_LCD_Data	lcd_ctrl_function.h	30;"	prototype	signature:(U8 Data)
