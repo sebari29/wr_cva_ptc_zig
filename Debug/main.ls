@@ -31,12 +31,12 @@
 2778  0011 4f            	clr	a
 2779  0012 cd0000        	call	_Set_LCD_Address
 2781                     ; 50 		Display_LCD_String("WOORY Industrial");
-2783  0015 ae002b        	ldw	x,#L3471
+2783  0015 ae002f        	ldw	x,#L3471
 2784  0018 cd0000        	call	_Display_LCD_String
 2786                     ; 52 		Set_LCD_Address(0xC0);  // 2 Line Test Zig
 2788  001b a6c0          	ld	a,#192
 2789  001d cd0000        	call	_Set_LCD_Address
-2791                     ; 62 		Display_LCD_String("TEST PTC");
+2791                     ; 62 		Display_LCD_String("TEST CVa PTC");
 2793  0020 ae0022        	ldw	x,#L5471
 2794  0023 cd0000        	call	_Display_LCD_String
 2796                     ; 64 		Set_LCD_Address(0x10);  // 3 Line Test Zig
@@ -48,7 +48,7 @@
 2806                     ; 67 		Set_LCD_Address(0xD0);  // 4 Line Test Zig
 2808  0031 a6d0          	ld	a,#208
 2809  0033 cd0000        	call	_Set_LCD_Address
-2811                     ; 68 		Display_LCD_String("23.11.13  By OSY");
+2811                     ; 68 		Display_LCD_String("23.11.23  By OSY");
 2813  0036 ae0000        	ldw	x,#L1571
 2814  0039 cd0000        	call	_Display_LCD_String
 2816  003c               L1471:
@@ -231,11 +231,11 @@
 3237                     	xdef	_uc_System_Ctrl_Reg
 3238                     .const:	section	.text
 3239  0000               L1571:
-3240  0000 32332e31312e  	dc.b	"23.11.13  By OSY",0
+3240  0000 32332e31312e  	dc.b	"23.11.23  By OSY",0
 3241  0011               L7471:
 3242  0011 546573742043  	dc.b	"Test Ctrl Ver0.4",0
 3243  0022               L5471:
-3244  0022 544553542050  	dc.b	"TEST PTC",0
-3245  002b               L3471:
-3246  002b 574f4f525920  	dc.b	"WOORY Industrial",0
+3244  0022 544553542043  	dc.b	"TEST CVa PTC",0
+3245  002f               L3471:
+3246  002f 574f4f525920  	dc.b	"WOORY Industrial",0
 3266                     	end

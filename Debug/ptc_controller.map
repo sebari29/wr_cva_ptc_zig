@@ -1,25 +1,25 @@
 
-Map of Debug\ptc_controller.sm8 from link file Debug\ptc_controller.lkf - Thu Nov 23 19:12:36 2023
+Map of Debug\ptc_controller.sm8 from link file Debug\ptc_controller.lkf - Thu Nov 23 19:24:34 2023
 
 
                                --------
                                Segments
                                --------
 
-start 00008080 end 000083ec length   876 segment .const
-start 00008439 end 0000d085 length 19532 segment .text
+start 00008080 end 000083f0 length   880 segment .const
+start 0000843d end 0000d089 length 19532 segment .text
 start 00004000 end 00004000 length     0 segment .eeprom
 start 00000000 end 00000000 length     0 segment .bsct
 start 00000000 end 00000031 length    49 segment .ubsct
 start 00000031 end 00000031 length     0 segment .bit
 start 00000031 end 00000031 length     0 segment .share
 start 00000100 end 00000145 length    69 segment .data, initialized
-start 000083f4 end 00008439 length    69 segment .data, from
+start 000083f8 end 0000843d length    69 segment .data, from
 start 00000145 end 000001d0 length   139 segment .bss
 start 00000000 end 000005f7 length  1527 segment .info.
 start 00000000 end 0000ecb9 length 60601 segment .debug
 start 00008000 end 00008080 length   128 segment .const
-start 000083ec end 000083f4 length     8 segment .init
+start 000083f0 end 000083f8 length     8 segment .init
 
 
                                -------
@@ -27,19 +27,19 @@ start 000083ec end 000083f4 length     8 segment .init
                                -------
 
 C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8:
-start 00008439 end 00008489 length    80 section .text
+start 0000843d end 0000848d length    80 section .text
 start 00000145 end 00000145 length     0 section .bss
 start 00000000 end 00000000 length     0 section .ubsct
 start 00000000 end 00000034 length    52 section .info.
 
 Debug\button_control.o:
-start 00008489 end 000085aa length   289 section .text
+start 0000848d end 000085ae length   289 section .text
 start 00000145 end 0000014d length     8 section .bss
 start 00000000 end 00001fe7 length  8167 section .debug
 start 00000034 end 000000a9 length   117 section .info.
 
 Debug\can_function.o:
-start 000085aa end 00008a29 length  1151 section .text
+start 000085ae end 00008a2d length  1151 section .text
 start 00000100 end 00000108 length     8 section .data
 start 0000014d end 0000017f length    50 section .bss
 start 00000000 end 00000005 length     5 section .ubsct
@@ -48,7 +48,7 @@ start 000000a9 end 0000011c length   115 section .info.
 start 00008080 end 00008088 length     8 section .const
 
 Debug\lcd_ctrl_function.o:
-start 00008a29 end 00008d3d length   788 section .text
+start 00008a2d end 00008d41 length   788 section .text
 start 00000108 end 0000010c length     4 section .data
 start 0000017f end 000001c1 length    66 section .bss
 start 00000005 end 00000026 length    33 section .ubsct
@@ -61,56 +61,56 @@ start 00006535 end 00008194 length  7263 section .debug
 start 00000194 end 00000206 length   114 section .info.
 
 Debug\main.o:
-start 00008d3d end 00008e62 length   293 section .text
+start 00008d41 end 00008e66 length   293 section .text
 start ******** end ******** length     0 section .bss *** removed ***
 start 00000026 end 00000027 length     1 section .ubsct
 start 00008194 end 0000a00d length  7801 section .debug
 start 00000206 end 00000271 length   107 section .info.
-start 00008099 end 000080d5 length    60 section .const
+start 00008099 end 000080d9 length    64 section .const
 
 Debug\stm8a_library.o:
-start 00008e62 end 000090c9 length   615 section .text
+start 00008e66 end 000090cd length   615 section .text
 start 0000a00d end 0000c0ab length  8350 section .debug
 start 00000271 end 000002e5 length   116 section .info.
 
 Debug\test_controller_function.o:
-start 000090c9 end 0000ced2 length 15881 section .text
+start 000090cd end 0000ced6 length 15881 section .text
 start 0000010c end 00000145 length    57 section .data
 start 000001c1 end 000001d0 length    15 section .bss
 start 0000c0ab end 0000eb4f length 10916 section .debug
 start 000002e5 end 00000364 length   127 section .info.
-start 000080d5 end 000083ec length   791 section .const
+start 000080d9 end 000083f0 length   791 section .const
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lreg.o:
 start 00000027 end 0000002b length     4 section .ubsct
 start 00000364 end 00000393 length    47 section .info.
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ludiv.o:
-start 0000ced2 end 0000cee6 length    20 section .text
+start 0000ced6 end 0000ceea length    20 section .text
 start 00000393 end 000003c3 length    48 section .info.
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ldiv.o:
-start 0000cee6 end 0000cfd1 length   235 section .text
+start 0000ceea end 0000cfd5 length   235 section .text
 start 000003c3 end 000003f2 length    47 section .info.
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lgneg.o:
-start 0000cfd1 end 0000cfe4 length    19 section .text
+start 0000cfd5 end 0000cfe8 length    19 section .text
 start 000003f2 end 00000422 length    48 section .info.
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lneg.o:
-start 0000cfe4 end 0000cff9 length    21 section .text
+start 0000cfe8 end 0000cffd length    21 section .text
 start 00000422 end 00000451 length    47 section .info.
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)sdivx.o:
-start 0000cff9 end 0000d024 length    43 section .text
+start 0000cffd end 0000d028 length    43 section .text
 start 00000451 end 00000481 length    48 section .info.
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)strcpx.o:
-start 0000d024 end 0000d048 length    36 section .text
+start 0000d028 end 0000d04c length    36 section .text
 start 00000481 end 000004b2 length    49 section .info.
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)umul.o:
-start 0000d048 end 0000d084 length    60 section .text
+start 0000d04c end 0000d088 length    60 section .text
 start 000004b2 end 000004e1 length    47 section .info.
 
 (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)xreg.o:
@@ -122,7 +122,7 @@ start 0000002e end 00000031 length     3 section .ubsct
 start 00000510 end 0000053f length    47 section .info.
 
 Debug\stm8_interrupt_vector.o:
-start 0000d084 end 0000d085 length     1 section .text
+start 0000d088 end 0000d089 length     1 section .text
 start 0000eb4f end 0000ecb9 length   362 section .debug
 start 0000053f end 000005bb length   124 section .info.
 start 00008000 end 00008080 length   128 section .const
@@ -507,14 +507,14 @@ Stack size: 57
                                Symbols
                                -------
 
-_ADC_10BIT_Read                     00008eb6   defined in Debug\stm8a_library.o section .text
+_ADC_10BIT_Read                     00008eba   defined in Debug\stm8a_library.o section .text
 _ADC_CR1                            00005401   defined in Debug\button_control.o
 _ADC_CR2                            00005402   defined in Debug\button_control.o
 _ADC_CR3                            00005403   defined in Debug\button_control.o
 _ADC_CSR                            00005400   defined in Debug\button_control.o
 _ADC_DRH                            00005404   defined in Debug\button_control.o
 _ADC_DRL                            00005405   defined in Debug\button_control.o
-_ADC_Enable                         00008ea1   defined in Debug\stm8a_library.o section .text
+_ADC_Enable                         00008ea5   defined in Debug\stm8a_library.o section .text
 _ADC_TDRH                           00005406   defined in Debug\button_control.o
 _ADC_TDRL                           00005407   defined in Debug\button_control.o
 _AWU_APR                            000050f1   defined in Debug\button_control.o
@@ -522,25 +522,25 @@ _AWU_CSR1                           000050f0   defined in Debug\button_control.o
 _AWU_TBR                            000050f2   defined in Debug\button_control.o
 _BEEP_CSR                           000050f3   defined in Debug\button_control.o
 _Buffer_Add                         00000025   defined in Debug\lcd_ctrl_function.o section .ubsct
-_CAN_Bus_Off_Handling               00008743   defined in Debug\can_function.o section .text
+_CAN_Bus_Off_Handling               00008747   defined in Debug\can_function.o section .text
 _CAN_DGR                            00005426   defined in Debug\button_control.o
-_CAN_Disable                        00009080   defined in Debug\stm8a_library.o section .text
+_CAN_Disable                        00009084   defined in Debug\stm8a_library.o section .text
                                                used in Debug\can_function.o
-_CAN_Enable                         00008f28   defined in Debug\stm8a_library.o section .text
+_CAN_Enable                         00008f2c   defined in Debug\stm8a_library.o section .text
                                                used in Debug\can_function.o
 _CAN_FPSR                           00005427   defined in Debug\button_control.o
-_CAN_Fail_Handling                  00008688   defined in Debug\can_function.o section .text
+_CAN_Fail_Handling                  0000868c   defined in Debug\can_function.o section .text
 _CAN_IER                            00005425   defined in Debug\button_control.o
-_CAN_Interrupt_Disable              00008ef6   defined in Debug\stm8a_library.o section .text
+_CAN_Interrupt_Disable              00008efa   defined in Debug\stm8a_library.o section .text
                                                used in Debug\can_function.o
-_CAN_Interrupt_Enable               00008f0f   defined in Debug\stm8a_library.o section .text
+_CAN_Interrupt_Enable               00008f13   defined in Debug\stm8a_library.o section .text
                                                used in Debug\can_function.o
 _CAN_MCR                            00005420   defined in Debug\button_control.o
 _CAN_MSR                            00005421   defined in Debug\button_control.o
-_CAN_Management_Function            00008800   defined in Debug\can_function.o section .text
+_CAN_Management_Function            00008804   defined in Debug\can_function.o section .text
                                                used in Debug\main.o
-_CAN_Normal_Maessge_Transmit        000086c5   defined in Debug\can_function.o section .text
-_CAN_Normal_Message_Handling        000085b5   defined in Debug\can_function.o section .text
+_CAN_Normal_Maessge_Transmit        000086c9   defined in Debug\can_function.o section .text
+_CAN_Normal_Message_Handling        000085b9   defined in Debug\can_function.o section .text
 _CAN_P0                             00005428   defined in Debug\button_control.o
 _CAN_P1                             00005429   defined in Debug\button_control.o
 _CAN_P2                             0000542a   defined in Debug\button_control.o
@@ -559,17 +559,17 @@ _CAN_PE                             00005436   defined in Debug\button_control.o
 _CAN_PF                             00005437   defined in Debug\button_control.o
 _CAN_RECV_ID                        00000100   defined in Debug\can_function.o section .data, initialized
 _CAN_RFR                            00005424   defined in Debug\button_control.o
-_CAN_Rx_Interrupt                   000088a1   defined in Debug\can_function.o section .text
+_CAN_Rx_Interrupt                   000088a5   defined in Debug\can_function.o section .text
                                                used in Debug\stm8_interrupt_vector.o
 _CAN_TPR                            00005423   defined in Debug\button_control.o
 _CAN_TSR                            00005422   defined in Debug\button_control.o
-_CAN_Timing_Control                 0000876f   defined in Debug\can_function.o section .text
-_CAN_Transmit_Cancel                00009085   defined in Debug\stm8a_library.o section .text
+_CAN_Timing_Control                 00008773   defined in Debug\can_function.o section .text
+_CAN_Transmit_Cancel                00009089   defined in Debug\stm8a_library.o section .text
                                                used in Debug\can_function.o
-_CAN_Tx_Interrupt                   000089c8   defined in Debug\can_function.o section .text
+_CAN_Tx_Interrupt                   000089cc   defined in Debug\can_function.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-_CAN_Tx_Message_Now                 000085aa   defined in Debug\can_function.o section .text
-_CAN_Wait_Tx_Message                000090aa   defined in Debug\stm8a_library.o section .text
+_CAN_Tx_Message_Now                 000085ae   defined in Debug\can_function.o section .text
+_CAN_Wait_Tx_Message                000090ae   defined in Debug\stm8a_library.o section .text
                                                used in Debug\can_function.o
 _CAN_test_data                      00000102   defined in Debug\can_function.o section .data, initialized
 _CFG_GCR                            00007f60   defined in Debug\button_control.o
@@ -586,33 +586,33 @@ _CLK_PCKENR2                        000050ca   defined in Debug\button_control.o
 _CLK_SWCR                           000050c5   defined in Debug\button_control.o
 _CLK_SWIMCCR                        000050cd   defined in Debug\button_control.o
 _CLK_SWR                            000050c4   defined in Debug\button_control.o
-_CPU_Clock_Initialize               00008e62   defined in Debug\stm8a_library.o section .text
+_CPU_Clock_Initialize               00008e66   defined in Debug\stm8a_library.o section .text
                                                used in Debug\main.o
 _Can_Fail_Time                      00008080   defined in Debug\can_function.o section .const
 _Can_Msg_Length                     00008084   defined in Debug\can_function.o section .const
 _Can_Node                           00000157   defined in Debug\can_function.o section .bss
 _Can_Tx_Buffer                      0000014f   defined in Debug\can_function.o section .bss
-_Clear_Display_LCD                  00008b24   defined in Debug\lcd_ctrl_function.o section .text
-_Controller_Button_Clear            00008595   defined in Debug\button_control.o section .text
+_Clear_Display_LCD                  00008b28   defined in Debug\lcd_ctrl_function.o section .text
+_Controller_Button_Clear            00008599   defined in Debug\button_control.o section .text
                                                used in Debug\main.o
-_Controller_Button_Detection        0000859a   defined in Debug\button_control.o section .text
+_Controller_Button_Detection        0000859e   defined in Debug\button_control.o section .text
                                                used in Debug\main.o
-_Cycle_Test_Control_Routine         00009845   defined in Debug\test_controller_function.o section .text
-_Cycle_Test_Timer_Count             000090c9   defined in Debug\test_controller_function.o section .text
-_Delay_ms                           00008a94   defined in Debug\lcd_ctrl_function.o section .text
-_DisableInterrupts                  00008e94   defined in Debug\stm8a_library.o section .text
+_Cycle_Test_Control_Routine         00009849   defined in Debug\test_controller_function.o section .text
+_Cycle_Test_Timer_Count             000090cd   defined in Debug\test_controller_function.o section .text
+_Delay_ms                           00008a98   defined in Debug\lcd_ctrl_function.o section .text
+_DisableInterrupts                  00008e98   defined in Debug\stm8a_library.o section .text
                                                used in Debug\main.o
-_Display_Clear                      00008b13   defined in Debug\lcd_ctrl_function.o section .text
-_Display_LCD_Data                   00008ade   defined in Debug\lcd_ctrl_function.o section .text
-_Display_LCD_String                 00008afc   defined in Debug\lcd_ctrl_function.o section .text
+_Display_Clear                      00008b17   defined in Debug\lcd_ctrl_function.o section .text
+_Display_LCD_Data                   00008ae2   defined in Debug\lcd_ctrl_function.o section .text
+_Display_LCD_String                 00008b00   defined in Debug\lcd_ctrl_function.o section .text
                                                used in Debug\main.o
                                                        Debug\test_controller_function.o
-_Down_Button_Detection              000084f2   defined in Debug\button_control.o section .text
+_Down_Button_Detection              000084f6   defined in Debug\button_control.o section .text
 _EXTI_CR1                           000050a0   defined in Debug\button_control.o
 _EXTI_CR2                           000050a1   defined in Debug\button_control.o
-_EnableInterrupts                   00008e96   defined in Debug\stm8a_library.o section .text
+_EnableInterrupts                   00008e9a   defined in Debug\stm8a_library.o section .text
                                                used in Debug\main.o
-_Enter_Button_Detection             00008578   defined in Debug\button_control.o section .text
+_Enter_Button_Detection             0000857c   defined in Debug\button_control.o section .text
 _FLASH_CR1                          0000505a   defined in Debug\button_control.o
 _FLASH_CR2                          0000505b   defined in Debug\button_control.o
 _FLASH_DUKR                         00005064   defined in Debug\button_control.o
@@ -621,7 +621,7 @@ _FLASH_IAPSR                        0000505f   defined in Debug\button_control.o
 _FLASH_NCR12                        0000505c   defined in Debug\button_control.o
 _FLASH_NFPR                         0000505e   defined in Debug\button_control.o
 _FLASH_PUKR                         00005062   defined in Debug\button_control.o
-_First_Switch_Control               00009197   defined in Debug\test_controller_function.o section .text
+_First_Switch_Control               0000919b   defined in Debug\test_controller_function.o section .text
 _HEATER_zone_status                 00000106   defined in Debug\can_function.o section .data, initialized
                                                used in Debug\test_controller_function.o
 _I2C_CCRH                           0000521c   defined in Debug\button_control.o
@@ -648,16 +648,16 @@ _ITC_SPR7                           00007f76   defined in Debug\button_control.o
 _IWDG_KR                            000050e0   defined in Debug\button_control.o
 _IWDG_PR                            000050e1   defined in Debug\button_control.o
 _IWDG_RLR                           000050e2   defined in Debug\button_control.o
-_LCD_Blink_Timer_Control            00008a29   defined in Debug\lcd_ctrl_function.o section .text
+_LCD_Blink_Timer_Control            00008a2d   defined in Debug\lcd_ctrl_function.o section .text
                                                used in Debug\main.o
 _LCD_Buffer                         00000005   defined in Debug\lcd_ctrl_function.o section .ubsct
-_LCD_Buffer_Add                     00008b84   defined in Debug\lcd_ctrl_function.o section .text
-_LCD_Buffer_Char                    00008b99   defined in Debug\lcd_ctrl_function.o section .text
-_LCD_Buffer_Clear                   00008bbf   defined in Debug\lcd_ctrl_function.o section .text
-_LCD_Buffer_String                  00008ba8   defined in Debug\lcd_ctrl_function.o section .text
+_LCD_Buffer_Add                     00008b88   defined in Debug\lcd_ctrl_function.o section .text
+_LCD_Buffer_Char                    00008b9d   defined in Debug\lcd_ctrl_function.o section .text
+_LCD_Buffer_Clear                   00008bc3   defined in Debug\lcd_ctrl_function.o section .text
+_LCD_Buffer_String                  00008bac   defined in Debug\lcd_ctrl_function.o section .text
 _LCD_Dis_Data                       00000180   defined in Debug\lcd_ctrl_function.o section .bss
                                                used in Debug\test_controller_function.o
-_LCD_Initialize                     00008b48   defined in Debug\lcd_ctrl_function.o section .text
+_LCD_Initialize                     00008b4c   defined in Debug\lcd_ctrl_function.o section .text
                                                used in Debug\main.o
 _LCD_Line                           00000108   defined in Debug\lcd_ctrl_function.o section .data, initialized
                                                used in Debug\test_controller_function.o
@@ -670,16 +670,16 @@ _LINUART_CR4                        00005247   defined in Debug\button_control.o
 _LINUART_CR6                        00005249   defined in Debug\button_control.o
 _LINUART_DR                         00005241   defined in Debug\button_control.o
 _LINUART_SR                         00005240   defined in Debug\button_control.o
-_Long_Test_Timer_Count              00009139   defined in Debug\test_controller_function.o section .text
-_Model_Select_Display_Handling      000091c1   defined in Debug\test_controller_function.o section .text
-_Model_Select_LCD_Display_Control   0000923c   defined in Debug\test_controller_function.o section .text
-_Model_Select_Routine               00009298   defined in Debug\test_controller_function.o section .text
+_Long_Test_Timer_Count              0000913d   defined in Debug\test_controller_function.o section .text
+_Model_Select_Display_Handling      000091c5   defined in Debug\test_controller_function.o section .text
+_Model_Select_LCD_Display_Control   00009240   defined in Debug\test_controller_function.o section .text
+_Model_Select_Routine               0000929c   defined in Debug\test_controller_function.o section .text
                                                used in Debug\main.o
-_Model_Select_Switch_Control        0000921a   defined in Debug\test_controller_function.o section .text
-_Num_Display_LCD                    00008bd4   defined in Debug\lcd_ctrl_function.o section .text
+_Model_Select_Switch_Control        0000921e   defined in Debug\test_controller_function.o section .text
+_Num_Display_LCD                    00008bd8   defined in Debug\lcd_ctrl_function.o section .text
                                                used in Debug\test_controller_function.o
-_ONOFF_Button_Detection             00008489   defined in Debug\button_control.o section .text
-_Option_Button_Detection            0000855b   defined in Debug\button_control.o section .text
+_ONOFF_Button_Detection             0000848d   defined in Debug\button_control.o section .text
+_Option_Button_Detection            0000855f   defined in Debug\button_control.o section .text
 _PA_CR1                             00005003   defined in Debug\button_control.o
 _PA_CR2                             00005004   defined in Debug\button_control.o
 _PA_DDR                             00005002   defined in Debug\button_control.o
@@ -726,9 +726,9 @@ _PI_DDR                             0000502a   defined in Debug\button_control.o
 _PI_IDR                             00005029   defined in Debug\button_control.o
 _PI_ODR                             00005028   defined in Debug\button_control.o
 _RST_SR                             000050b3   defined in Debug\button_control.o
-_Reset_Can_Function                 00008896   defined in Debug\can_function.o section .text
-_Reset_Cycle_Test_Timer             00009124   defined in Debug\test_controller_function.o section .text
-_Reset_Long_Test_Timer              00009182   defined in Debug\test_controller_function.o section .text
+_Reset_Can_Function                 0000889a   defined in Debug\can_function.o section .text
+_Reset_Cycle_Test_Timer             00009128   defined in Debug\test_controller_function.o section .text
+_Reset_Long_Test_Timer              00009186   defined in Debug\test_controller_function.o section .text
 _SPI_CR1                            00005200   defined in Debug\button_control.o
 _SPI_CR2                            00005201   defined in Debug\button_control.o
 _SPI_CRCPR                          00005205   defined in Debug\button_control.o
@@ -738,15 +738,15 @@ _SPI_RXCRCR                         00005206   defined in Debug\button_control.o
 _SPI_SR                             00005203   defined in Debug\button_control.o
 _SPI_TXCRCR                         00005207   defined in Debug\button_control.o
 _SWIM_CSR                           00007f80   defined in Debug\button_control.o
-_Set_Button_Detection               0000853e   defined in Debug\button_control.o section .text
-_Set_LCD_Address                    00008ac6   defined in Debug\lcd_ctrl_function.o section .text
+_Set_Button_Detection               00008542   defined in Debug\button_control.o section .text
+_Set_LCD_Address                    00008aca   defined in Debug\lcd_ctrl_function.o section .text
                                                used in Debug\main.o
                                                        Debug\test_controller_function.o
-_Set_LCD_Command                    00008ab0   defined in Debug\lcd_ctrl_function.o section .text
-_Start_Zig_Display                  00008d48   defined in Debug\main.o section .text
+_Set_LCD_Command                    00008ab4   defined in Debug\lcd_ctrl_function.o section .text
+_Start_Zig_Display                  00008d4c   defined in Debug\main.o section .text
                                                used in Debug\test_controller_function.o
-_System_IO_Port_Initialize          00008d7a   defined in Debug\main.o section .text
-_System_On_Initialize               00008d3d   defined in Debug\main.o section .text
+_System_IO_Port_Initialize          00008d7e   defined in Debug\main.o section .text
+_System_On_Initialize               00008d41   defined in Debug\main.o section .text
 _TIM1_ARRH                          00005262   defined in Debug\button_control.o
 _TIM1_ARRL                          00005263   defined in Debug\button_control.o
 _TIM1_BKR                           0000526d   defined in Debug\button_control.o
@@ -824,25 +824,25 @@ _TIM4_EGR                           00005343   defined in Debug\button_control.o
 _TIM4_IER                           00005341   defined in Debug\button_control.o
 _TIM4_PSCR                          00005345   defined in Debug\button_control.o
 _TIM4_SR                            00005342   defined in Debug\button_control.o
-_TIMER_3_Enable                     00008edd   defined in Debug\stm8a_library.o section .text
+_TIMER_3_Enable                     00008ee1   defined in Debug\stm8a_library.o section .text
                                                used in Debug\main.o
-_TIMER_3_Interrupt                  00008e55   defined in Debug\main.o section .text
+_TIMER_3_Interrupt                  00008e59   defined in Debug\main.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-_Test_10m_OFF_10m_On                000096c6   defined in Debug\test_controller_function.o section .text
-_Test_1h_OFF_1h_On                  00009752   defined in Debug\test_controller_function.o section .text
-_Test_30s_OFF_30s_On                0000963a   defined in Debug\test_controller_function.o section .text
-_Test_48h_On                        000097d5   defined in Debug\test_controller_function.o section .text
-_Test_Controller_First_Routine      000091b7   defined in Debug\test_controller_function.o section .text
+_Test_10m_OFF_10m_On                000096ca   defined in Debug\test_controller_function.o section .text
+_Test_1h_OFF_1h_On                  00009756   defined in Debug\test_controller_function.o section .text
+_Test_30s_OFF_30s_On                0000963e   defined in Debug\test_controller_function.o section .text
+_Test_48h_On                        000097d9   defined in Debug\test_controller_function.o section .text
+_Test_Controller_First_Routine      000091bb   defined in Debug\test_controller_function.o section .text
                                                used in Debug\main.o
-_Test_Controller_Routine            0000ce93   defined in Debug\test_controller_function.o section .text
+_Test_Controller_Routine            0000ce97   defined in Debug\test_controller_function.o section .text
                                                used in Debug\main.o
-_Test_Ctrl_LCD_Display_Control      0000bb5f   defined in Debug\test_controller_function.o section .text
-_Test_Ctrl_Reset_Values             0000ce9d   defined in Debug\test_controller_function.o section .text
+_Test_Ctrl_LCD_Display_Control      0000bb63   defined in Debug\test_controller_function.o section .text
+_Test_Ctrl_Reset_Values             0000cea1   defined in Debug\test_controller_function.o section .text
                                                used in Debug\main.o
-_Test_Ctrl_Swtich_Control           00009493   defined in Debug\test_controller_function.o section .text
-_Test_Ctrl_Text_Display_Handling    000098b5   defined in Debug\test_controller_function.o section .text
-_Test_Ctrl_Value_Change             0000929e   defined in Debug\test_controller_function.o section .text
-_Timer_10ms_Routine                 00008d44   defined in Debug\main.o section .text
+_Test_Ctrl_Swtich_Control           00009497   defined in Debug\test_controller_function.o section .text
+_Test_Ctrl_Text_Display_Handling    000098b9   defined in Debug\test_controller_function.o section .text
+_Test_Ctrl_Value_Change             000092a2   defined in Debug\test_controller_function.o section .text
+_Timer_10ms_Routine                 00008d48   defined in Debug\main.o section .text
 _UART_BRR1                          00005232   defined in Debug\button_control.o
 _UART_BRR2                          00005233   defined in Debug\button_control.o
 _UART_CR1                           00005234   defined in Debug\button_control.o
@@ -854,10 +854,10 @@ _UART_DR                            00005231   defined in Debug\button_control.o
 _UART_GTR                           00005239   defined in Debug\button_control.o
 _UART_PSCR                          0000523a   defined in Debug\button_control.o
 _UART_SR                            00005230   defined in Debug\button_control.o
-_Up_Button_Detection                000084a6   defined in Debug\button_control.o section .text
+_Up_Button_Detection                000084aa   defined in Debug\button_control.o section .text
 _WWDG_CR                            000050d1   defined in Debug\button_control.o
 _WWDG_WR                            000050d2   defined in Debug\button_control.o
-_Windows_Watchdog_Clear             00008e98   defined in Debug\stm8a_library.o section .text
+_Windows_Watchdog_Clear             00008e9c   defined in Debug\stm8a_library.o section .text
                                                used in Debug\can_function.o
                                                        Debug\lcd_ctrl_function.o
                                                        Debug\main.o
@@ -865,7 +865,7 @@ __endmem                            000013ff   defined in command file
                                                *** not used ***
 __endzp                             00000031   defined in command file section .ubsct
                                                used in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8
-__idesc__                           000083ec   defined in linker section .init
+__idesc__                           000083f0   defined in linker section .init
                                                used in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8
 __memory                            000001d0   defined in command file section .bss
                                                used in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8
@@ -873,11 +873,11 @@ __stack                             000017ff   defined in command file
                                                used in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8
 __startmem                          000001d0   defined in command file section .bss
                                                *** not used ***
-__stext                             00008439   defined in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8 section .text
+__stext                             0000843d   defined in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8 section .text
                                                used in Debug\stm8_interrupt_vector.o
 __vectab                            00008000   defined in Debug\stm8_interrupt_vector.o section .const
-_exit                               00008487   defined in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8 section .text
-_main                               00008e0b   defined in Debug\main.o section .text
+_exit                               0000848b   defined in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8 section .text
+_main                               00008e0f   defined in Debug\main.o section .text
                                                used in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8
 _uc_Button_Status_Reg               0000014c   defined in Debug\button_control.o section .bss
                                                used in Debug\test_controller_function.o
@@ -932,28 +932,28 @@ _ui_Test_Cycle                      0000012f   defined in Debug\test_controller_
 _ui_Test_Target                     00000131   defined in Debug\test_controller_function.o section .data, initialized
 _ui_Total_hour_cnt                  0000013b   defined in Debug\test_controller_function.o section .data, initialized
 _ui_blink_timer_cnt                 0000017f   defined in Debug\lcd_ctrl_function.o section .bss
-c_divsl                             0000cee6   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ldiv.o section .text
+c_divsl                             0000ceea   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ldiv.o section .text
                                                *** not used ***
-c_divul                             0000cefd   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ldiv.o section .text
+c_divul                             0000cf01   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ldiv.o section .text
                                                used in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ludiv.o
-c_lgneg                             0000cfd1   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lgneg.o section .text
+c_lgneg                             0000cfd5   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lgneg.o section .text
                                                used in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ldiv.o
-c_lneg                              0000cfe4   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lneg.o section .text
+c_lneg                              0000cfe8   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lneg.o section .text
                                                used in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ldiv.o
 c_lreg                              00000027   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lreg.o section .ubsct
                                                used in Debug\test_controller_function.o
                                                        (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ldiv.o
                                                        (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)lneg.o
                                                        (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)umul.o
-c_ludv                              0000ced2   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ludiv.o section .text
+c_ludv                              0000ced6   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)ludiv.o section .text
                                                used in Debug\test_controller_function.o
-c_sdivx                             0000cfff   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)sdivx.o section .text
+c_sdivx                             0000d003   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)sdivx.o section .text
                                                used in Debug\test_controller_function.o
-c_smodx                             0000cff9   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)sdivx.o section .text
+c_smodx                             0000cffd   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)sdivx.o section .text
                                                used in Debug\test_controller_function.o
-c_strcpx                            0000d024   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)strcpx.o section .text
+c_strcpx                            0000d028   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)strcpx.o section .text
                                                used in Debug\test_controller_function.o
-c_umul                              0000d048   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)umul.o section .text
+c_umul                              0000d04c   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)umul.o section .text
                                                used in Debug\test_controller_function.o
 c_x                                 0000002b   defined in (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)xreg.o section .ubsct
                                                used in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8
@@ -965,4 +965,4 @@ c_y                                 0000002e   defined in (C:\Program Files (x86
                                                used in C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\crtsi0.sm8
                                                        Debug\can_function.o
                                                        (C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\lib\libm0.sm8)umul.o
-f_Not_Used_Interrupt                0000d084   defined in Debug\stm8_interrupt_vector.o section .text
+f_Not_Used_Interrupt                0000d088   defined in Debug\stm8_interrupt_vector.o section .text

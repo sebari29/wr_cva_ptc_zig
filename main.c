@@ -59,13 +59,13 @@ void Start_Zig_Display(void)
 #elif (PTC_MODEL == CVa_FRONT_PTC)
 		Display_LCD_String("CV FRONT PTC");
 #else
-		Display_LCD_String("TEST PTC");
+		Display_LCD_String("TEST CVa PTC");
 #endif
 		Set_LCD_Address(0x10);  // 3 Line Test Zig
 		Display_LCD_String("Test Ctrl Ver0.4");
 
 		Set_LCD_Address(0xD0);  // 4 Line Test Zig
-		Display_LCD_String("23.11.13  By OSY");
+		Display_LCD_String("23.11.23  By OSY");
 	}	
 	return;
 }// End of Start_Zig_Display
