@@ -5,25 +5,25 @@ Keyword=ST7Project
 Number=1.3
 
 [Root.Source Files.button_control.c.Config.0]
-ExternDep= button_control.c  "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\modsl0.h" Main.h common.h  STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h
+ExternDep= button_control.c  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\modsl0.h" Main.h  common.h STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h
 
 [Root.Source Files.can_function.c.Config.0]
-ExternDep= can_function.c  "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\modsl0.h" main.h common.h  STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h Main.h
+ExternDep= can_function.c  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\modsl0.h" main.h  common.h STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h Main.h
 
 [Root.Source Files.lcd_ctrl_function.c.Config.0]
-ExternDep= lcd_ctrl_function.c  "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\modsl0.h" main.h common.h  STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h Main.h
+ExternDep= lcd_ctrl_function.c  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\modsl0.h" main.h  common.h STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h Main.h
 
 [Root.Source Files.lin_control.c.Config.0]
-ExternDep= lin_control.c  "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\modsl0.h" main.h common.h  STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h Main.h
+ExternDep= lin_control.c  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\modsl0.h" main.h  common.h STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h Main.h
 
 [Root.Source Files.main.c.Config.0]
-ExternDep= main.c "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\modsl0.h"  Main.h common.h STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h
+ExternDep= main.c  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\modsl0.h" Main.h  common.h STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h
 
 [Root.Source Files.stm8_interrupt_vector.c.Config.0]
-ExternDep= stm8_interrupt_vector.c  "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\modsl0.h"
+ExternDep= stm8_interrupt_vector.c  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\modsl0.h"
 
 [Root.Source Files.stm8a_library.c.Config.0]
-ExternDep= stm8a_library.c  "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\modsl0.h" Main.h common.h  STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h
+ExternDep= stm8a_library.c  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\modsl0.h" Main.h  common.h STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h
 
 [Root.Source Files.test_controller_function.c.Config.0]
-ExternDep= test_controller_function.c  "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\modsl0.h" Main.h common.h  STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h  "C:\Program Files (x86)\COSMIC\CXSTM8_32K\Hstm8\string.h"
+ExternDep= test_controller_function.c  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\modsl0.h" Main.h  common.h STM8A.h STM8A_Library.h LCD_Ctrl_Function.h Button_Control.h  Test_Controller_Function.h CAN_Function.h  "C:\Program Files (x86)\COSMIC\FSE_Compilers\CXSTM8\HSTM8\string.h"

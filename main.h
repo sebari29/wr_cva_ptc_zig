@@ -13,9 +13,10 @@
 /*==============	¢Ñ System_Control_Value_Define ¢Ð  ===================================================*/
 #define MV_FRONT_PTC 		0	//
 #define MV_REAR_PTC 		1	//
-#define SU2I_PTC	2
-#define CVa_FRONT_PTC	3
-#define PTC_MODEL	CVa_FRONT_PTC
+#define SU2I_PTC	      2
+#define CVa_FRONT_PTC	  3
+#define TEST_PTC	    	4
+#define PTC_MODEL	       TEST_PTC 
 
 /*============== ¢Ñ AD_Conversion_Channel_Define ¢Ð  ==================================================*/
 

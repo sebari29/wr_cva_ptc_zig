@@ -54,16 +54,18 @@ void Start_Zig_Display(void)
 		Display_LCD_String("MV FRONT PTC");
 #elif (PTC_MODEL == MV_REAR_PTC)
 		Display_LCD_String("MV REAR PTC");
+#elif (PTC_MODEL == SU2I_PTC)
+		Display_LCD_String("SU2I PTC");
 #elif (PTC_MODEL == CVa_FRONT_PTC)
 		Display_LCD_String("CV FRONT PTC");
 #else
-		Display_LCD_String("SU2I PTC");
+		Display_LCD_String("TEST PTC");
 #endif
 		Set_LCD_Address(0x10);  // 3 Line Test Zig
-		Display_LCD_String("Test Ctrl Ver0.3");
+		Display_LCD_String("Test Ctrl Ver0.4");
 
 		Set_LCD_Address(0xD0);  // 4 Line Test Zig
-		Display_LCD_String("23.11.06  By YJS");
+		Display_LCD_String("23.11.13  By OSY");
 	}	
 	return;
 }// End of Start_Zig_Display
